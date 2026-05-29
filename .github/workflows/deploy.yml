@@ -3,9 +3,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Daily rebuild: re-checks the research-network dispatch (liveness + freshness)
+  schedule:
+    - cron: "30 8 * * *"
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -26,6 +29,13 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: app/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Refresh research-network dispatch
+        working-directory: .
+        run: python3 scripts/82_build_dispatch.py
+        continue-on-error: true
       - run: npm ci
       - run: npm run build
         env:
@@ -33,6 +43,15 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: app/dist
+      - name: Commit refreshed dispatch
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/public/data/dispatch.json
+          git diff --staged --quiet || git commit -m "chore: refresh research-network dispatch"
+          git push || true
 
   deploy:
     needs: build

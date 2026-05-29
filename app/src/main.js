@@ -63,6 +63,7 @@ async function boot() {
   buildRedlining();
   buildWire();
   buildPapers();
+  buildNetwork();
   setupScrolly();
   wireMasthead();
   setupReveal();
@@ -146,6 +147,42 @@ async function buildPapers() {
     }).join("");
     return `<div class="paper-theme"><div class="paper-theme-head">${theme}</div>${items}</div>`;
   }).join("");
+}
+
+async function buildNetwork() {
+  const mount = document.getElementById("network-mount");
+  if (!mount) return;
+  let dispatch;
+  try { dispatch = await loadJSON("dispatch.json"); }
+  catch { mount.innerHTML = `<p class="mono-dim">Network manifest unavailable — run scripts/82_build_dispatch.py to build it.</p>`; return; }
+
+  const stamp = document.getElementById("network-stamp");
+  if (stamp && dispatch.generated)
+    stamp.textContent = "· checked " + new Date(dispatch.generated).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const fmtDate = (iso) => iso ? new Date(iso + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "";
+  const dot = (live) => live === true ? "is-live" : live === false ? "is-down" : "is-unknown";
+  const dotLabel = (live) => live === true ? "live" : live === false ? "offline" : "status unknown";
+
+  const cards = (dispatch.nodes || []).map((n) => {
+    const tags = (n.tags || []).map((t) => `<span class="net-tag">${esc(t)}</span>`).join("");
+    const updated = n.updated ? `<span class="net-updated">updated ${fmtDate(n.updated)}</span>` : "";
+    return `<a class="net-card" href="${esc(n.url)}" target="_blank" rel="noopener">
+      <div class="net-card-head">
+        <span class="net-status ${dot(n.live)}" title="${dotLabel(n.live)}"></span>
+        <span class="net-title">${esc(n.title)}</span>
+      </div>
+      <p class="net-blurb">${esc(n.blurb)}</p>
+      <p class="net-signal">${esc(n.signal)}</p>
+      <div class="net-foot"><div class="net-tags">${tags}</div>${updated}</div>
+    </a>`;
+  }).join("");
+
+  const hub = dispatch.hub
+    ? `<a class="net-hub" href="${esc(dispatch.hub)}" target="_blank" rel="noopener">All projects on the hub ↗</a>`
+    : "";
+  mount.innerHTML = cards + hub;
 }
 
 function buildHero() {

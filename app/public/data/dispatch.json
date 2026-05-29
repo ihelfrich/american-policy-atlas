@@ -1,0 +1,142 @@
+{
+  "generated": "2026-05-29T23:24:39+00:00",
+  "hub": "https://ihelfrich.github.io/",
+  "note": "Curated manifest of Ian Helfrich's public research observatories. Liveness and last-push dates are checked at build time; signal lines are descriptive, not live metrics.",
+  "nodes": [
+    {
+      "repo": "worldscope",
+      "title": "WorldScope",
+      "url": "https://ihelfrich.github.io/worldscope/",
+      "repo_url": "https://github.com/ihelfrich/worldscope",
+      "blurb": "Daily global political, economic, and OSINT briefing engine.",
+      "signal": "Tracks ~18 sections of open-source signal \u2014 executive orders, sanctions, markets, conflict \u2014 into one daily diff.",
+      "tags": [
+        "osint",
+        "briefing",
+        "daily"
+      ],
+      "live": true,
+      "updated": "2026-05-29"
+    },
+    {
+      "repo": "econscope",
+      "title": "EconScope",
+      "url": "https://ihelfrich.github.io/econscope/",
+      "repo_url": "https://github.com/ihelfrich/econscope",
+      "blurb": "Unified economic-intelligence platform: 50+ data sources, a DuckDB warehouse, full audit trail.",
+      "signal": "The data spine \u2014 FRED, BEA, BLS, Census and more, normalized and queryable, that feeds the rest of the network.",
+      "tags": [
+        "economics",
+        "data",
+        "warehouse"
+      ],
+      "live": true,
+      "updated": "2026-05-19"
+    },
+    {
+      "repo": "stl-digital-twin",
+      "title": "St. Louis Digital Twin",
+      "url": "https://ihelfrich.github.io/stl-digital-twin/",
+      "repo_url": "https://github.com/ihelfrich/stl-digital-twin",
+      "blurb": "A 3D digital twin of St. Louis \u2014 live aircraft, transit, traffic, and weather on CesiumJS.",
+      "signal": "A live city model: the same place the atlas uses for its Delmar Divide case study, rendered as a real-time research instrument.",
+      "tags": [
+        "geospatial",
+        "st-louis",
+        "real-time"
+      ],
+      "live": true,
+      "updated": "2026-05-29"
+    },
+    {
+      "repo": "redlining-health-la",
+      "title": "Redlining & Health, LA",
+      "url": "https://ihelfrich.github.io/redlining-health-la/",
+      "repo_url": "https://github.com/ihelfrich/redlining-health-la",
+      "blurb": "Interactive stats practicum: 1939 LA HOLC grades against present-day census-tract health.",
+      "signal": "The single-city practicum this national atlas grew out of \u2014 the redlining flagship in its original Los Angeles form.",
+      "tags": [
+        "redlining",
+        "practicum",
+        "teaching"
+      ],
+      "live": true,
+      "updated": "2026-05-29"
+    },
+    {
+      "repo": "hantavirus-observatory",
+      "title": "Hantavirus Observatory",
+      "url": "https://ihelfrich.github.io/hantavirus-observatory/",
+      "repo_url": "https://github.com/ihelfrich/hantavirus-observatory",
+      "blurb": "A 16-panel epidemiological SPA: case surveillance, wastewater signals, genomic phylogeny, and composite outbreak risk.",
+      "signal": "Shows the observatory pattern applied to disease surveillance \u2014 the same scrollytelling-plus-live-data shape as this atlas.",
+      "tags": [
+        "epidemiology",
+        "surveillance",
+        "observatory"
+      ],
+      "live": true,
+      "updated": "2026-05-29"
+    },
+    {
+      "repo": "eo14405-contagion",
+      "title": "EO 14405 Contagion",
+      "url": "https://ihelfrich.github.io/eo14405-contagion/",
+      "repo_url": "https://github.com/ihelfrich/eo14405-contagion",
+      "blurb": "A network-contagion model of how EO 14405 shifts stablecoin run-risk from commercial banks onto the Fed's balance sheet.",
+      "signal": "Network methods on a financial-stability question \u2014 the graph-theory side of the toolkit this atlas teaches spatially.",
+      "tags": [
+        "networks",
+        "finance",
+        "contagion"
+      ],
+      "live": true,
+      "updated": "2026-05-27"
+    },
+    {
+      "repo": "us-nmtc-viewer",
+      "title": "US NMTC Viewer",
+      "url": "https://ihelfrich.github.io/us-nmtc-viewer/",
+      "repo_url": "https://github.com/ihelfrich/us-nmtc-viewer",
+      "blurb": "Every New Markets Tax Credit project, FY2001\u20132022, as a browser-based Cesium viewer.",
+      "signal": "The blended-finance dataset behind Helfrich (2026) on the rural mobilization gap.",
+      "tags": [
+        "dataset",
+        "blended-finance",
+        "viewer"
+      ],
+      "live": true,
+      "updated": "2026-05-05"
+    },
+    {
+      "repo": "inference-lab",
+      "title": "Inference Lab",
+      "url": "https://ihelfrich.github.io/inference-lab/",
+      "repo_url": "https://github.com/ihelfrich/inference-lab",
+      "blurb": "Applied causal inference for the spatial social sciences: DiD, RDD, IV, synthetic control, networks, R and Stata side by side.",
+      "signal": "Where the methods this atlas demonstrates get their full causal-inference treatment.",
+      "tags": [
+        "causal-inference",
+        "methods",
+        "textbook"
+      ],
+      "live": true,
+      "updated": "2026-05-12"
+    },
+    {
+      "repo": "metric-sovereignty",
+      "title": "Metric Sovereignty",
+      "url": "https://ihelfrich.github.io/metric-sovereignty/",
+      "repo_url": "https://github.com/ihelfrich/metric-sovereignty",
+      "blurb": "Social choice, AI directives, and capitalist democracy \u2014 a living essay.",
+      "signal": "The theory end of the network: what it means to govern by a metric, when every map here is one.",
+      "tags": [
+        "social-choice",
+        "ai-governance",
+        "essay"
+      ],
+      "live": true,
+      "updated": "2026-05-14"
+    }
+  ]
+}

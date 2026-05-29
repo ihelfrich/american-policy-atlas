@@ -267,6 +267,33 @@ section[id] { scroll-margin-top: calc(var(--mast-h) + 8px); }
 .paper-doi { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 0.03em; margin-top: 0.35rem; }
 .paper-item:hover .paper-doi { color: var(--rust); }
 
+/* ---- research network --------------------------------------------------- */
+.network { padding: 6rem 1.5rem; background: var(--cream); border-top: 1px solid var(--line); }
+.network-grid { max-width: 78rem; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 1.1rem; }
+@media (min-width: 640px) { .network-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .network-grid { grid-template-columns: repeat(3, 1fr); } }
+.net-card {
+  display: flex; flex-direction: column; text-decoration: none;
+  background: #fff; border: 1px solid var(--line); border-radius: 4px;
+  padding: 1.1rem 1.15rem; transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+.net-card:hover { border-color: var(--rust); transform: translateY(-2px); box-shadow: 0 8px 22px rgba(13,27,42,0.07); }
+.net-card-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.net-status { width: 8px; height: 8px; border-radius: 50%; flex: none; background: var(--dim); }
+.net-status.is-live { background: #3a9d57; box-shadow: 0 0 0 3px rgba(58,157,87,0.16); }
+.net-status.is-down { background: var(--rust); }
+.net-status.is-unknown { background: var(--gold); }
+.net-title { font-family: var(--serif); font-size: 1.18rem; font-weight: 600; color: var(--ink); line-height: 1.15; }
+.net-card:hover .net-title { color: var(--rust); }
+.net-blurb { font-size: 0.9rem; line-height: 1.5; color: rgba(13,27,42,0.82); margin: 0 0 0.55rem; }
+.net-signal { font-size: 0.84rem; line-height: 1.5; color: var(--dim); margin: 0 0 0.9rem; font-style: italic; flex: 1; }
+.net-foot { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-top: auto; }
+.net-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.net-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--violet); background: rgba(109,90,140,0.1); padding: 0.15rem 0.4rem; border-radius: 2px; }
+.net-updated { font-family: var(--mono); font-size: 9px; color: var(--dim); white-space: nowrap; }
+.net-hub { grid-column: 1 / -1; justify-self: center; margin-top: 0.8rem; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); text-decoration: none; border-bottom: 1px solid transparent; }
+.net-hub:hover { border-bottom-color: var(--rust); }
+
 /* ---- methods ------------------------------------------------------------ */
 .methods { font-size: 0.92rem; color: rgba(13,27,42,0.82); }
 .methods p { margin: 0 0 0.9rem; line-height: 1.6; }
