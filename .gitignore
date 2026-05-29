@@ -1,0 +1,17 @@
+# data: raw downloads + cleaned intermediates are large and reproducible from scripts/.
+# Only the served payload in app/public/data/ is committed.
+data/raw/
+data/clean/
+data/web/
+
+# node
+app/node_modules/
+app/dist/
+
+# python
+__pycache__/
+*.pyc
+.env
+
+# os
+.DS_Store

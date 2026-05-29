@@ -1,0 +1,230 @@
+{
+  "note": "Twenty-four papers behind the methods and the story. Every DOI was checked against the publisher of record. Hooks are written for this atlas, not lifted from abstracts.",
+  "themes": [
+    "Redlining & New Deal housing policy",
+    "Segregation: measurement & causes",
+    "Neighborhoods & mobility",
+    "Spatial statistics & geography",
+    "Health, place & inequality",
+    "Housing policy in practice"
+  ],
+  "papers": [
+    {
+      "authors": "Daniel Aaronson, Daniel Hartley & Bhashkar Mazumder",
+      "year": 2021,
+      "title": "The Effects of the 1930s HOLC “Redlining” Maps",
+      "venue": "American Economic Journal: Economic Policy 13(4): 355–392",
+      "doi": "10.1257/pol.20190414",
+      "theme": "Redlining & New Deal housing policy",
+      "hook": "The closest thing to a causal estimate of what the HOLC maps did: tracts that fell just on the red side of a boundary diverged for decades. The backbone of this atlas's redlining module."
+    },
+    {
+      "authors": "Jacob W. Faber",
+      "year": 2020,
+      "title": "We Built This: Consequences of New Deal Era Intervention in America's Racial Geography",
+      "venue": "American Sociological Review 85(5): 739–775",
+      "doi": "10.1177/0003122420948464",
+      "theme": "Redlining & New Deal housing policy",
+      "hook": "Shows the maps did not just record segregation, they manufactured it, by writing “proximity to Black residents lowers value” into federal underwriting."
+    },
+    {
+      "authors": "Jeremy S. Hoffman, Vivek Shandas & Nicholas Pendleton",
+      "year": 2020,
+      "title": "The Effects of Historical Housing Policies on Resident Exposure to Intra-Urban Heat: A Study of 108 US Urban Areas",
+      "venue": "Climate 8(1): 12",
+      "doi": "10.3390/cli8010012",
+      "theme": "Redlining & New Deal housing policy",
+      "hook": "Formerly redlined neighborhoods run hotter today, by up to 7°C. A vivid case that a 1939 ink color still shapes the physical environment."
+    },
+    {
+      "authors": "Nancy Krieger et al.",
+      "year": 2020,
+      "title": "Structural Racism, Historical Redlining, and Risk of Preterm Birth in New York City, 2013–2017",
+      "venue": "American Journal of Public Health 110(7): 1046–1053",
+      "doi": "10.2105/AJPH.2020.305656",
+      "theme": "Redlining & New Deal housing policy",
+      "hook": "Preterm-birth risk climbs monotonically from grade A to grade D. The health gradient this atlas measures with diabetes, replicated at birth."
+    },
+    {
+      "authors": "Douglas S. Massey & Nancy A. Denton",
+      "year": 1988,
+      "title": "The Dimensions of Residential Segregation",
+      "venue": "Social Forces 67(2): 281–315",
+      "doi": "10.1093/sf/67.2.281",
+      "theme": "Segregation: measurement & causes",
+      "hook": "Names the five axes of segregation (evenness, exposure, concentration, centralization, clustering). Why one dissimilarity index is never the whole picture."
+    },
+    {
+      "authors": "David M. Cutler & Edward L. Glaeser",
+      "year": 1997,
+      "title": "Are Ghettos Good or Bad?",
+      "venue": "Quarterly Journal of Economics 112(3): 827–872",
+      "doi": "10.1162/003355397555361",
+      "theme": "Segregation: measurement & causes",
+      "hook": "Uses city-to-city variation to ask whether segregation itself harms outcomes. The template for treating a map as data, not decoration."
+    },
+    {
+      "authors": "David M. Cutler, Edward L. Glaeser & Jacob L. Vigdor",
+      "year": 1999,
+      "title": "The Rise and Decline of the American Ghetto",
+      "venue": "Journal of Political Economy 107(3): 455–506",
+      "doi": "10.1086/250069",
+      "theme": "Segregation: measurement & causes",
+      "hook": "A century of segregation indices, 1890–1990, and the institutions that drove them up and then partly down."
+    },
+    {
+      "authors": "John F. Kain",
+      "year": 1968,
+      "title": "Housing Segregation, Negro Employment, and Metropolitan Decentralization",
+      "venue": "Quarterly Journal of Economics 82(2): 175–197",
+      "doi": "10.2307/1885893",
+      "theme": "Segregation: measurement & causes",
+      "hook": "The original spatial-mismatch argument: separate where people live from where the jobs are and unemployment follows. Still the frame for South Central."
+    },
+    {
+      "authors": "Elizabeth Oltmans Ananat",
+      "year": 2011,
+      "title": "The Wrong Side(s) of the Tracks: The Causal Effects of Racial Segregation on Urban Poverty and Inequality",
+      "venue": "American Economic Journal: Applied Economics 3(2): 34–66",
+      "doi": "10.1257/app.3.2.34",
+      "theme": "Segregation: measurement & causes",
+      "hook": "Instruments segregation with the literal layout of 19th-century railroad tracks. A clean lesson in finding exogenous variation in a map."
+    },
+    {
+      "authors": "Leah Platt Boustan",
+      "year": 2010,
+      "title": "Was Postwar Suburbanization “White Flight”? Evidence from the Black Migration",
+      "venue": "Quarterly Journal of Economics 125(1): 417–443",
+      "doi": "10.1162/qjec.2010.125.1.417",
+      "theme": "Segregation: measurement & causes",
+      "hook": "Quantifies how many white residents left cities per Black arrival. Movement, not just stocks, makes the modern map."
+    },
+    {
+      "authors": "Sean F. Reardon & Kendra Bischoff",
+      "year": 2011,
+      "title": "Income Inequality and Income Segregation",
+      "venue": "American Journal of Sociology 116(4): 1092–1153",
+      "doi": "10.1086/657114",
+      "theme": "Segregation: measurement & causes",
+      "hook": "Rising inequality sorts families across neighborhoods, mostly by concentrating affluence. Connects the income choropleth to the segregation one."
+    },
+    {
+      "authors": "David Card, Alexandre Mas & Jesse Rothstein",
+      "year": 2008,
+      "title": "Tipping and the Dynamics of Segregation",
+      "venue": "Quarterly Journal of Economics 123(1): 177–218",
+      "doi": "10.1162/qjec.2008.123.1.177",
+      "theme": "Segregation: measurement & causes",
+      "hook": "Finds discontinuities: once minority share crosses a tract-specific threshold, white population collapses. A regression-discontinuity classic on a map."
+    },
+    {
+      "authors": "Raj Chetty, Nathaniel Hendren, Patrick Kline & Emmanuel Saez",
+      "year": 2014,
+      "title": "Where Is the Land of Opportunity? The Geography of Intergenerational Mobility in the United States",
+      "venue": "Quarterly Journal of Economics 129(4): 1553–1623",
+      "doi": "10.1093/qje/qju022",
+      "theme": "Neighborhoods & mobility",
+      "hook": "Mobility is local and the rank-rank relationship is strikingly linear, exactly the conditional-expectation idea this atlas teaches in M3."
+    },
+    {
+      "authors": "Raj Chetty & Nathaniel Hendren",
+      "year": 2018,
+      "title": "The Impacts of Neighborhoods on Intergenerational Mobility I: Childhood Exposure Effects",
+      "venue": "Quarterly Journal of Economics 133(3): 1107–1162",
+      "doi": "10.1093/qje/qjy007",
+      "theme": "Neighborhoods & mobility",
+      "hook": "Each childhood year in a better tract pays off linearly. Turns “place matters” into a dose-response curve."
+    },
+    {
+      "authors": "Raj Chetty, Nathaniel Hendren & Lawrence F. Katz",
+      "year": 2016,
+      "title": "The Effects of Exposure to Better Neighborhoods on Children: New Evidence from the Moving to Opportunity Experiment",
+      "venue": "American Economic Review 106(4): 855–902",
+      "doi": "10.1257/aer.20150572",
+      "theme": "Neighborhoods & mobility",
+      "hook": "The randomized-voucher experiment that gives the neighborhood story a true counterfactual."
+    },
+    {
+      "authors": "P. A. P. Moran",
+      "year": 1950,
+      "title": "Notes on Continuous Stochastic Phenomena",
+      "venue": "Biometrika 37(1/2): 17–23",
+      "doi": "10.2307/2332142",
+      "theme": "Spatial statistics & geography",
+      "hook": "The origin of Moran's I, the statistic this atlas uses to prove that nearby tracts resemble each other more than chance allows."
+    },
+    {
+      "authors": "Luc Anselin",
+      "year": 1995,
+      "title": "Local Indicators of Spatial Association—LISA",
+      "venue": "Geographical Analysis 27(2): 93–115",
+      "doi": "10.1111/j.1538-4632.1995.tb00338.x",
+      "theme": "Spatial statistics & geography",
+      "hook": "Breaks a global Moran's I into per-tract contributions, the math behind hot-spot and cold-spot maps."
+    },
+    {
+      "authors": "Waldo R. Tobler",
+      "year": 1970,
+      "title": "A Computer Movie Simulating Urban Growth in the Detroit Region",
+      "venue": "Economic Geography 46(sup1): 234–240",
+      "doi": "10.2307/143141",
+      "theme": "Spatial statistics & geography",
+      "hook": "Source of the First Law of Geography: everything relates to everything, but near things more so. The one sentence every spatial model assumes."
+    },
+    {
+      "authors": "Paul Krugman",
+      "year": 1991,
+      "title": "Increasing Returns and Economic Geography",
+      "venue": "Journal of Political Economy 99(3): 483–499",
+      "doi": "10.1086/261763",
+      "theme": "Spatial statistics & geography",
+      "hook": "Why economic activity clumps into cores and peripheries at all. The theory under the density choropleth."
+    },
+    {
+      "authors": "Robert J. Sampson, Stephen W. Raudenbush & Felton Earls",
+      "year": 1997,
+      "title": "Neighborhoods and Violent Crime: A Multilevel Study of Collective Efficacy",
+      "venue": "Science 277(5328): 918–924",
+      "doi": "10.1126/science.277.5328.918",
+      "theme": "Health, place & inequality",
+      "hook": "Introduces collective efficacy and the multilevel model, the reason we cannot treat tracts as independent observations."
+    },
+    {
+      "authors": "Anne Case & Angus Deaton",
+      "year": 2015,
+      "title": "Rising Morbidity and Mortality in Midlife among White Non-Hispanic Americans in the 21st Century",
+      "venue": "Proceedings of the National Academy of Sciences 112(49): 15078–15083",
+      "doi": "10.1073/pnas.1518393112",
+      "theme": "Health, place & inequality",
+      "hook": "The “deaths of despair” paper. A reminder that health gradients move, and that descriptive statistics can be an alarm."
+    },
+    {
+      "authors": "Raj Chetty et al.",
+      "year": 2016,
+      "title": "The Association Between Income and Life Expectancy in the United States, 2001–2014",
+      "venue": "JAMA 315(16): 1750–1766",
+      "doi": "10.1001/jama.2016.4226",
+      "theme": "Health, place & inequality",
+      "hook": "Life expectancy tracks income, and the gap varies by place. The clearest national version of the within-California health map."
+    },
+    {
+      "authors": "Rebecca Diamond, Tim McQuade & Franklin Qian",
+      "year": 2019,
+      "title": "The Effects of Rent Control Expansion on Tenants, Landlords, and Inequality: Evidence from San Francisco",
+      "venue": "American Economic Review 109(9): 3365–3394",
+      "doi": "10.1257/aer.20181289",
+      "theme": "Housing policy in practice",
+      "hook": "A California-grown quasi-experiment: rent control helped incumbents stay but shrank supply. Policy impact estimated cleanly, the M7 goal."
+    },
+    {
+      "authors": "Trevon D. Logan & John M. Parman",
+      "year": 2017,
+      "title": "The National Rise in Residential Segregation",
+      "venue": "Journal of Economic History 77(1): 127–170",
+      "doi": null,
+      "url": "https://www.cambridge.org/core/journals/journal-of-economic-history/article/national-rise-in-residential-segregation/C6CDA8CE8E2A0F2523EAE4C7BACB8E2A",
+      "theme": "Segregation: measurement & causes",
+      "hook": "Builds a next-door-neighbor segregation measure from full census manuscripts back to 1880. Shows segregation is a 20th-century construction, not a constant."
+    }
+  ]
+}

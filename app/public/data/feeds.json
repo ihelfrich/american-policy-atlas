@@ -1,0 +1,478 @@
+{
+"generated": "2026-05-29T20:21:32.645451+00:00",
+"lanes": {
+"data": [
+{
+"source": "Census Bureau",
+"title": "Advance Retail Inventories",
+"url": "https://www.census.gov/econ/indicators/index.html",
+"date": "2026-05-29T12:30:00+00:00",
+"summary": "April 2026 end-of-month inventories were $827.3 billion, up 0.7 percent (+/-0.2 percent) from last month.April 2026: +0.7 % Change in InventoriesMarch 2026 (r): +0.7 % Change in Inventories"
+},
+{
+"source": "Census Bureau",
+"title": "Advance U.S. International Trade in Goods",
+"url": "https://www.census.gov/econ/indicators/index.html",
+"date": "2026-05-29T12:30:00+00:00",
+"summary": "The advance international trade deficit in goods decreased to $82.4 billion in April from $85.3 billion in March as exports increased more than imports.April 2026: -3.4\u00b0 % ChangeMarch 2026: 4.3\u00b0 % Change"
+},
+{
+"source": "Census Bureau",
+"title": "Advance Wholesale Inventories",
+"url": "https://www.census.gov/econ/indicators/index.html",
+"date": "2026-05-29T12:30:00+00:00",
+"summary": "April end-of-month inventories were $938.6 billion, up 0.5 percent (+/- 0.4 percent) from last month.April 2026: +0.5 % Change in InventoriesMarch 2026 (r): +1.5 % Change in Inventories"
+},
+{
+"source": "Federal Reserve",
+"title": "Federal Reserve Board issues enforcement actions with former employee of Atlantic Union Bank and former employee of Frost Bank",
+"url": "https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260528a.htm",
+"date": "2026-05-28T15:00:00+00:00",
+"summary": "Federal Reserve Board issues enforcement actions with former employee of Atlantic Union Bank and former employee of Frost Bank"
+},
+{
+"source": "Census Bureau",
+"title": "New Home Sales",
+"url": "https://www.census.gov/construction/nrs/",
+"date": "2026-05-28T14:00:00+00:00",
+"summary": "Sales of new single-family houses in April 2026 were at a seasonally adjusted annual rate of 622,000. This is 6.2 percent (+/- 12.8%)* below the revised March 2026 estimate of 663,000.April 2026: -6.2* % ChangeMarch 2026\u2026"
+},
+{
+"source": "FRED Blog",
+"title": "State and metro employment: First quarter 2026",
+"url": "https://fredblog.stlouisfed.org/2026/05/state-and-metro-employment-first-quarter-2026/",
+"date": "2026-05-28T13:00:00+00:00",
+"summary": "U.S. employment growth in the first quarter of 2026 accelerated slightly to 0.2% relative to one year ago. However, the national average masks significant variation in job growth across the 50 states: 21 of the 50 states\u2026"
+},
+{
+"source": "BEA",
+"title": "GDP (Second Estimate) and Corporate Profits, 1st Quarter 2026",
+"url": "https://www.bea.gov/news/2026/gdp-second-estimate-and-corporate-profits-1st-quarter-2026",
+"date": "2026-05-28T12:30:00+00:00",
+"summary": "Real gross domestic product (GDP) increased at an annual rate of 1.6 percent in the first quarter of 2026 (January, February, and March), according to the second estimate released today by the U.S. Bureau of Economic Ana\u2026"
+},
+{
+"source": "BEA",
+"title": "Personal Income and Outlays, April 2026",
+"url": "https://www.bea.gov/news/2026/personal-income-and-outlays-april-2026",
+"date": "2026-05-28T12:30:00+00:00",
+"summary": "Personal income decreased less than $0.1 billion (less than 0.1 percent at a monthly rate) in April, according to estimates released today by the U.S. Bureau of Economic Analysis (BEA). Disposable personal income (DPI)-p\u2026"
+},
+{
+"source": "Census Bureau",
+"title": "Advance Monthly Manufacturers' Shipments, Inventories, and Orders",
+"url": "https://www.census.gov/manufacturing/m3/",
+"date": "2026-05-28T12:30:00+00:00",
+"summary": "New orders for manufactured durable goods in April, up two consecutive months, increased $25.5 billion or 7.9 percent to $346.0 billion.April 2026: +7.9\u00b0 % ChangeMarch 2026 (r): +1.3\u00b0 % Change"
+},
+{
+"source": "Federal Reserve",
+"title": "Minutes of the Board's discount rate meeting on April 20 and 29, 2026",
+"url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260526a.htm",
+"date": "2026-05-26T18:00:00+00:00",
+"summary": "Minutes of the Board's discount rate meeting on April 20 and 29, 2026"
+},
+{
+"source": "Census Newsroom",
+"title": "Census Bureau Releases New Educational Enrollment Data",
+"url": "",
+"date": "2026-05-26T14:04:03+00:00",
+"summary": "The U.S. Census Bureau released new data today about the educational characteristics of people ages 3 and older."
+},
+{
+"source": "Federal Reserve",
+"title": "Kevin Warsh takes oath of office as chairman and a member of the Board of Governors of the Federal Reserve System, and the Federal Open Market Committee unanimously selects Warsh as its chairman",
+"url": "https://www.federalreserve.gov/newsevents/pressreleases/other20260522a.htm",
+"date": "2026-05-22T20:15:00+00:00",
+"summary": "Kevin Warsh takes oath of office as chairman and a member of the Board of Governors of the Federal Reserve System, and the Federal Open Market Committee unanimously selects Warsh as its chairman"
+},
+{
+"source": "Federal Reserve",
+"title": "Agencies publish resolution plan feedback letters for certain domestic and foreign banking organizations",
+"url": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260522a.htm",
+"date": "2026-05-22T20:00:00+00:00",
+"summary": "Agencies publish resolution plan feedback letters for certain domestic and foreign banking organizations"
+},
+{
+"source": "Census Newsroom",
+"title": "New Community Resilience Estimates for Puerto Rico Now Available",
+"url": "",
+"date": "2026-05-21T15:35:58+00:00",
+"summary": "Community Resilience Estimates for Puerto Rico highlight areas most vulnerable to impacts of natural disasters."
+},
+{
+"source": "Federal Reserve",
+"title": "Federal Reserve Board issues enforcement action with former employee of Commerce Bank",
+"url": "https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260521a.htm",
+"date": "2026-05-21T15:00:00+00:00",
+"summary": "Federal Reserve Board issues enforcement action with former employee of Commerce Bank"
+},
+{
+"source": "Census Newsroom",
+"title": "Business Trends and Outlook Survey Data Release \u2014 May 21, 2026",
+"url": "",
+"date": "2026-05-21T14:02:12+00:00",
+"summary": "The Business Trends and Outlook Survey provides timely data for key economic measures and business expectations about future conditions."
+},
+{
+"source": "Census Bureau",
+"title": "Quarterly Services Survey",
+"url": "https://www.census.gov/services/index.html",
+"date": "2026-05-21T14:00:00+00:00",
+"summary": "Advance U.S. selected services total revenue for the first quarter of 2026, adjusted for seasonal variation but not for price changes, was $6,216.3 billion, an increase of 0.9 percent (+/- 0.4 percent) from the fourth qu\u2026"
+},
+{
+"source": "FRED Blog",
+"title": "How are benchmark borrowing costs measured? : A close look into the 10-year Treasury yield",
+"url": "https://fredblog.stlouisfed.org/2026/05/how-are-benchmark-borrowing-costs-measured/",
+"date": "2026-05-21T13:00:00+00:00",
+"summary": "The takeaway The market value of US Treasury securities is considered a benchmark for setting other borrowing costs, such as mortgages. It&#8217;s considered a benchmark because the US government has not failed to make g\u2026"
+},
+{
+"source": "Federal Reserve",
+"title": "Federal Reserve Board requests public comment on a proposal to establish a \"payment account,\" which legally eligible financial institutions could use for the specific purpose of clearing and settling their payments",
+"url": "https://www.federalreserve.gov/newsevents/pressreleases/other20260520a.htm",
+"date": "2026-05-20T20:00:00+00:00",
+"summary": "Federal Reserve Board requests public comment on a proposal to establish a &quot;payment account,&quot; which legally eligible financial institutions could use for the specific purpose of clearing and settling their paym\u2026"
+},
+{
+"source": "Census Newsroom",
+"title": "Census Bureau Releases New Local Estimates of Air Conditioning Access",
+"url": "",
+"date": "2026-05-19T14:04:15+00:00",
+"summary": "The Census Bureau released the 2023 Local Air Conditioning Estimates, an experimental dataset that covers access to air conditioning data."
+},
+{
+"source": "FRED Blog",
+"title": "Rising capital expenditures and declining cash holdings during the AI boom",
+"url": "https://fredblog.stlouisfed.org/2026/05/rising-capital-expenditures-and-declining-cash-holdings-during-the-ai-boom/",
+"date": "2026-05-18T13:00:00+00:00",
+"summary": "The takeaway Firms have intensified their research and development during the AI boom. They\u2019ve reduced their cash holdings, too, likely to pay for R&#38;D. In this post, we use FRED data to explore these trends and the f\u2026"
+},
+{
+"source": "Census Newsroom",
+"title": "Census Bureau Releases 2025 Annual Survey of Public Pensions",
+"url": "",
+"date": "2026-05-14T15:29:36+00:00",
+"summary": "Public Pensions in the nation totaled over $6 trillion in 2025, according to the Annual Survey of Public Pensions (ASPP) released today."
+},
+{
+"source": "Census Newsroom",
+"title": "El crecimiento de la poblaci\u00f3n sigue constante en ciudades medianas",
+"url": "",
+"date": "2026-05-14T14:23:34+00:00",
+"summary": "Seg\u00fan estimaciones de poblaci\u00f3n de subcondados, del 2024 al 2025 el crecimiento en ciudades medianas fue constante, mientras que en muchas \u00e1reas se desaceler\u00f3."
+},
+{
+"source": "FRED Blog",
+"title": "Bankrate and Freddie Mac mortgage rate data : Using FRED to compare similar but not identical datasets",
+"url": "https://fredblog.stlouisfed.org/2026/05/bankrate-and-freddie-mac-mortgage-rate-data/",
+"date": "2026-05-14T13:00:00+00:00",
+"summary": "Data providers may use the same labels for their data even if their methods of collecting the data differ. FRED can help you compare and understand these differences. Our FRED graph above displays two types of mortgage r\u2026"
+},
+{
+"source": "FRED Blog",
+"title": "The peculiar recent behavior of unemployment",
+"url": "https://fredblog.stlouisfed.org/2026/05/the-peculiar-recent-behavior-of-unemployment/",
+"date": "2026-05-11T13:00:00+00:00",
+"summary": "Our FRED graph above shows that unemployment is almost always doing one of two things: (1) declining slowly during expansions or (2) rising rapidly during recessions. Friedman (1964, 1993) compared this behavior to playi\u2026"
+},
+{
+"source": "FRED Blog",
+"title": "Velocity of money: The invisible pulse of the economy : A US-India comparison",
+"url": "https://fredblog.stlouisfed.org/2026/05/velocity-of-money-the-invisible-pulse-of-the-economy/",
+"date": "2026-05-07T13:00:00+00:00",
+"summary": "The takeaway The velocity of money is how fast money travels from one entity to another to purchase goods and services in a given period. Since 2008, velocity in India has been closing the gap with velocity in the US. &#\u2026"
+},
+{
+"source": "BEA",
+"title": "U.S. International Trade in Goods and Services, March 2026",
+"url": "https://www.bea.gov/news/2026/us-international-trade-goods-and-services-march-2026",
+"date": "2026-05-05T12:30:00+00:00",
+"summary": "The U.S. monthly international trade deficit increased in March 2026 according to the U.S. Bureau of Economic Analysis and the U.S. Census Bureau. The deficit increased from $57.8 billion in February (revised) to $60.3 b\u2026"
+},
+{
+"source": "BEA",
+"title": "U.S. International Transactions and Investment Position, 4th Quarter and Year 2025",
+"url": "https://www.bea.gov",
+"date": "2026-03-25T12:30:00+00:00",
+"summary": "The U.S. current-account deficit resulting from international economic transactions narrowed by $48.4 billion, or 20.2 percent, to $190.7 billion in the fourth quarter of 2025, according to statistics released today by t\u2026"
+},
+{
+"source": "BEA",
+"title": "Personal Income and Outlays, January 2026",
+"url": "https://www.bea.gov/news/2026/personal-income-and-outlays-january-2026",
+"date": "2026-03-13T12:31:00+00:00",
+"summary": "Personal income increased $113.8 billion (0.4 percent at a monthly rate) in January, according to estimates released today by the U.S. Bureau of Economic Analysis. Disposable personal income (DPI)-personal income less pe\u2026"
+},
+{
+"source": "BEA",
+"title": "Outdoor Recreation Economic Statistics, U.S. and States, 2024",
+"url": "https://www.bea.gov/news/2026/outdoor-recreation-economic-statistics-us-and-states-2024",
+"date": "2026-03-05T15:00:00+00:00",
+"summary": "The value added of the outdoor recreation economy accounted for 2.4 percent ($696.7 billion) of current-dollar gross domestic product (GDP) for the nation in 2024. Across states and the District of Columbia, value added \u2026"
+}
+],
+"research": [
+{
+"source": "PPIC",
+"title": "Police Agencies Face Obstacles with Hiring and Retention",
+"url": "https://www.ppic.org/blog/police-agencies-face-obstacles-with-hiring-and-retention/?utm_source=rss&utm_medium=rss&utm_campaign=police-agencies-face-obstacles-with-hiring-and-retention",
+"date": "2026-05-29T16:11:20+00:00",
+"summary": "Law enforcement agencies have undergone major shifts in recent years, with notable declines in the number of police officers."
+},
+{
+"source": "PPIC",
+"title": "PPIC Statewide Survey: Californians and Their Government",
+"url": "https://www.ppic.org/publication/ppic-statewide-survey-californians-and-their-government-may-2026/?utm_source=rss&utm_medium=rss&utm_campaign=ppic-statewide-survey-californians-and-their-government-may-2026",
+"date": "2026-05-28T04:00:18+00:00",
+"summary": "Key findings of the survey include: Democrat Xavier Becerra and Republican Steve Hilton lead in the top-two gubernatorial primary. A majority of likely voters support a one-time tax on billionaires, while they are split \u2026"
+},
+{
+"source": "PPIC",
+"title": "The Art and Science of Transforming California\u2019s Forests",
+"url": "https://www.ppic.org/blog/the-art-and-science-of-transforming-californias-forests/?utm_source=rss&utm_medium=rss&utm_campaign=the-art-and-science-of-transforming-californias-forests",
+"date": "2026-05-27T17:08:58+00:00",
+"summary": "As California\u2019s wildfire season approaches, how is the state working to prevent severe wildfires? We convened a panel of experts to discuss our new report on the state\u2019s progress\u2014and to look at what can help the effort s\u2026"
+},
+{
+"source": "PPIC",
+"title": "Statewide Survey: Californians and Their Government",
+"url": "https://www.ppic.org/event/statewide-survey-californians-and-their-government-may-2026/?utm_source=rss&utm_medium=rss&utm_campaign=statewide-survey-californians-and-their-government-may-2026",
+"date": "2026-05-26T21:41:36+00:00",
+"summary": "PPIC\u2019s latest survey tracks voter preferences in the gubernatorial primary and the congressional election. The survey also examines views on a range of state and national issues, including the economy, the state budget, \u2026"
+},
+{
+"source": "PPIC",
+"title": "Big California Dreams for College, Uneven Paths to a Degree",
+"url": "https://www.ppic.org/blog/big-california-dreams-for-college-uneven-paths-to-a-degree/?utm_source=rss&utm_medium=rss&utm_campaign=big-california-dreams-for-college-uneven-paths-to-a-degree",
+"date": "2026-05-26T19:10:34+00:00",
+"summary": "California parents have high hopes for their children\u2019s education, but college preparation and enrollment vary widely."
+},
+{
+"source": "PPIC",
+"title": "Examining Trends in California\u2019s Birth Rates",
+"url": "https://www.ppic.org/publication/examining-trends-in-californias-birth-rates/?utm_source=rss&utm_medium=rss&utm_campaign=examining-trends-in-californias-birth-rates",
+"date": "2026-05-21T21:13:04+00:00",
+"summary": "As in other states, California\u2019s birth rates have fallen to their lowest levels on record, largely driven by fewer births among younger women. The implications of this change are far-reaching: a smaller population may ha\u2026"
+},
+{
+"source": "SF Fed Economic Letter",
+"title": "Advisory Council Observations: March 2026",
+"url": "https://www.frbsf.org/research-and-insights/blog/sf-fed-blog/2026/05/06/advisory-council-observations-march-2026/",
+"date": "2026-05-06T18:00:00+00:00",
+"summary": "The San Francisco Fed\u2019s latest Advisory Council Observations offer a real\u2011time look at how businesses, households, and financial institutions across the Twelfth District are navigating today\u2019s economic environment."
+},
+{
+"source": "SF Fed Economic Letter",
+"title": "Monetary Policy in a Slow (to No) Growth Labor Market",
+"url": "https://www.frbsf.org/research-and-insights/blog/sf-fed-blog/2026/04/03/monetary-policy-in-a-slow-to-no-growth-labor-market/",
+"date": "2026-04-03T16:00:00+00:00",
+"summary": "What does a slow growth labor market mean for monetary policy? For one, it means \"traditional 'rules of thumb' for labor market health are changing,\" writes President Mary C. Daly. \"Simply stated, slower labor force grow\u2026"
+},
+{
+"source": "SF Fed Economic Letter",
+"title": "The AI Investing Landscape: Insights from Venture Capital",
+"url": "https://www.frbsf.org/research-and-insights/blog/sf-fed-blog/2026/02/11/the-ai-investing-landscape-insights-from-venture-capital/",
+"date": "2026-02-11T19:00:00+00:00",
+"summary": "In 2024, the San Francisco Fed and the Federal Reserve System Innovation Office launched the EmergingTech Economic Research Network (EERN) to support a better understanding of how new technologies like GenAI are shaping \u2026"
+},
+{
+"source": "SF Fed Economic Letter",
+"title": "Listening, Learning, and Connecting: Twelfth District Year\u2011End Highlights",
+"url": "https://www.frbsf.org/research-and-insights/blog/around-the-district/2025/12/29/2025-twelfth-district-year%e2%80%91end-highlights/",
+"date": "2025-12-29T17:00:00+00:00",
+"summary": "Highlights from 2025 around the Twelfth District. Discover how the SF Fed engages, listens to communities, and learns from local economies."
+},
+{
+"source": "SF Fed Economic Letter",
+"title": "Economic Letter Countdown: Most Read Topics from 2025",
+"url": "https://www.frbsf.org/research-and-insights/blog/sf-fed-blog/2025/12/19/economic-letter-countdown-most-read-topics-2025/",
+"date": "2025-12-19T21:00:00+00:00",
+"summary": "As we approach the end of the year, here\u2019s a top five list of our most widely read FRBSF Economic Letter topics in 2025, featuring research and insights from SF Fed economists and research staff."
+},
+{
+"source": "SF Fed Economic Letter",
+"title": "Around the District: Exploring Spokane\u2019s Economic Landscape",
+"url": "https://www.frbsf.org/research-and-insights/blog/around-the-district/2025/12/18/exploring-spokanes-economic-landscape/",
+"date": "2025-12-18T18:00:00+00:00",
+"summary": "SF Fed Regional Executives explore Spokane's economic landscape, uncovering insights on the bioscience, aerospace, and timber industries in the Inland Northwest."
+},
+{
+"source": "NBER New Working Papers",
+"title": "How Should Central Banks Respond to Commodity Price Shocks? Optimal Monetary and Exchange Rate Frameworks for Commodity-Exposed Economies -- by Thomas Drechsel, Michael McLeay, Silvana Tenreyro, Enrico D. Turri",
+"url": "https://www.nber.org/papers/w35164#fromrss",
+"date": null,
+"summary": "We show that the optimal monetary policy and exchange rate framework depend critically on the economy\u2019s commodity exposure. We develop a flexible but tractable model economy with commodity exports and imports, in which i\u2026"
+},
+{
+"source": "NBER New Working Papers",
+"title": "State Dependence of Monetary Policy During Global Supply Chain Disruptions -- by Xiwen Bai, Jes\u00fas Fern\u00e1ndez-Villaverde, Yiliang Li, Francesco Zanetti",
+"url": "https://www.nber.org/papers/w35209#fromrss",
+"date": null,
+"summary": "We study how global supply chain disruptions affect monetary policy transmission. Post-pandemic evidence indicates surging transportation costs, goods-market imbalances, and rising prices. We develop a model in which log\u2026"
+},
+{
+"source": "NBER New Working Papers",
+"title": "California Billionaires: Wealth, Taxes, and Wealth Tax Revenue Estimates -- by Jasper Boll, Emmanuel Saez, Gabriel Zucman",
+"url": "https://www.nber.org/papers/w35218#fromrss",
+"date": null,
+"summary": "This paper documents the wealth of California\u2019s billionaires and the taxes they pay. California billionaires\u2019 wealth exceeds $2 trillion today, the equivalent of 50% of California\u2019s GDP. It has grown 144% from 2023 to 20\u2026"
+},
+{
+"source": "NBER New Working Papers",
+"title": "Explaining Movements in Government Debt -- by Tatiana Kirsanova, Eric M. Leeper, Campbell B. Leith, Ding Liu",
+"url": "https://www.nber.org/papers/w35222#fromrss",
+"date": null,
+"summary": "Standard New Keynesian models with time-consistent policy predict minimal debt responses to conventional shocks, as a debt stabilization bias dominates tax-smoothing motives. We show that two mechanisms can generate debt\u2026"
+},
+{
+"source": "NBER New Working Papers",
+"title": "Management of Health Care Facilities and Patient Attendance during Major Disruptions: Evidence from Kenya -- by Kathryn Andrews, Fabiano Dal-Ri, Roberta Gatti, Renata Lemos, Mario Macis, Lydia Nakhone",
+"url": "https://www.nber.org/papers/w35223#fromrss",
+"date": null,
+"summary": "This paper measures and analyzes management practices in the Kenyan health care sector, drawing on a nationally representative survey and linked administrative data. The paper adapts the World Management Survey to measur\u2026"
+},
+{
+"source": "NBER New Working Papers",
+"title": "Credit Supply, Firms, and Earnings Inequality -- by Christian Moser, Farzad Saidi, Benjamin Wirth, Stefanie Wolter",
+"url": "https://www.nber.org/papers/w35224#fromrss",
+"date": null,
+"summary": "We study the distributional consequences of monetary policy-induced credit supply in the German labor market. Firms in relationships with banks that are more exposed to the introduction of negative interest rates in 2014\u2026"
+}
+],
+"news": [
+{
+"source": "LA Times California",
+"title": "Mountain lion sighting reported in Santa Monica; residents told to stay indoors",
+"url": "https://www.latimes.com/california/story/2026-05-29/mountain-lion-sighting-santa-monica",
+"date": "2026-05-29T20:10:57+00:00",
+"summary": "Officials responded Friday morning to a possible mountain lion sighting in Santa Monica."
+},
+{
+"source": "CalMatters",
+"title": "Una nueva ley de California proh\u00edbe a las fuerzas del orden interferir en las elecciones estatales",
+"url": "https://calmatters.org/calmatters-en-espanol/2026/05/fuerzas-del-orden-elecciones-california/",
+"date": "2026-05-29T20:09:24+00:00",
+"summary": "Newsom afirm\u00f3 que la nueva ley era solo la primera de un \"mosaico\" de legislaci\u00f3n para abordar la \"preocupaci\u00f3n leg\u00edtima\" que tienen los votantes sobre la seguridad de las elecciones en California."
+},
+{
+"source": "LA Times California",
+"title": "Oxnard man smuggled baby crocodiles, among 1,700 reptiles, gets 5 years",
+"url": "https://www.latimes.com/environment/story/2026-05-29/oxnard-man-smuggled-1-700-reptiles-gets-5-years",
+"date": "2026-05-29T20:08:24+00:00",
+"summary": "Jose Manuel Perez trafficked reptiles worth more than $739,000 into the U.S. from Mexico and Hong Kong, using social media to make deals, according to federal officials."
+},
+{
+"source": "CalMatters",
+"title": "\u2018Sent\u00eda que no estaba aprendiendo\u2019: Los estudiantes de colegios comunitarios tienen dificultades con la educaci\u00f3n en l\u00ednea",
+"url": "https://calmatters.org/calmatters-en-espanol/2026/05/california-educacion-en-linea/",
+"date": "2026-05-29T19:57:32+00:00",
+"summary": "Actualmente, alrededor del 40% de los cursos de los colegios comunitarios de California se imparten en l\u00ednea, lo que est\u00e1 redefiniendo la educaci\u00f3n. Seg\u00fan los responsables de estos centros, estos cursos son m\u00e1s accesible\u2026"
+},
+{
+"source": "LA Times California",
+"title": "Former California mayor pleads guilty to secretly working as foreign agent of China",
+"url": "https://www.latimes.com/california/story/2026-05-29/former-arcadia-mayor-guilty-plea-foreign-agent-china",
+"date": "2026-05-29T18:54:40+00:00",
+"summary": "The former mayor of Arcadia appeared in court Friday to formally plead guilty to a charge of acting as an unregistered agent of the Chinese government."
+},
+{
+"source": "LA Times California",
+"title": "Los Angeles tops nation in dog attacks on postal workers, again",
+"url": "https://www.latimes.com/california/story/2026-05-29/la-tops-nation-in-dog-attacks-on-postal-workers-again",
+"date": "2026-05-29T17:27:49+00:00",
+"summary": "California tops the list of states with the most postal service workers attacked by dogs, according to a recent study released by the U.S. Postal Service."
+},
+{
+"source": "LA Times California",
+"title": "West Altadena rescue came nearly 4 hours before evacuations ordered, 911 records show",
+"url": "https://www.latimes.com/california/story/2026-05-29/more-missed-opportunities-to-evacuate-west-altadena-during-eaton-fire-new-911-records-from-sheriff",
+"date": "2026-05-29T15:32:51+00:00",
+"summary": "Newly released 911 records from the Eaton fire show that Los Angeles County sheriff's deputies were aware of, and reported, the escalating fire threat in west Altadena. Why didn't that critical information trigger earlie\u2026"
+},
+{
+"source": "LA Times California",
+"title": "Man charged with murder, kidnapping his 5-year-old child before fleeing to Mexico",
+"url": "https://www.latimes.com/california/story/2026-05-29/amber-alert-kidnapping-murder-charge",
+"date": "2026-05-29T13:42:00+00:00",
+"summary": "A 40-year-old Los Angeles man was charged with murder after allegedly killing his girlfriend and kidnapping their young child before fleeing to Mexico, according to authorities."
+},
+{
+"source": "CalMatters",
+"title": "Can you even say no when your hospital asks you to sign a waiver?",
+"url": "https://calmatters.org/newsletter/opt-out-hospital-privacy/",
+"date": "2026-05-29T13:00:00+00:00",
+"summary": "If your doctor\u2019s office has ever asked you to sign an electronic pad without showing you exactly what you\u2019re signing, you aren\u2019t alone. CalMatters\u2019 director of sociotechnical research, Alex Rosenblat, heard dozens of sto\u2026"
+},
+{
+"source": "CalMatters",
+"title": "Berkeley\u2019s soda tax success story deserves wider attention across California",
+"url": "https://calmatters.org/commentary/2026/05/berkeley-soda-tax-success-health/",
+"date": "2026-05-29T12:00:00+00:00",
+"summary": "After Berkeley voters first passed a soda tax in 2014, the city has invested millions of dollars into impactful health programs. Other California cities should follow."
+},
+{
+"source": "CalMatters",
+"title": "Gavin Newsom\u2019s rosy painting of California\u2019s economy leaves out its darker undertones",
+"url": "https://calmatters.org/commentary/2026/05/gavin-newsom-california-economy-brag/",
+"date": "2026-05-29T12:00:00+00:00",
+"summary": "Gov. Newsom often brags about California's productivity and Nobel winners but omits its recent tech layoffs, shrinking jobs base and growing gaps between rich and poor."
+},
+{
+"source": "CalMatters",
+"title": "Sigamos el rastro del dinero: \u00bfQui\u00e9n apoya al pr\u00f3ximo gobernador de California y por qu\u00e9?",
+"url": "https://calmatters.org/calmatters-en-espanol/2026/05/sigamos-el-rastro-del-dinero-gobernador-california/",
+"date": "2026-05-28T20:27:46+00:00",
+"summary": "Multimillonarios, grandes petroleras y otros grupos de inter\u00e9s est\u00e1n gastando grandes sumas de dinero para influir en la contienda por la gobernaci\u00f3n de California, lo que la convierte en la campa\u00f1a de primarias m\u00e1s cara\u2026"
+},
+{
+"source": "The Economist Finance",
+"title": "Without fanfare, China is making rural migrants\u2019 lives easier",
+"url": "https://www.economist.com/finance-and-economics/2026/05/28/without-fanfare-china-is-making-rural-migrants-lives-easier",
+"date": "2026-05-28T09:29:28+00:00",
+"summary": "The notorious hukou system is being relaxed. Marx would approve"
+},
+{
+"source": "The Economist Finance",
+"title": "How to tax businesses in orbit and beyond",
+"url": "https://www.economist.com/finance-and-economics/2026/05/28/how-to-tax-businesses-in-orbit-and-beyond",
+"date": "2026-05-28T09:28:19+00:00",
+"summary": "As the space business grows, so will offplanet finance"
+},
+{
+"source": "The Economist Finance",
+"title": "Kevin Warsh\u2019s troublesome inflation in-tray",
+"url": "https://www.economist.com/finance-and-economics/2026/05/27/kevin-warshs-troublesome-inflation-in-tray",
+"date": "2026-05-27T20:26:28+00:00",
+"summary": "The new Fed chair will struggle to appease his colleagues, the market and Donald Trump all at once"
+},
+{
+"source": "The Economist Finance",
+"title": "Japan, South Korea and Taiwan are suffering industrial rot",
+"url": "https://www.economist.com/finance-and-economics/2026/05/27/japan-south-korea-and-taiwan-are-suffering-industrial-rot",
+"date": "2026-05-27T14:08:47+00:00",
+"summary": "Artificial intelligence is concealing a China shock"
+},
+{
+"source": "The Economist Finance",
+"title": "Giga-IPOs are a symptom of public markets\u2019 giga-problem",
+"url": "https://www.economist.com/finance-and-economics/2026/05/26/giga-ipos-are-a-symptom-of-public-markets-giga-problem",
+"date": "2026-05-26T20:12:08+00:00",
+"summary": "The incredible shrinking stockmarket"
+},
+{
+"source": "The Economist Finance",
+"title": "Crackdowns on financial secrecy aren\u2019t hurting offshore finance",
+"url": "https://www.economist.com/finance-and-economics/2026/05/25/crackdowns-on-financial-secrecy-arent-hurting-offshore-finance",
+"date": "2026-05-25T15:38:01+00:00",
+"summary": "There is a lot more to havens than crystal-clear waters and a promise of opacity"
+}
+]
+},
+"counts": {
+"data": 30,
+"research": 18,
+"news": 18
+}
+}
