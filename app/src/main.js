@@ -6,6 +6,7 @@ import { VARS, RAMPS, HOLC_COLORS, state, loadJSON } from "./data.js";
 import { breaksFor, stepExpression, fmtVal } from "./classify.js";
 import { renderProse } from "./prose.js";
 import { mountExplorer } from "./explorer.js";
+import { mountAssistant } from "./assistant.js";
 import "./style.css";
 
 const BASE = import.meta.env.BASE_URL;
@@ -65,6 +66,7 @@ async function boot() {
   setupScrolly();
   wireMasthead();
   setupReveal();
+  mountAssistant();
 }
 
 function wireMasthead() {

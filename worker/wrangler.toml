@@ -1,0 +1,12 @@
+name = "atlas-assistant"
+main = "src/worker.js"
+compatibility_date = "2024-11-01"
+
+# Workers AI: free-tier inference, no API key ever reaches the browser.
+[ai]
+binding = "AI"
+
+# Optional fallback provider. Set with: wrangler secret put GROQ_API_KEY
+# (leave unset to run on Workers AI alone.)
+[vars]
+# ALLOWED_ORIGIN = "https://ihelfrich.github.io"   # tighten CORS in production
