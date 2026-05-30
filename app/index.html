@@ -4,230 +4,24 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The American Policy Atlas — a teaching observatory for statistics</title>
-  <meta name="description" content="A teaching observatory for statistics, built on every county in the United States. Distributions, conditional expectations, regression, statistical inference, spatial dependence, and Bayesian estimation — taught on live national data, with a live wire of releases and a reading room of the literature." />
+  <meta name="description" content="A multi-page statistics curriculum built on every county in the United States. Three movements: classical inference, the spatial field, and geosocioeconometrics — distributions and regression through to gradient fields, optimal transport, networks, and the topology of the socioeconomic surface." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- masthead -->
+  <!-- masthead: nav is built by the router from the curriculum manifest -->
   <header class="masthead" id="top">
     <div class="masthead-bar">
-      <a href="#top" class="masthead-title">The American Policy Atlas</a>
+      <a href="#/" class="masthead-title">The American Policy Atlas</a>
       <div class="masthead-edition" id="edition">A teaching observatory · statistics on live national data</div>
       <button class="masthead-toggle" id="nav-toggle" aria-label="sections">Sections</button>
     </div>
-    <nav class="masthead-nav" id="masthead-nav">
-      <a href="#atlas">Atlas</a>
-      <a href="#m1">Reading a map</a>
-      <a href="#m2">Distributions</a>
-      <a href="#m3">E[Y|X]</a>
-      <a href="#m4">Regression</a>
-      <a href="#m5">Inference</a>
-      <a href="#m6">Spatial</a>
-      <a href="#m7">Bayesian</a>
-      <a href="#m8">Policy</a>
-      <a href="#explorer">Explorer</a>
-      <a href="#download">Download</a>
-      <a href="#redlining">Redlining</a>
-      <a href="#wire">Live wire</a>
-      <a href="#papers">Reading room</a>
-      <a href="#network">Network</a>
-      <a href="#methods">Methods</a>
-    </nav>
+    <nav class="masthead-nav" id="masthead-nav"></nav>
   </header>
 
-  <!-- hero -->
-  <section id="home" class="hero">
-    <div id="hero-map"></div>
-    <div class="hero-scrim"></div>
-    <div class="hero-inner">
-      <div class="kicker reveal">Vol. I · 3,144 counties · 50 states + DC · ACS 2018–22 → today</div>
-      <h1 class="hero-title reveal">The country,<br/>one variable<br/>at a time.</h1>
-      <p class="hero-lede reveal">A working atlas of the United States built to <em>teach</em> statistics — not just display it. Every county in the country is here. Pick a number and watch the map rewrite itself, then follow that same data through distributions, conditional expectations, regression, statistical inference, spatial dependence, and Bayesian estimation.</p>
-      <div class="hero-actions reveal">
-        <a href="#atlas" class="btn btn-solid">Open the atlas</a>
-        <a href="#redlining" class="btn btn-ghost">The redlining story</a>
-      </div>
-      <div class="hero-scrollcue reveal">scroll ↓</div>
-    </div>
-  </section>
-
-  <!-- atlas: scrollytelling + interactive choropleth -->
-  <section id="atlas" class="scrolly">
-    <div class="scrolly-stage">
-      <div id="atlas-map"></div>
-      <div class="stage-overlay">
-        <div class="overlay-head">
-          <span class="kicker">The atlas</span>
-          <span class="overlay-count" id="atlas-count"></span>
-        </div>
-        <select id="var-select" aria-label="variable"></select>
-        <div id="class-buttons" class="class-row"></div>
-        <div id="legend" class="legend"></div>
-        <div id="atlas-stats" class="overlay-stats"></div>
-        <div class="fly-row">
-          <button data-fly="us" class="flyto">United States</button>
-          <button data-fly="west" class="flyto">West</button>
-          <button data-fly="south" class="flyto">South</button>
-          <button data-fly="northeast" class="flyto">Northeast</button>
-        </div>
-        <p id="var-desc" class="overlay-desc"></p>
-      </div>
-    </div>
-
-    <div class="chapters">
-      <article class="chapter" data-var="pop_density_km2" data-view="us" data-class="jenks">
-        <span class="kicker">Chapter 01 · where people are</span>
-        <h2>340 million people, very unevenly spread.</h2>
-        <p>Population per square kilometre runs from empty western counties to Manhattan across four orders of magnitude. A handful of dense counties hold a huge share of the country — which is exactly why the color breaks you choose matter so much.</p>
-      </article>
-      <article class="chapter" data-var="median_hh_income" data-view="us" data-class="quantile">
-        <span class="kicker">Chapter 02 · the money map</span>
-        <h2>Income is a geography, not a list.</h2>
-        <p>The coasts and the big-metro suburbs separate cleanly from the rural interior and the Deep South. Switch to a quantile cut and the structure sharpens — the first hint of the spatial dependence we measure later.</p>
-      </article>
-      <article class="chapter" data-var="pct_poverty" data-view="south" data-class="quantile">
-        <span class="kicker">Chapter 03 · the persistent South</span>
-        <h2>Poverty clusters, county by county.</h2>
-        <p>Drop into the South and a band of high-poverty counties resolves: the Mississippi Delta, the Black Belt, Appalachia, the Texas border. Poverty is not scattered at random; it pools. That is the difference between a map and a dataset of independent dots.</p>
-      </article>
-      <article class="chapter" data-var="pct_black" data-view="south" data-class="quantile">
-        <span class="kicker">Chapter 04 · who lives where</span>
-        <h2>Demography and disadvantage share a map.</h2>
-        <p>Lay the Black-share map beside the poverty map and the overlap across the Black Belt is hard to miss. Correlation, not destiny — but the co-location is the empirical fact every model in this atlas has to reckon with.</p>
-      </article>
-      <article class="chapter" data-var="diabetes_pct" data-view="south" data-class="jenks">
-        <span class="kicker">Chapter 05 · the health gradient</span>
-        <h2>A health gradient you can see.</h2>
-        <p>Adult diabetes prevalence rises across the same southern counties — the "diabetes belt" the CDC named. This is where the redlining story begins: places that were starved of investment decades ago still carry the health cost today. Take the controls and test it yourself.</p>
-      </article>
-      <article class="chapter chapter-quiet">
-        <span class="kicker">Now you drive</span>
-        <h2>Twelve variables, three ways to cut them.</h2>
-        <p>The panel on the map is live. Change the variable, change the classification rule, fly between the regions. Everything below — every chart, every model — is built from this same national data.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- modules -->
-  <main class="modules">
-    <section id="m1" class="module reveal">
-      <div class="module-head"><span class="sec-num">01</span><span class="kicker">Reading a map</span></div>
-      <h2 class="module-title">The same data, cut three ways</h2>
-      <div class="prose-slot"></div>
-    </section>
-
-    <section id="m2" class="module reveal">
-      <div class="module-head"><span class="sec-num">02</span><span class="kicker">Distributions</span></div>
-      <h2 class="module-title">One variable, 3,144 counties</h2>
-      <div class="prose-slot"></div>
-      <div id="dist-plot" class="plot"></div>
-    </section>
-
-    <section id="m3" class="module reveal">
-      <div class="module-head"><span class="sec-num">03</span><span class="kicker">Conditional expectations</span></div>
-      <h2 class="module-title">E[Y | X], the most useful object in statistics</h2>
-      <div class="prose-slot"></div>
-      <div id="cef-plot" class="plot"></div>
-    </section>
-
-    <section id="m4" class="module reveal">
-      <div class="module-head"><span class="sec-num">04</span><span class="kicker">Regression</span></div>
-      <h2 class="module-title">A line, and then a control</h2>
-      <div class="prose-slot"></div>
-      <div id="reg-plot" class="plot"></div>
-    </section>
-
-    <section id="m5" class="module reveal">
-      <div class="module-head"><span class="sec-num">05</span><span class="kicker">Statistical inference</span></div>
-      <h2 class="module-title">From one sample to a sampling distribution</h2>
-      <div class="prose-slot"></div>
-      <div id="inference-plot" class="plot"></div>
-    </section>
-
-    <section id="m6" class="module reveal">
-      <div class="module-head"><span class="sec-num">06</span><span class="kicker">Spatial dependence</span></div>
-      <h2 class="module-title">Nearby counties are not strangers</h2>
-      <div class="prose-slot"></div>
-      <div id="moran-plot" class="plot"></div>
-    </section>
-
-    <section id="m7" class="module reveal">
-      <div class="module-head"><span class="sec-num">07</span><span class="kicker">Bayesian thinking</span></div>
-      <h2 class="module-title">Borrowing strength across counties</h2>
-      <div class="prose-slot"></div>
-      <div id="bayes-plot" class="plot"></div>
-    </section>
-
-    <section id="m8" class="module reveal">
-      <div class="module-head"><span class="sec-num">08</span><span class="kicker">Policy impact &amp; forecasting</span></div>
-      <h2 class="module-title">From description to counterfactual</h2>
-      <div class="prose-slot"></div>
-      <div id="policy-plot" class="plot"></div>
-    </section>
-
-    <section id="explorer" class="module reveal">
-      <div class="module-head"><span class="sec-num">09</span><span class="kicker">Data explorer</span></div>
-      <h2 class="module-title">Cut the data yourself</h2>
-      <div class="prose-slot"></div>
-      <div id="explorer-mount" class="mt"></div>
-    </section>
-
-    <section id="download" class="module reveal">
-      <div class="module-head"><span class="sec-num">10</span><span class="kicker">Open data</span></div>
-      <h2 class="module-title">Take the data with you</h2>
-      <div class="prose-slot"></div>
-      <div id="download-mount" class="mt"></div>
-    </section>
-  </main>
-
-  <!-- redlining flagship: full-bleed dark -->
-  <section id="redlining" class="flagship reveal">
-    <div class="flagship-inner">
-      <span class="kicker kicker-light">The flagship case</span>
-      <h2 class="flagship-title">A line drawn in 1939, still legible today</h2>
-      <div class="prose-slot"></div>
-      <div id="redlining-mount" class="mt"></div>
-    </div>
-  </section>
-
-  <!-- live wire: RSS feeds -->
-  <section id="wire" class="wire reveal">
-    <div class="section-head">
-      <span class="kicker">Live wire</span>
-      <h2 class="section-title">What the data agencies are saying right now</h2>
-      <p class="section-sub">A build-time snapshot of release calendars, working papers, and coverage. Refreshed daily. <span id="wire-stamp" class="mono-dim"></span></p>
-    </div>
-    <div id="wire-mount" class="wire-grid"></div>
-  </section>
-
-  <!-- reading room: papers -->
-  <section id="papers" class="papers reveal">
-    <div class="section-head">
-      <span class="kicker">Reading room</span>
-      <h2 class="section-title">Twenty-four papers behind the maps</h2>
-      <p class="section-sub">The literature this atlas leans on, from Moran (1950) to Diamond–McQuade–Qian (2019). Every DOI checked against the publisher of record.</p>
-    </div>
-    <div id="papers-mount" class="papers-mount"></div>
-  </section>
-
-  <!-- research network: sibling observatories -->
-  <section id="network" class="network reveal">
-    <div class="section-head">
-      <span class="kicker">Research network</span>
-      <h2 class="section-title">One node in a wider observatory</h2>
-      <p class="section-sub">This atlas is part of a federated network of public research instruments. Each links out to its own live site; liveness and last activity are checked when this page is built. <span id="network-stamp" class="mono-dim"></span></p>
-    </div>
-    <div id="network-mount" class="network-grid"></div>
-  </section>
-
-  <!-- methods -->
-  <section id="methods" class="module reveal">
-    <div class="module-head"><span class="sec-num">10</span><span class="kicker">Methods &amp; sources</span></div>
-    <h2 class="module-title">How this was built</h2>
-    <div id="methods-mount" class="methods"></div>
-  </section>
+  <!-- single routed view: exactly one curriculum page lives here at a time -->
+  <main id="view"></main>
 
   <!-- colophon -->
   <footer class="colophon">

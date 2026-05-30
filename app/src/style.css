@@ -463,3 +463,103 @@ section[id] { scroll-margin-top: calc(var(--mast-h) + 8px); }
 .dl-table tr:last-child td { border-bottom: none; }
 .dl-src { font-size: 0.74rem; color: var(--dim); }
 .mono { font-family: var(--mono); font-size: 0.78rem; }
+
+/* ======================================================================
+   ROUTED CURRICULUM (multi-page shell)
+   ====================================================================== */
+#view { display: block; min-height: calc(100svh - var(--mast-h)); }
+.load-error { max-width: 40rem; margin: 6rem auto; padding: 0 1.5rem; color: var(--rust); font-size: 0.95rem; }
+
+/* ---- grouped masthead nav ---------------------------------------------- */
+.nav-group { display: inline-flex; align-items: center; gap: 0.1rem; }
+.nav-group-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink); opacity: 0.55; white-space: nowrap;
+  padding: 0 0.35rem 0 0.7rem; margin-left: 0.25rem; border-left: 1px solid var(--line);
+}
+.nav-group:first-child .nav-group-label { border-left: none; }
+.masthead-nav a.is-current { color: var(--rust); border-bottom-color: var(--rust); }
+@media (max-width: 1023px) {
+  .nav-group { flex: 0 0 100%; flex-wrap: wrap; gap: 0.1rem 0.2rem; padding: 0.35rem 0; border-top: 1px dashed var(--line); }
+  .nav-group:first-child { border-top: none; }
+  .nav-group-label { flex: 0 0 100%; border-left: none; padding: 0.2rem 0; margin: 0; opacity: 0.7; color: var(--rust); }
+}
+
+/* ---- generic page chrome ------------------------------------------------ */
+.page-head { max-width: 44rem; margin: 0 auto; padding: 4.5rem 1.5rem 0; }
+.page-title { font-size: clamp(2rem, 4.4vw, 3.1rem); line-height: 1.05; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
+.page-lede { font-size: clamp(1.05rem, 1.7vw, 1.28rem); line-height: 1.55; color: rgba(13,27,42,0.8); max-width: 38rem; margin: 1.2rem 0 0; }
+.page-lede em { font-family: var(--serif); font-style: italic; }
+.page-lede-light { color: rgba(250,248,243,0.84); }
+.page-body { max-width: 44rem; margin: 0 auto; padding: 2.4rem 1.5rem 1rem; }
+.page-body .prose-slot > p { margin: 0 0 1rem; font-size: 1rem; line-height: 1.7; }
+
+/* ---- home: table of contents ------------------------------------------- */
+.toc { max-width: 72rem; margin: 0 auto; padding: 5rem 1.5rem 6rem; }
+.toc-intro { max-width: 44rem; }
+.toc-title { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.06; margin: 0.5rem 0 0.8rem; }
+.toc-sub { font-size: 1.02rem; line-height: 1.6; color: var(--dim); max-width: 40rem; }
+.toc-grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-top: 2.6rem; }
+@media (min-width: 880px) { .toc-grid { grid-template-columns: repeat(3, 1fr); } }
+.toc-card {
+  display: flex; flex-direction: column; text-decoration: none;
+  background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--ink);
+  padding: 1.6rem 1.4rem 1.4rem; transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+.toc-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px -20px rgba(13,27,42,0.4); }
+.toc-i { border-top-color: var(--violet); }
+.toc-ii { border-top-color: var(--sage); }
+.toc-iii { border-top-color: var(--rust); }
+.toc-num { font-family: var(--serif); font-size: 2.2rem; font-weight: 600; line-height: 1; color: var(--ink); opacity: 0.9; }
+.toc-card h3 { font-size: 1.32rem; margin: 0.5rem 0 0.6rem; line-height: 1.15; }
+.toc-card p { font-size: 0.92rem; line-height: 1.55; color: rgba(13,27,42,0.78); margin: 0; flex: 1; }
+.toc-go { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); margin-top: 1rem; }
+.toc-i:hover h3 { color: var(--violet); }
+.toc-ii:hover h3 { color: var(--sage); }
+.toc-iii:hover h3 { color: var(--rust); }
+
+/* ---- atlas page --------------------------------------------------------- */
+.atlas-page { display: block; }
+.atlas-stage { position: relative; height: clamp(60vh, 72vh, 80vh); background: var(--paper); border-bottom: 1px solid var(--line); }
+.atlas-rail { max-width: 44rem; margin: 0 auto; padding: 3rem 1.5rem 1rem; }
+.rail-title { font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.1; margin: 0.4rem 0 0.7rem; }
+.rail-sub { font-size: 0.98rem; line-height: 1.6; color: var(--dim); max-width: 38rem; margin: 0 0 1.6rem; }
+.preset-list { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
+@media (min-width: 680px) { .preset-list { grid-template-columns: repeat(2, 1fr); } }
+.preset {
+  text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 4px;
+  padding: 0.85rem 1rem; cursor: pointer; transition: border-color 0.16s, transform 0.16s;
+  display: flex; flex-direction: column; gap: 0.2rem;
+}
+.preset:hover { border-color: var(--rust); transform: translateY(-2px); }
+.preset.is-active { border-color: var(--ink); border-left: 3px solid var(--rust); }
+.preset b { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+.preset span { font-size: 0.82rem; color: var(--dim); line-height: 1.4; }
+
+/* ---- chapter prev / next ----------------------------------------------- */
+.chapter-nav { max-width: 44rem; margin: 2.5rem auto 4rem; padding: 0 1.5rem; display: flex; gap: 1rem; }
+.cn-link {
+  flex: 1; display: flex; flex-direction: column; gap: 0.2rem; text-decoration: none;
+  border: 1px solid var(--line); border-radius: 4px; padding: 0.9rem 1.1rem;
+  transition: border-color 0.16s, background 0.16s;
+}
+.cn-link:not(.cn-empty):hover { border-color: var(--rust); background: rgba(181,72,47,0.04); }
+.cn-next { text-align: right; }
+.cn-empty { border: none; pointer-events: none; }
+.cn-dir { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+.cn-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.cn-link:hover .cn-title { color: var(--rust); }
+
+/* ---- Movement III framework blocks ------------------------------------- */
+.tex-block { margin: 1.6rem 0; padding: 1.1rem 1rem; background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--violet); overflow-x: auto; text-align: center; }
+.dev-note {
+  margin-top: 1.6rem; font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em;
+  color: var(--dim); background: rgba(109,90,140,0.07); border: 1px dashed rgba(109,90,140,0.4);
+  border-radius: 4px; padding: 0.7rem 0.9rem; line-height: 1.5;
+}
+#grad-plot:empty { display: none; }
+
+/* ---- flagship (redlining) page tweaks ---------------------------------- */
+.flagship .prose-slot-light > p { color: rgba(250,248,243,0.82); margin: 0 0 1rem; }
+.flagship .prose-slot-light b { color: #fff; }
+.redline-map { height: 60vh; border: 1px solid rgba(250,248,243,0.2); overflow: hidden; }

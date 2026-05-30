@@ -73,52 +73,64 @@ function solve(A, b) {
   return M.map((r) => r[n]);
 }
 
-export function renderProse(Plot) {
-  // ---- M1: reading a map ----
+// ---- M1: reading a map ----
+export function renderReadingMap() {
   setProse("m1",
-    P(`A choropleth paints each area by a number. The honest trick is that the same numbers can tell different stories depending on where you cut the color breaks. In the atlas above, switch between <b>Quantile</b> (equal counts per color), <b>Equal interval</b> (equal value width), and <b>Jenks</b> (natural breaks that minimize within-class variance). Watch how the income map "spreads" or "concentrates" the country just by changing the rule.`) +
+    P(`A choropleth paints each area by a number. The honest trick is that the same numbers can tell different stories depending on where you cut the color breaks. On the atlas page, switch between <b>Quantile</b> (equal counts per color), <b>Equal interval</b> (equal value width), and <b>Jenks</b> (natural breaks that minimize within-class variance). Watch how the income map "spreads" or "concentrates" the country just by changing the rule.`) +
     P(`Quantile guarantees every color is used equally often, which flatters maps of skewed variables like income or density. Equal interval is honest about magnitude but can leave whole classes empty. Jenks is the cartographer's compromise: it finds breaks that group similar counties together. None is "correct" — the point is that classification is an assumption, and a good analyst states it.`));
+}
 
-  // ---- M2: distributions ----
+// ---- M2: distributions ----
+export function renderDistributions(Plot) {
   setProse("m2",
     P(`Before any model, look at one variable on its own. Here is median household income for all <b>3,144 counties</b>, as a histogram: the horizontal axis is income, the height of each bar is how many counties fall in that slice. A distribution is just the full answer to "how often does each value happen?"`) +
-    P(`Two summaries sit on the plot. The <b>median</b> (solid) splits the counties into two equal halves; the <b>mean</b> (dashed) is the balance point. When a distribution has a long right tail — a handful of very rich counties — the mean is dragged toward the tail and lands to the right of the median. That gap between mean and median <em>is</em> the skew, and it is why the choice of color breaks in M1 mattered so much.`));
+    P(`Two summaries sit on the plot. The <b>median</b> (solid) splits the counties into two equal halves; the <b>mean</b> (dashed) is the balance point. When a distribution has a long right tail — a handful of very rich counties — the mean is dragged toward the tail and lands to the right of the median. That gap between mean and median <em>is</em> the skew, and it is why the choice of color breaks on the atlas page mattered so much.`));
   distPlot(Plot);
+}
 
-  // ---- M3: CEF / binscatter ----
+// ---- M3: CEF / binscatter ----
+export function renderCEF(Plot) {
   setProse("m3",
     P(`A conditional expectation answers: for counties at a given income, what is the average diabetes rate? Written ${tex("E[Y \\mid X]")}, it is the single most useful object in applied statistics. We approximate it with a <b>binscatter</b>: sort counties by income, chop into bins, and plot the average outcome in each bin.`) +
     P(`The curve below is nonparametric — it lets the data choose its own shape. Regression, next, is just the straight-line summary of this same cloud.`));
   cefPlot(Plot);
+}
 
-  // ---- M4: regression + control ----
+// ---- M4: regression + control ----
+export function renderRegression(Plot) {
   regressionBlock(Plot);
+}
 
-  // ---- M5: statistical inference ----
+// ---- M5: statistical inference ----
+export function renderInference(Plot) {
   setProse("m5",
-    P(`Every number above is computed on all 3,144 counties at once. But the deeper lesson of statistics is about <em>sampling</em>: if you only saw a handful of counties, how sure could you be about the whole country? Treat the full set of county diabetes rates as the population, then draw thousands of random samples and record each sample's mean.`) +
+    P(`Every number in Movement I so far is computed on all 3,144 counties at once. But the deeper lesson of statistics is about <em>sampling</em>: if you only saw a handful of counties, how sure could you be about the whole country? Treat the full set of county diabetes rates as the population, then draw thousands of random samples and record each sample's mean.`) +
     P(`The histogram below is the <b>sampling distribution</b> of that mean. Two facts the <b>Central Limit Theorem</b> promises show up immediately: the heap is nearly normal even though the underlying county values are skewed, and its spread is the standard error ${tex("\\sigma/\\sqrt{n}")}, not the population standard deviation. A 95% confidence interval is just one sample's mean plus or minus about two standard errors — and a hypothesis test asks whether an observed gap is larger than that yardstick.`));
   inferencePlot(Plot);
+}
 
-  // ---- M6: Moran's I ----
+// ---- M6: Moran's I ----
+export function renderMoran(Plot) {
   setProse("m6",
     P(`Tobler's first law: near things are more related than distant things. <b>Moran's I</b> puts a number on it by correlating each county's value with the average of its neighbors (its "spatial lag"). Positive I means clustering — high next to high, low next to low. Neighbors here are counties that share a border (queen contiguity), built from the full-resolution Census boundary file.`) +
-    P(`The residuals from the regression above are not scattered at random across the map; they pool. That spatial autocorrelation is exactly why a single OLS line understates the uncertainty, and why spatial models exist.`));
+    P(`The residuals from the regression we fit in Movement I are not scattered at random across the map; they pool. That spatial autocorrelation is exactly why a single OLS line understates the uncertainty, and why spatial models exist. It is also the hinge into Movement III: autocorrelation is the crudest possible reading of a structure the field actually has everywhere.`));
   moranPlot(Plot);
+}
 
-  // ---- M7: Bayesian shrinkage ----
+// ---- M7: Bayesian shrinkage ----
+export function renderBayes(Plot) {
   setProse("m7",
     P(`A county of 500 people with a 20% diabetes rate is not really telling you 20% — the estimate is built on almost nothing. Empirical-Bayes small-area estimation pulls each noisy local rate toward the population-weighted national mean, in proportion to how little information that county carries. This is <b>shrinkage</b>, and it is the logic behind every model-based small-area release.`) +
     P(`The posterior mean is a precision-weighted average: ${tex("\\hat\\theta_i = w_i\\,y_i + (1-w_i)\\,\\mu")}, with weight ${tex("w_i = \\tau^2 / (\\tau^2 + v_i)")}. Here ${tex("v_i")} is the county's own sampling variance (large for tiny counties) and ${tex("\\tau^2")} is the genuine between-county variance, estimated by method of moments. Small counties move a lot; large counties barely budge.`));
   bayesPlot(Plot);
+}
 
-  // ---- M8: policy ----
+// ---- M8: policy ----
+export function renderPolicy(Plot) {
   setProse("m8",
     P(`Sort the counties into five equal groups by poverty rate. Diabetes climbs steadily from the lowest-poverty quintile to the highest. Suppose a place-based investment program closed half of that gap — bringing every quintile halfway down to the healthiest one. How many fewer adults would have diabetes?`) +
     P(`The projection below applies that counterfactual reduction to each quintile and counts the avoided cases, weighting by population. This is not causal proof; it is a transparent what-if built on the conditional means you have been computing all along. Good forecasting shows its assumptions in the open.`));
   policyPlot(Plot);
-
-  methods();
 }
 
 function distPlot(Plot) {
@@ -132,6 +144,7 @@ function distPlot(Plot) {
   const mean = v.reduce((s, x) => s + x, 0) / v.length;
   const median = v[Math.floor(v.length / 2)];
   const el = document.getElementById("dist-plot");
+  if (!el) return;
   el.append(Plot.plot({
     height: 320, marginLeft: 50,
     x: { label: "median household income ($)", grid: true },
@@ -157,7 +170,9 @@ function cefPlot(Plot) {
     bins.push({ x: seg.reduce((s, r) => s + r.x, 0) / seg.length,
                 y: seg.reduce((s, r) => s + r.y, 0) / seg.length });
   }
-  document.getElementById("cef-plot").append(Plot.plot({
+  const cefEl = document.getElementById("cef-plot");
+  if (!cefEl) return;
+  cefEl.append(Plot.plot({
     height: 320, marginLeft: 50,
     x: { label: "median household income ($)", grid: true },
     y: { label: "diabetes prevalence (%)", grid: true },
@@ -190,7 +205,8 @@ function regressionBlock(Plot) {
     txt += P(`Adding poverty shrinks the income slope by about <b>${shrink}%</b> but does not erase it. Much of income's apparent link to diabetes runs through poverty, yet an independent association survives — the two variables are correlated, not interchangeable, and the regression keeps the part of each that the other cannot explain.`);
     const xmin = Math.min(...dp.map((d) => d.inc)), xmax = Math.max(...dp.map((d) => d.inc));
     const line = [xmin, xmax].map((x) => ({ x, y: simple.beta[0] + simple.beta[1] * x }));
-    document.getElementById("reg-plot").append(Plot.plot({
+    const regEl = document.getElementById("reg-plot");
+    if (regEl) regEl.append(Plot.plot({
       height: 300, marginLeft: 50,
       x: { label: "median household income ($10k)", grid: true },
       y: { label: "diabetes prevalence (%)", grid: true },
@@ -210,6 +226,7 @@ function inferencePlot(Plot) {
     if (Number.isFinite(x)) pop.push(x);
   }
   const el = document.getElementById("inference-plot");
+  if (!el) return;
   if (pop.length < 100) { el.innerHTML = `<p class="text-sm text-ink/60">Inference demo needs the national county layer.</p>`; return; }
   const N = pop.length;
   const mu = pop.reduce((s, x) => s + x, 0) / N;
@@ -261,6 +278,7 @@ function inferencePlot(Plot) {
 function moranPlot(Plot) {
   const m = state.summary?.moran;
   const el = document.getElementById("moran-plot");
+  if (!el) return;
   if (m && m.scatter?.length) {
     el.append(Plot.plot({
       height: 300, marginLeft: 50,
@@ -285,6 +303,7 @@ function bayesPlot(Plot) {
     if (Number.isFinite(y) && Number.isFinite(n) && n > 0) rows.push({ y, n });
   }
   const el = document.getElementById("bayes-plot");
+  if (!el) return;
   if (rows.length < 100) { el.innerHTML = `<p class="text-sm text-ink/60">Shrinkage demo needs the national county layer.</p>`; return; }
   // population-weighted grand mean (the prior)
   const totN = rows.reduce((s, r) => s + r.n, 0);
@@ -319,6 +338,7 @@ function policyPlot(Plot) {
     if ([pov, d, p].every(Number.isFinite)) rows.push({ pov, d, p });
   }
   const el = document.getElementById("policy-plot");
+  if (!el) return;
   if (rows.length < 100) { el.innerHTML = `<p class="text-sm text-ink/60">Counterfactual needs the national county layer.</p>`; return; }
   rows.sort((a, b) => a.pov - b.pov);
   const Q = 5, bins = [];
@@ -346,8 +366,10 @@ function policyPlot(Plot) {
     `<p class="text-sm mt-2 text-ink/80">Halving every quintile's gap to the lowest-poverty group implies roughly <b>${Math.round(avoided).toLocaleString()}</b> fewer adults with diabetes nationwide — a transparent counterfactual, not a causal estimate.</p>`);
 }
 
-function methods() {
-  document.getElementById("methods-mount").innerHTML = `
+export function renderMethods() {
+  const el = document.getElementById("methods-mount");
+  if (!el) return;
+  el.innerHTML = `
     <p><b>Geography.</b> All 3,144 county and county-equivalent units of the 50 states and DC (Census TIGER 2023). The web map carries simplified boundaries; spatial contiguity is built from the full-resolution shapefile.</p>
     <p><b>ACS 2018–2022</b> five-year estimates: median household income, poverty, education, race and ethnicity, unemployment, tenure and rent burden, health insurance. Percentages derived against their correct universes.</p>
     <p><b>CDC PLACES 2024–2025</b> model-based county prevalence of adult diabetes, obesity, and hypertension.</p>
@@ -355,5 +377,47 @@ function methods() {
     <p><b>Spatial dependence.</b> Moran's I under queen contiguity (counties sharing any boundary point are neighbors), row-standardized weights, significance from a 999-draw permutation null. Contiguity is computed on the unsimplified TIGER geometry, excluding Alaska and Hawaii, which have no land neighbors.</p>
     <p><b>Inference demos</b> resample the county values with a fixed seed, so every figure is reproducible. The South/non-South contrast uses the Census definition of the South region.</p>
     <p><b>Empirical Bayes.</b> Each county rate is shrunk toward the population-weighted national mean with weight w = τ²/(τ²+v), where v is the county's own sampling variance and the between-county variance τ² is estimated by method of moments. This is the Fay–Herriot logic behind official small-area estimates.</p>
-    <p class="text-ink/60">All computation is reproducible from the <code>scripts/</code> pipeline (11 national county assembly → 12 spatial dependence). California tracts and the redlining case study below retain their own tract-level pipeline.</p>`;
+    <p class="text-ink/60">All computation is reproducible from the <code>scripts/</code> pipeline (11 national county assembly → 12 spatial dependence). California tracts and the redlining case study retain their own tract-level pipeline.</p>`;
+}
+
+// =====================================================================
+// MOVEMENT III — geosocioeconometrics. These pages are framework-first:
+// the math is the specification the interactive viewers (in development)
+// will implement. Each fills its own prose slot.
+// =====================================================================
+function setSlot(id, html) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = html;
+}
+
+export function renderGradientField() {
+  setSlot("iii-grad-prose",
+    P(`Movements I and II asked questions about counties: how is income distributed, do nearby counties resemble each other. Movement III changes the noun. Treat a variable as a continuous surface ${tex("Z(s)")} over the plane ${tex("s = (x, y)")}, interpolated from the county centroids. A surface has a slope at every point, and that slope carries more information than the level does.`) +
+    P(`The <b>gradient</b> ${tex("\\nabla Z(s) = \\left(\\partial Z/\\partial x,\\ \\partial Z/\\partial y\\right)")} points in the direction the variable rises fastest; its magnitude ${tex("\\lVert \\nabla Z \\rVert")} is the rate of that rise. A sharp income cliff between two adjacent neighborhoods is a place where ${tex("\\lVert \\nabla Z \\rVert")} is large. Mapping the gradient turns "where are the boundaries in the data" from an eyeball judgment into a field you can compute.`) +
+    `<div class="tex-block">${tex("\\nabla Z(s) = \\Big(\\tfrac{\\partial Z}{\\partial x},\\ \\tfrac{\\partial Z}{\\partial y}\\Big), \\qquad T_\\sigma(s) = G_\\sigma * \\big(\\nabla Z\\,\\nabla Z^{\\top}\\big)", true)}</div>` +
+    P(`A single gradient vector cannot tell a clean border from a noisy speckle. The <b>structure tensor</b> ${tex("T_\\sigma = G_\\sigma * (\\nabla Z\\,\\nabla Z^{\\top})")} — the outer product of the gradient, smoothed over a neighborhood by a Gaussian ${tex("G_\\sigma")} — can. Its two eigenvalues ${tex("\\lambda_1 \\ge \\lambda_2")} read the local geometry: ${tex("\\lambda_1 \\gg \\lambda_2")} is a <em>frontier</em> (change along one direction, an edge), ${tex("\\lambda_1 \\approx \\lambda_2")} both large is a <em>pocket</em> (an isolated high or low), and both small is flat interior. This is the borrowed-from-image-processing core of the geosocioeconometric program: the country has edges and corners, and they are measurable.`));
+}
+
+export function renderOptimalTransport() {
+  setSlot("iii-ot-prose",
+    P(`Put two maps side by side: where poverty is, and where the clinics are. As probability distributions over the same space, call them ${tex("\\mu")} and ${tex("\\nu")}. <b>Optimal transport</b> asks the cheapest way to rearrange one pile of mass into the other. The minimal total cost, with squared-distance as the price of moving mass, is the squared 2-Wasserstein distance.`) +
+    `<div class="tex-block">${tex("W_2^2(\\mu,\\nu) = \\inf_{\\pi \\in \\Pi(\\mu,\\nu)} \\int_{\\mathbb{R}^2 \\times \\mathbb{R}^2} \\lVert x - y \\rVert^2 \\, d\\pi(x,y)", true)}</div>` +
+    P(`Unlike a correlation, ${tex("W_2")} is a genuine distance between spatial distributions: it knows that mismatch nearby is cheap and mismatch across the country is dear. The <b>Benamou–Brenier</b> reformulation rewrites that static problem as a flow — a density ${tex("\\rho_t")} and a velocity field ${tex("v_t")} obeying the continuity equation ${tex("\\partial_t \\rho + \\nabla\\!\\cdot(\\rho v) = 0")} — minimizing total kinetic energy ${tex("\\int_0^1 \\!\\int \\rho_t \\lVert v_t \\rVert^2")}.`) +
+    P(`That velocity field is what I mean by <b>distributional flux</b>: not a single number but a map of arrows showing the direction and intensity of the redistribution one map would need to match another. It is the difference between knowing two geographies disagree and knowing exactly how mass would have to move to reconcile them — which is the quantity a place-based policy is actually trying to buy.`));
+}
+
+export function renderNetworks() {
+  setSlot("iii-net-prose",
+    P(`Make the country a graph: counties are nodes, a shared border is an edge, the weighted adjacency matrix is ${tex("W")}. With the degree matrix ${tex("D")}, the <b>graph Laplacian</b> ${tex("L = D - W")} is the discrete analogue of the ${tex("-\\nabla^2")} operator — it measures how much each county departs from the average of its neighbors. Almost everything in the first two movements is secretly a statement about ${tex("L")}.`) +
+    `<div class="tex-block">${tex("L = D - W, \\qquad \\frac{\\partial u}{\\partial t} = -L\\,u, \\qquad u(t) = e^{-tL} u_0", true)}</div>` +
+    P(`Run a shock through that network and it spreads by <b>diffusion</b>: the heat kernel ${tex("e^{-tL}")} is the exact solution, and at small ${tex("t")} it reaches only immediate neighbors while at large ${tex("t")} it equilibrates across the whole graph. <b>Effective distance</b> (Brockmann and Helbing's idea, ${tex("d_{\\text{eff}} = 1 - \\log p")} along the most probable path) then replaces raw mileage with how readily something actually reaches you through the network.`) +
+    P(`This is the unification the program is built toward. Moran's I is a quadratic form in ${tex("W")}; the spatial-autoregressive model is ${tex("(I - \\rho W)^{-1}")}; kriging is a covariance built on graph distance. Autocorrelation, the spatial models of Movement II, and the field geometry of the gradient pages are all readings of the same operator. Centrality on this graph then ranks counties not by what they contain but by where they sit in the flow.`));
+}
+
+export function renderTopology() {
+  setSlot("iii-topo-prose",
+    P(`Moran's I answers one question — is there clustering, yes or no — and answers it with a single number for the whole country. But "how many distinct high-poverty regions are there, and which are robust?" is a different question, and choosing one threshold to count them is exactly the arbitrary cut Movement I warned about.`) +
+    P(`<b>Persistent homology</b> removes the choice. Lower a waterline ${tex("\\tau")} down through the surface ${tex("Z(s)")} and watch the superlevel sets ${tex("\\{ s : Z(s) \\ge \\tau \\}")}. As ${tex("\\tau")} falls, islands of high value are <em>born</em>, grow, and eventually <em>merge</em>. Record the threshold at which each feature appears and the threshold at which it dies into a larger one.`) +
+    `<div class="tex-block">${tex("\\{ s : Z(s) \\ge \\tau \\}, \\qquad \\text{persistence} = \\lvert \\tau_{\\text{birth}} - \\tau_{\\text{death}} \\rvert", true)}</div>` +
+    P(`Plot every feature as a (birth, death) point: that is the <b>persistence diagram</b>. Features far from the diagonal lived across a wide band of thresholds — they are real structure. Features hugging the diagonal flickered in and out — they are noise. ${tex("H_0")} counts connected components (the clusters), ${tex("H_1")} counts loops (a ring of high values enclosing a low). It is a principled, threshold-free census of the shape of the country, and it is where the field-first program lands.`));
 }
