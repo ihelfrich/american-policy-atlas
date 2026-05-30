@@ -11,7 +11,7 @@ HOLC gradient means, the redlining regression), and writes:
   app/public/data/atlas_summary.json     (stats payload)
 """
 from pathlib import Path
-import json, shutil
+import json
 import numpy as np
 import pandas as pd
 import geopandas as gpd
@@ -115,7 +115,7 @@ summary = {"varstats": varstats, "byGrade": byGrade, "reg": reg, "moran": moran,
 json.dump(summary, open(APP / "atlas_summary.json", "w"))
 print(f"wrote atlas_summary.json")
 
-# ---- county geojson with econ ----
+# ---- county geojson with econ (build-time source → data/web, not shipped) ----
 print("building county geojson...")
 cty = gpd.read_file(RAW / "ca_tracts" / "tl_2023_06_tract.shp")
 cty["county_fips"] = cty.STATEFP + cty.COUNTYFP
@@ -123,11 +123,14 @@ cty = cty.dissolve(by="county_fips").reset_index()[["county_fips", "geometry"]].
 econ = pd.read_parquet(CLEAN / "econ_ca_county.parquet").rename(columns={"GEOID_county": "county_fips"})
 cty = cty.merge(econ, on="county_fips", how="left")
 cty["geometry"] = cty.geometry.simplify(0.002, preserve_topology=True)
-cty.to_file(APP / "ca_counties.geojson", driver="GeoJSON")
+cty.to_file(WEB / "ca_counties.geojson", driver="GeoJSON")
 
-# ---- copy tract + la geojson ----
-for f in ["ca_tracts.geojson", "la_focus.geojson"]:
-    if (WEB / f).exists():
-        shutil.copy(WEB / f, APP / f)
-        print(f"copied {f} ({(APP / f).stat().st_size/1e6:.1f} MB)")
+# ---- raw tract + LA geojson: SOURCES only, kept in data/web ----
+# The browser never downloads these directly. The SPA loads the slim
+# ca_tracts_holc.geojson (HOLC-graded tracts only) produced by
+# scripts/90_optimize_web_geometry.py. We deliberately do NOT copy the
+# 11.5 MB raw tracts / 2.7 MB LA file into app/public/data — shipping
+# geometry the app never requests is the lag this refactor removed.
+print("raw tract/LA geojson left in data/web (sources, not shipped)")
+print("NEXT: python3 scripts/90_optimize_web_geometry.py  → slim browser payloads")
 print("DONE web payload.")

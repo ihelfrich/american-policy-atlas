@@ -226,6 +226,16 @@ section[id] { scroll-margin-top: calc(var(--mast-h) + 8px); }
 .flagship .prose-slot b { color: #fff; }
 #redline-map { height: 60vh; border: 1px solid rgba(250,248,243,0.2); overflow: hidden; }
 #redline-gradient { background: var(--cream); color: var(--ink); padding: 1rem; margin-top: 1.4rem; border-radius: 2px; }
+.redline-skeleton {
+  height: 60vh; display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(250,248,243,0.2); border-radius: 8px;
+  font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.04em;
+  color: rgba(250,248,243,0.55);
+  background: linear-gradient(100deg, rgba(250,248,243,0.04) 30%, rgba(250,248,243,0.10) 50%, rgba(250,248,243,0.04) 70%);
+  background-size: 220% 100%; animation: redline-shimmer 1.5s ease-in-out infinite;
+}
+@keyframes redline-shimmer { 0% { background-position: 180% 0; } 100% { background-position: -180% 0; } }
+@media (prefers-reduced-motion: reduce) { .redline-skeleton { animation: none; } }
 
 /* ---- section heads (wire, papers) -------------------------------------- */
 .section-head { max-width: 44rem; margin: 0 auto 2.4rem; }

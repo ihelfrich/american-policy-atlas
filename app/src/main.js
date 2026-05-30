@@ -42,25 +42,28 @@ const VIEWS = {
 let atlasMap, currentValues = [];
 
 async function boot() {
+  // Critical path: only the two payloads the hero + national atlas need, fetched
+  // in parallel. The 11.5 MB statewide tract file used to block first paint here;
+  // it is now deferred to lazyRedlining() and slimmed to the HOLC-graded subset.
   try {
-    state.counties = await loadJSON("us_counties.geojson");
+    const [counties, summary] = await Promise.all([
+      loadJSON("us_counties.min.geojson"),
+      loadJSON("us_summary.json").catch(() => ({})),
+    ]);
+    state.counties = counties;
+    state.summary = summary;
   } catch (e) {
     document.getElementById("atlas-stats").innerHTML =
-      `<p class="text-rust">Could not load county data. Run scripts/11_national_county.py first.</p>`;
+      `<p class="text-rust">Could not load county data. Run scripts/11_national_county.py then scripts/90_optimize_web_geometry.py.</p>`;
     console.error(e);
+    return;
   }
-  try { state.summary = await loadJSON("us_summary.json"); }
-  catch { state.summary = {}; }
-  // California tracts + HOLC power the redlining case study, loaded lazily.
-  try { state.caTracts = await loadJSON("ca_tracts.geojson"); } catch { state.caTracts = null; }
-  try { state.caSummary = await loadJSON("atlas_summary.json"); } catch { state.caSummary = {}; }
 
   buildHero();
   buildAtlas();
   buildControls();
   renderProse(Plot);
   mountExplorer();
-  buildRedlining();
   buildWire();
   buildPapers();
   buildNetwork();
@@ -68,6 +71,40 @@ async function boot() {
   wireMasthead();
   setupReveal();
   mountAssistant();
+
+  // Heavy redlining tract layer: fetch only as the section approaches the viewport.
+  lazyRedlining();
+}
+
+// Defer the California HOLC tract payload until the redlining section is near.
+// rootMargin gives a head start so the map is usually ready before it scrolls in.
+function lazyRedlining() {
+  const sec = document.getElementById("redlining");
+  if (!sec) return;
+  let started = false;
+  const load = async () => {
+    if (started) return;
+    started = true;
+    const mount = document.getElementById("redlining-mount");
+    if (mount) mount.innerHTML = `<div class="redline-skeleton mono-dim">Loading the redlining map…</div>`;
+    try {
+      const [tracts, caSummary] = await Promise.all([
+        loadJSON("ca_tracts_holc.geojson"),
+        loadJSON("atlas_summary.json").catch(() => ({})),
+      ]);
+      state.caTracts = tracts;
+      state.caSummary = caSummary;
+    } catch (e) {
+      console.error(e);
+      if (mount) mount.innerHTML = `<p class="mono-dim">Redlining layer unavailable — run scripts/90_optimize_web_geometry.py.</p>`;
+      return;
+    }
+    buildRedlining();
+  };
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+  }, { rootMargin: "700px 0px" });
+  io.observe(sec);
 }
 
 function wireMasthead() {
@@ -194,7 +231,9 @@ function buildHero() {
     if (state.counties) {
       m.addSource("t", { type: "geojson", data: state.counties });
       m.addLayer({ id: "t-fill", type: "fill", source: "t",
-        paint: { "fill-color": colorExpr("median_hh_income"), "fill-opacity": 0.8 } });
+        paint: { "fill-color": colorExpr("median_hh_income"), "fill-opacity": 0,
+          "fill-opacity-transition": { duration: 900 } } });
+      requestAnimationFrame(() => m.getLayer("t-fill") && m.setPaintProperty("t-fill", "fill-opacity", 0.8));
     }
     m.easeTo({ center: VIEWS.us.center, zoom: VIEWS.us.zoom, duration: 7000 });
   });
@@ -222,13 +261,22 @@ function buildAtlas() {
     if (!state.counties) return;
     atlasMap.addSource("counties", { type: "geojson", data: state.counties });
     atlasMap.addLayer({ id: "fill", type: "fill", source: "counties",
-      paint: { "fill-color": colorExpr(state.variable), "fill-opacity": 0.82 } });
+      paint: { "fill-color": colorExpr(state.variable), "fill-opacity": 0,
+        "fill-opacity-transition": { duration: 600 } } });
     atlasMap.addLayer({ id: "line", type: "line", source: "counties",
-      paint: { "line-color": "#0d1b2a", "line-width": 0.2, "line-opacity": 0.22 } });
+      paint: { "line-color": "#0d1b2a", "line-width": 0.2, "line-opacity": 0,
+        "line-opacity-transition": { duration: 600 } } });
     atlasMap.addLayer({ id: "hl", type: "line", source: "counties",
       filter: ["==", "GEOID", ""], paint: { "line-color": "#b5482f", "line-width": 2 } });
     wirePopup();
     repaint();
+    // Fade the choropleth in on the next frame so first paint is a soft reveal,
+    // not a hard pop the instant the GeoJSON parses.
+    requestAnimationFrame(() => {
+      if (!atlasMap.getLayer("fill")) return;
+      atlasMap.setPaintProperty("fill", "fill-opacity", 0.82);
+      atlasMap.setPaintProperty("line", "line-opacity", 0.22);
+    });
   });
 }
 
@@ -276,8 +324,11 @@ function buildControls() {
     state.classifier = b.dataset.m; repaint();
   });
 
+  // easeOutCubic: decelerating glide reads more composed than the default ease.
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
   document.querySelectorAll(".flyto").forEach((b) =>
-    b.addEventListener("click", () => atlasMap.flyTo({ ...VIEWS[b.dataset.fly], duration: 1600 })));
+    b.addEventListener("click", () => atlasMap.flyTo({
+      ...VIEWS[b.dataset.fly], duration: 1800, curve: 1.42, easing: easeOutCubic })));
 }
 
 function repaint() {
@@ -333,10 +384,16 @@ function buildRedlining() {
       filter: ["has", "holc_dominant_grade"],
       paint: { "fill-color": ["match", ["get", "holc_dominant_grade"],
         "A", HOLC_COLORS.A, "B", HOLC_COLORS.B, "C", HOLC_COLORS.C, "D", HOLC_COLORS.D, "#ccc"],
-        "fill-opacity": 0.75 } });
+        "fill-opacity": 0, "fill-opacity-transition": { duration: 600 } } });
     m.addLayer({ id: "holc-line", type: "line", source: "t",
       filter: ["has", "holc_dominant_grade"],
-      paint: { "line-color": "#0d1b2a", "line-width": 0.2, "line-opacity": 0.3 } });
+      paint: { "line-color": "#0d1b2a", "line-width": 0.2, "line-opacity": 0,
+        "line-opacity-transition": { duration: 600 } } });
+    requestAnimationFrame(() => {
+      if (!m.getLayer("holc")) return;
+      m.setPaintProperty("holc", "fill-opacity", 0.75);
+      m.setPaintProperty("holc-line", "line-opacity", 0.3);
+    });
   });
   // gradient: mean diabetes by HOLC grade, computed from tract props
   const g = { A: [], B: [], C: [], D: [] };

@@ -26,6 +26,11 @@ from dotenv import dotenv_values
 BASE = Path(__file__).resolve().parents[1]
 RAW = BASE / "data" / "raw"; RAW.mkdir(parents=True, exist_ok=True)
 APP = BASE / "app" / "public" / "data"; APP.mkdir(parents=True, exist_ok=True)
+# Full-resolution county geometry is a build-time SOURCE (consumed by
+# 12_national_moran.py and slimmed by 90_optimize_web_geometry.py), not a
+# browser payload. It lives in data/web so app/public/data holds only the
+# files the SPA actually downloads.
+WEB = BASE / "data" / "web"; WEB.mkdir(parents=True, exist_ok=True)
 KEY = (dotenv_values("/Users/ian/Projects/econscope/.env").get("CENSUS_API_KEY")
        or os.environ.get("CENSUS_API_KEY"))
 assert KEY, "no census key"
@@ -155,9 +160,10 @@ df = df[keep + ["geometry"]]
 # simplify for web (counties tolerate more than tracts)
 df["geometry"] = df.geometry.simplify(0.01, preserve_topology=True)
 out = gpd.GeoDataFrame(df, geometry="geometry", crs=4326)
-out.to_file(APP / "us_counties.geojson", driver="GeoJSON")
-sz = (APP / "us_counties.geojson").stat().st_size / 1e6
-print(f"wrote us_counties.geojson — {len(out)} counties, {sz:.1f} MB")
+out.to_file(WEB / "us_counties.geojson", driver="GeoJSON")
+sz = (WEB / "us_counties.geojson").stat().st_size / 1e6
+print(f"wrote data/web/us_counties.geojson — {len(out)} counties, {sz:.1f} MB"
+      f"  (slim with scripts/90_optimize_web_geometry.py → us_counties.min.geojson)")
 
 # ---------- national summary ----------
 varstats = {}

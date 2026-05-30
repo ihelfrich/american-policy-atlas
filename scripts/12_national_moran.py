@@ -15,7 +15,7 @@ the hairline gaps/overlaps that survive in any real polygon coverage.
 No libpysal on this machine, so the weights are built directly via the
 geopandas spatial index.
 
-Reads:   app/public/data/us_counties.geojson  (the diabetes_pct values)
+Reads:   data/web/us_counties.geojson  (the diabetes_pct values)
          data/raw/tl_2023_us_county/tl_2023_us_county.shp  (the geometry)
 Writes:  merges a "moran" block into app/public/data/us_summary.json
 """
@@ -26,6 +26,7 @@ import geopandas as gpd
 
 BASE = Path(__file__).resolve().parents[1]
 APP = BASE / "app" / "public" / "data"
+WEB = BASE / "data" / "web"   # full-res county source lives here, not in public/data
 RAW = BASE / "data" / "raw" / "tl_2023_us_county" / "tl_2023_us_county.shp"
 VAR = "diabetes_pct"          # the health thread that runs through the curriculum
 N_PERM = 999
@@ -33,7 +34,7 @@ N_SCATTER = 900               # points sent to the browser for the lag scatter
 rng = np.random.default_rng(42)
 
 # values come from the web layer; geometry comes from the raw TIGER shapefile
-vals = gpd.read_file(APP / "us_counties.geojson")[["GEOID", VAR]]
+vals = gpd.read_file(WEB / "us_counties.geojson")[["GEOID", VAR]]
 vals = vals[vals[VAR].notna()]
 
 raw = gpd.read_file(RAW)[["GEOID", "geometry"]]
