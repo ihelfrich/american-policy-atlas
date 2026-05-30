@@ -563,3 +563,21 @@ section[id] { scroll-margin-top: calc(var(--mast-h) + 8px); }
 .flagship .prose-slot-light > p { color: rgba(250,248,243,0.82); margin: 0 0 1rem; }
 .flagship .prose-slot-light b { color: #fff; }
 .redline-map { height: 60vh; border: 1px solid rgba(250,248,243,0.2); overflow: hidden; }
+
+/* ---- scaffold lesson pages (objectives + static prose) ----------------- */
+.objectives {
+  margin: 0 0 2rem; padding: 1.1rem 1.2rem 1.2rem; background: var(--cream);
+  border: 1px solid var(--line); border-left: 3px solid var(--rust); border-radius: 2px;
+}
+.objectives .obj-label {
+  display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--rust); margin-bottom: 0.6rem;
+}
+.objectives ul { margin: 0; padding-left: 1.1rem; }
+.objectives li { font-size: 0.95rem; line-height: 1.5; color: var(--ink); margin: 0 0 0.4rem; }
+.objectives li:last-child { margin-bottom: 0; }
+.lesson-prose > p { margin: 0 0 1.2rem; font-size: 1rem; line-height: 1.75; }
+.lesson-prose > p:last-child { margin-bottom: 0; }
+.lesson-prose em { font-family: var(--serif); font-style: italic; }
+.lesson-prose .katex { font-size: 1.02em; }
+.lesson-prose .katex-display { margin: 1.4rem 0; overflow-x: auto; overflow-y: hidden; }
