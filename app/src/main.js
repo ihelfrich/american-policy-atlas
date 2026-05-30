@@ -238,8 +238,8 @@ function buildHero() {
     if (state.counties) {
       m.addSource("t", { type: "geojson", data: state.counties });
       m.addLayer({ id: "t-fill", type: "fill", source: "t",
-        paint: { "fill-color": colorExpr("median_hh_income"), "fill-opacity": 0,
-          "fill-opacity-transition": { duration: 900 } } });
+        paint: { "fill-color": colorExpr("median_hh_income"), "fill-antialias": false,
+          "fill-opacity": 0, "fill-opacity-transition": { duration: 900 } } });
       requestAnimationFrame(() => m.getLayer("t-fill") && m.setPaintProperty("t-fill", "fill-opacity", 0.8));
     }
     m.easeTo({ center: VIEWS.us.center, zoom: VIEWS.us.zoom, duration: 7000 });
@@ -267,11 +267,17 @@ function buildAtlas() {
   whenStyleReady(atlasMap, () => {
     if (!state.counties) return;
     atlasMap.addSource("counties", { type: "geojson", data: state.counties });
+    // fill-antialias:false is deliberate. With it on (the default), MapLibre
+    // antialiases every polygon edge toward the basemap; at a shared county
+    // boundary the two semi-transparent fills' antialiased edges don't perfectly
+    // coincide and the light basemap bleeds through as a hairline — "white gaps"
+    // along every border. Turning it off lets the topology-shared arcs tile
+    // exactly; the boundary line below supplies the crisp edge instead.
     atlasMap.addLayer({ id: "fill", type: "fill", source: "counties",
-      paint: { "fill-color": colorExpr(state.variable), "fill-opacity": 0,
-        "fill-opacity-transition": { duration: 600 } } });
+      paint: { "fill-color": colorExpr(state.variable), "fill-antialias": false,
+        "fill-opacity": 0, "fill-opacity-transition": { duration: 600 } } });
     atlasMap.addLayer({ id: "line", type: "line", source: "counties",
-      paint: { "line-color": "#0d1b2a", "line-width": 0.2, "line-opacity": 0,
+      paint: { "line-color": "rgba(13,27,42,0.5)", "line-width": 0.35, "line-opacity": 0,
         "line-opacity-transition": { duration: 600 } } });
     atlasMap.addLayer({ id: "hl", type: "line", source: "counties",
       filter: ["==", "GEOID", ""], paint: { "line-color": "#b5482f", "line-width": 2 } });
@@ -391,6 +397,7 @@ function buildRedlining() {
       filter: ["has", "holc_dominant_grade"],
       paint: { "fill-color": ["match", ["get", "holc_dominant_grade"],
         "A", HOLC_COLORS.A, "B", HOLC_COLORS.B, "C", HOLC_COLORS.C, "D", HOLC_COLORS.D, "#ccc"],
+        "fill-antialias": false,
         "fill-opacity": 0, "fill-opacity-transition": { duration: 600 } } });
     m.addLayer({ id: "holc-line", type: "line", source: "t",
       filter: ["has", "holc_dominant_grade"],
