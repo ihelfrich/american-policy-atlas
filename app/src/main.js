@@ -2,14 +2,20 @@ import maplibregl from "maplibre-gl";
 import * as Plot from "@observablehq/plot";
 import scrollama from "scrollama";
 import { animate, inView } from "motion";
-import { VARS, RAMPS, HOLC_COLORS, state, loadJSON } from "./data.js";
+import { VARS, RAMPS, HOLC_COLORS, state, loadJSON, groupedOptions } from "./data.js";
 import { breaksFor, stepExpression, fmtVal } from "./classify.js";
 import { renderProse } from "./prose.js";
 import { mountExplorer } from "./explorer.js";
+import { mountDownloads } from "./download.js";
 import { mountAssistant } from "./assistant.js";
 import "./style.css";
 
 const BASE = import.meta.env.BASE_URL;
+
+// Census suppresses small-county estimates, stored as null in the GeoJSON.
+// `+null` is 0 (and finite), which would drag down break computation and print
+// "$0" in popups for suppressed counties — coerce through this so they drop out.
+const num = (x) => (x == null || x === "") ? NaN : +x;
 
 // MapTiler-free raster basemap (CARTO light, no token). Vector style overlaid with our GeoJSON.
 const BASEMAP = {
@@ -64,6 +70,7 @@ async function boot() {
   buildControls();
   renderProse(Plot);
   mountExplorer();
+  mountDownloads();
   buildWire();
   buildPapers();
   buildNetwork();
@@ -241,7 +248,7 @@ function buildHero() {
 
 function colorExpr(varId) {
   const v = VARS[varId];
-  const vals = state.counties.features.map((f) => +f.properties[varId]).filter(Number.isFinite);
+  const vals = state.counties.features.map((f) => num(f.properties[varId])).filter(Number.isFinite);
   const br = breaksFor(state.classifier, vals);
   return stepExpression(varId, br, RAMPS[v.palette] || RAMPS.reds);
 }
@@ -296,7 +303,7 @@ function wirePopup() {
     atlasMap.getCanvas().style.cursor = "pointer";
     atlasMap.setFilter("hl", ["==", "GEOID", f.properties.GEOID]);
     const v = VARS[state.variable];
-    const val = fmtVal(+f.properties[state.variable], v.unit);
+    const val = fmtVal(num(f.properties[state.variable]), v.unit);
     pop.setLngLat(e.lngLat).setHTML(
       `<strong>${f.properties.county_name || ""}</strong><br/>` +
       `<span class="pop-sub">${f.properties.state_name || ""}</span><br/>` +
@@ -311,7 +318,7 @@ function wirePopup() {
 
 function buildControls() {
   const sel = document.getElementById("var-select");
-  sel.innerHTML = Object.entries(VARS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
+  sel.innerHTML = groupedOptions(state.variable);
   sel.value = state.variable;
   sel.addEventListener("change", () => { state.variable = sel.value; repaint(); });
 
@@ -338,7 +345,7 @@ function repaint() {
     b.classList.toggle("is-active", b.dataset.m === state.classifier));
   if (!atlasMap || !atlasMap.getLayer("fill")) return;
 
-  const vals = state.counties.features.map((f) => +f.properties[state.variable]).filter(Number.isFinite);
+  const vals = state.counties.features.map((f) => num(f.properties[state.variable])).filter(Number.isFinite);
   currentValues = vals;
   const br = breaksFor(state.classifier, vals);
   const ramp = RAMPS[v.palette] || RAMPS.reds;
@@ -399,7 +406,7 @@ function buildRedlining() {
   const g = { A: [], B: [], C: [], D: [] };
   if (!state.caTracts) return;
   state.caTracts.features.forEach((f) => {
-    const gr = f.properties.holc_dominant_grade, d = +f.properties.diabetes_pct;
+    const gr = f.properties.holc_dominant_grade, d = num(f.properties.diabetes_pct);
     if (gr && g[gr] && Number.isFinite(d)) g[gr].push(d);
   });
   const data = Object.entries(g).map(([grade, arr]) => ({

@@ -8,6 +8,12 @@ function tex(s, display = false) {
 }
 const P = (html) => `<p class="text-[15px] leading-7 text-ink/85">${html}</p>`;
 
+// Suppressed small-county estimates are null in the GeoJSON. `+null` is 0 and
+// passes Number.isFinite, which would inject phantom 0% counties into every
+// demo below (the diabetes layer alone has ~190). Coerce through this so the
+// existing isFinite filters drop them instead of treating them as real zeros.
+const num = (x) => (x == null || x === "") ? NaN : +x;
+
 function setProse(id, html) {
   const slot = document.querySelector(`#${id} .prose-slot`);
   if (slot) slot.innerHTML = html;
@@ -27,7 +33,7 @@ function mulberry32(a) {
 function pairs(xv, yv) {
   const out = [];
   for (const f of state.counties?.features || []) {
-    const x = +f.properties[xv], y = +f.properties[yv];
+    const x = num(f.properties[xv]), y = num(f.properties[yv]);
     if (Number.isFinite(x) && Number.isFinite(y)) out.push({ x, y });
   }
   return out;
@@ -118,8 +124,8 @@ export function renderProse(Plot) {
 function distPlot(Plot) {
   const v = [];
   for (const f of state.counties?.features || []) {
-    const x = +f.properties.median_hh_income;
-    if (Number.isFinite(x) && x > 0) v.push(x);
+    const x = num(f.properties.median_hh_income);
+    if (Number.isFinite(x)) v.push(x);
   }
   if (!v.length) return;
   v.sort((a, b) => a - b);
@@ -167,8 +173,8 @@ function regressionBlock(Plot) {
   const dp = [];
   for (const f of state.counties?.features || []) {
     const p = f.properties;
-    const inc = +p.median_hh_income, y = +p.diabetes_pct, pov = +p.pct_poverty;
-    if ([inc, y, pov].every(Number.isFinite) && inc > 0) dp.push({ inc: inc / 10000, diabetes_pct: y, pct_poverty: pov });
+    const inc = num(p.median_hh_income), y = num(p.diabetes_pct), pov = num(p.pct_poverty);
+    if ([inc, y, pov].every(Number.isFinite)) dp.push({ inc: inc / 10000, diabetes_pct: y, pct_poverty: pov });
   }
   let txt = P(`Fit a straight line: ${tex("\\text{diabetes} = \\beta_0 + \\beta_1\\,\\text{income}")}. The slope ${tex("\\beta_1")} is the change in diabetes prevalence for each additional $10,000 of county median income. Then add present-day poverty as a control and watch the income coefficient shrink — income and poverty carry much of the same information.`);
   if (dp.length > 30) {
@@ -200,7 +206,7 @@ function regressionBlock(Plot) {
 function inferencePlot(Plot) {
   const pop = [];
   for (const f of state.counties?.features || []) {
-    const x = +f.properties.diabetes_pct;
+    const x = num(f.properties.diabetes_pct);
     if (Number.isFinite(x)) pop.push(x);
   }
   const el = document.getElementById("inference-plot");
@@ -239,7 +245,7 @@ function inferencePlot(Plot) {
   const SOUTH = new Set(["10", "11", "12", "13", "24", "37", "45", "51", "54", "01", "21", "28", "47", "05", "22", "40", "48"]);
   const south = [], rest = [];
   for (const f of state.counties?.features || []) {
-    const x = +f.properties.diabetes_pct; if (!Number.isFinite(x)) continue;
+    const x = num(f.properties.diabetes_pct); if (!Number.isFinite(x)) continue;
     const fips = String(f.properties.GEOID).padStart(5, "0").slice(0, 2);
     (SOUTH.has(fips) ? south : rest).push(x);
   }
@@ -275,7 +281,7 @@ function moranPlot(Plot) {
 function bayesPlot(Plot) {
   const rows = [];
   for (const f of state.counties?.features || []) {
-    const y = +f.properties.diabetes_pct, n = +f.properties.pop_total;
+    const y = num(f.properties.diabetes_pct), n = num(f.properties.pop_total);
     if (Number.isFinite(y) && Number.isFinite(n) && n > 0) rows.push({ y, n });
   }
   const el = document.getElementById("bayes-plot");
@@ -309,7 +315,7 @@ function bayesPlot(Plot) {
 function policyPlot(Plot) {
   const rows = [];
   for (const f of state.counties?.features || []) {
-    const pov = +f.properties.pct_poverty, d = +f.properties.diabetes_pct, p = +f.properties.pop_total;
+    const pov = num(f.properties.pct_poverty), d = num(f.properties.diabetes_pct), p = num(f.properties.pop_total);
     if ([pov, d, p].every(Number.isFinite)) rows.push({ pov, d, p });
   }
   const el = document.getElementById("policy-plot");

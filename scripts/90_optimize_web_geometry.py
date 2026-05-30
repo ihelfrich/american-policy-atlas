@@ -94,10 +94,27 @@ def slim_counties():
     print(f"  us_counties.min.geojson         {mb(out):5.2f} MB  (from {mb(src):.2f} MB)")
 
 
+def refresh_manifest():
+    """Point the download manifest at the freshly-slimmed county GeoJSON size.
+    Script 11 writes the manifest before this slim step runs, so the GeoJSON
+    byte count it records is stale; correct it here."""
+    mani = APP / "data_manifest.json"
+    minf = APP / "us_counties.min.geojson"
+    if not (mani.exists() and minf.exists()):
+        return
+    m = json.loads(mani.read_text())
+    for f in m.get("files", []):
+        if f.get("name") == "us_counties.min.geojson":
+            f["bytes"] = minf.stat().st_size
+    mani.write_text(json.dumps(m, indent=1))
+    print(f"  refreshed data_manifest.json → us_counties.min.geojson {mb(minf):.2f} MB")
+
+
 def main():
     print("[optimize] slimming web geometry...")
     slim_tracts()
     slim_counties()
+    refresh_manifest()
     shutil.rmtree(TMP, ignore_errors=True)
     print("[optimize] done.")
 

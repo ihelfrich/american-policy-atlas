@@ -1,0 +1,34 @@
+variable,label,unit,group,source,definition,n_counties
+pop_density_km2,Population density,people / km²,Demographics,ACS 2018–22 5-year + TIGER 2023 land area,County population (ACS B01003) divided by TIGER land area in km².,3144
+median_age,Median age,years,Demographics,ACS 2018–22 5-year,Median age of the population (ACS B01002).,3144
+pct_hispanic,Hispanic / Latino share,%,Demographics,ACS 2018–22 5-year,Residents identifying as Hispanic or Latino (ACS B03003).,3144
+pct_black,Black share,%,Demographics,ACS 2018–22 5-year,Residents identifying as Black or African American (ACS B02001).,3144
+pct_foreign_born,Foreign-born share,%,Demographics,ACS 2018–22 5-year,Residents born outside the United States (ACS B05002).,3144
+pct_veteran,Veteran share (18+),%,Demographics,ACS 2018–22 5-year,Civilian veterans among adults 18+ (ACS B21001).,3144
+median_hh_income,Median household income,$,Economy,ACS 2018–22 5-year,Median household income (ACS B19013).,3143
+income_per_capita,Income per capita,$,Economy,ACS 2018–22 5-year,Per-capita income in the past 12 months (ACS B19301).,3144
+gini,Income inequality (Gini),index 0–1,Economy,ACS 2018–22 5-year,Gini index of household income inequality (ACS B19083).,3144
+pct_poverty,Poverty rate,%,Economy,ACS 2018–22 5-year,People below the federal poverty line (ACS B17001).,3144
+pct_unemployed,Unemployment,%,Economy,ACS 2018–22 5-year,Unemployed share of the civilian labor force (ACS B23025).,3144
+pct_bachelor_plus,Bachelor's degree +,%,Education,ACS 2018–22 5-year,Adults 25+ with a bachelor's degree or higher (ACS B15003).,3144
+median_home_value,Median home value,$,Housing & mobility,ACS 2018–22 5-year,Median value of owner-occupied homes (ACS B25077).,3141
+median_gross_rent,Median gross rent,$ / month,Housing & mobility,ACS 2018–22 5-year,Median monthly gross rent (ACS B25064).,3134
+rent_burden_pct,Rent burden,% of income,Housing & mobility,ACS 2018–22 5-year,Median gross rent as a share of household income (ACS B25071).,3139
+pct_renter,Renter share,%,Housing & mobility,ACS 2018–22 5-year,Occupied units that are renter-occupied (ACS B25003).,3144
+pct_no_vehicle,No vehicle available,%,Housing & mobility,ACS 2018–22 5-year,Households with no vehicle available (ACS B08201).,3144
+pct_broadband,Broadband internet,%,Housing & mobility,ACS 2018–22 5-year,Households with a broadband subscription (ACS B28002).,3144
+pct_uninsured,Uninsured,%,Health access,ACS 2018–22 5-year subject S2701,Population without health insurance (ACS subject table S2701).,3144
+pct_disability,With a disability,%,Health access,ACS 2018–22 5-year subject S1810,Civilian noninstitutionalized population with a disability (ACS subject S1810).,3144
+diabetes_pct,Diabetes,%,Chronic disease,"CDC PLACES 2025 (county, crude prevalence)",Adults with diagnosed diabetes (PLACES DIABETES).,2956
+obesity_pct,Obesity,%,Chronic disease,"CDC PLACES 2025 (county, crude prevalence)","Adults with obesity, BMI ≥ 30 (PLACES OBESITY).",2956
+hypertension_pct,High blood pressure,%,Chronic disease,"CDC PLACES 2025 (county, crude prevalence)",Adults with high blood pressure (PLACES BPHIGH).,2956
+high_chol_pct,High cholesterol,%,Chronic disease,"CDC PLACES 2025 (county, crude prevalence)",Adults ever told they have high cholesterol (PLACES HIGHCHOL).,2956
+chd_pct,Coronary heart disease,%,Chronic disease,"CDC PLACES 2025 (county, crude prevalence)",Adults with coronary heart disease (PLACES CHD).,2956
+stroke_pct,Stroke,%,Chronic disease,"CDC PLACES 2025 (county, crude prevalence)",Adults who have ever had a stroke (PLACES STROKE).,2956
+copd_pct,COPD,%,Chronic disease,"CDC PLACES 2025 (county, crude prevalence)",Adults with chronic obstructive pulmonary disease (PLACES COPD).,2956
+asthma_pct,Current asthma,%,Chronic disease,"CDC PLACES 2025 (county, crude prevalence)",Adults with current asthma (PLACES CASTHMA).,2956
+smoking_pct,Current smoking,%,Behavioral & mental health,"CDC PLACES 2025 (county, crude prevalence)",Adults who currently smoke (PLACES CSMOKING).,2956
+no_exercise_pct,No leisure exercise,%,Behavioral & mental health,"CDC PLACES 2025 (county, crude prevalence)",Adults reporting no leisure-time physical activity (PLACES LPA).,2956
+depression_pct,Depression,%,Behavioral & mental health,"CDC PLACES 2025 (county, crude prevalence)",Adults with diagnosed depression (PLACES DEPRESSION).,2956
+mental_distress_pct,Frequent mental distress,%,Behavioral & mental health,"CDC PLACES 2025 (county, crude prevalence)",Adults reporting ≥14 poor mental-health days/month (PLACES MHLTH).,2956
+phys_distress_pct,Frequent physical distress,%,Behavioral & mental health,"CDC PLACES 2025 (county, crude prevalence)",Adults reporting ≥14 poor physical-health days/month (PLACES PHLTH).,2956

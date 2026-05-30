@@ -1,0 +1,32 @@
+{
+ "title": "American Policy Atlas \u2014 county dataset",
+ "vintage": {
+  "acs": "ACS 2018\u201322 5-year",
+  "places": "CDC PLACES 2025 (county, crude prevalence)",
+  "geometry": "TIGER 2023"
+ },
+ "n_counties": 3144,
+ "n_variables": 33,
+ "geography": "US counties (50 states + DC)",
+ "files": [
+  {
+   "name": "us_counties.csv",
+   "format": "CSV",
+   "desc": "Flat table, one row per county, all variables (no geometry).",
+   "bytes": 669474
+  },
+  {
+   "name": "us_counties.min.geojson",
+   "format": "GeoJSON",
+   "desc": "County polygons + all variables (topology-simplified).",
+   "bytes": 3439218
+  },
+  {
+   "name": "data_dictionary.csv",
+   "format": "CSV",
+   "desc": "Variable, label, unit, group, source, definition.",
+   "bytes": 4772
+  }
+ ],
+ "license": "Source data are public domain (US Census Bureau, CDC). Compiled by Ian Helfrich."
+}
