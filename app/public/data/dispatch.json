@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-16T10:23:24+00:00",
+  "generated": "2026-07-17T10:15:26+00:00",
   "hub": "https://ihelfrich.github.io/",
   "note": "Curated manifest of Ian Helfrich's public research observatories. Liveness and last-push dates are checked at build time; signal lines are descriptive, not live metrics.",
   "nodes": [
@@ -16,7 +16,7 @@
         "daily"
       ],
       "live": true,
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     },
     {
       "repo": "econscope",
@@ -46,7 +46,7 @@
         "real-time"
       ],
       "live": true,
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     },
     {
       "repo": "redlining-health-la",
@@ -76,7 +76,7 @@
         "observatory"
       ],
       "live": true,
-      "updated": "2026-07-16"
+      "updated": "2026-07-17"
     },
     {
       "repo": "eo14405-contagion",
