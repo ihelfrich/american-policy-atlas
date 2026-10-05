@@ -37,6 +37,7 @@ jobs:
         run: python3 scripts/82_build_dispatch.py
         continue-on-error: true
       - run: npm ci
+      - run: npm test
       - run: npm run build
         env:
           ATLAS_BASE: /american-policy-atlas/

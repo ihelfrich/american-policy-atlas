@@ -1,3 +1,7 @@
+# Historical design proposal
+
+This document records an earlier, partly aspirational plan. It does not describe completed or verified functionality. See README.md and AUDIT.md for the current implementation and limits.
+
 # The California Policy Atlas
 ### Learning geospatial statistics with real data — from the state down to your block
 
@@ -134,4 +138,4 @@ teaching site, and every piece deploys to GitHub Pages with no server.
 
 ---
 
-*Prepared with AI assistance (Anthropic Claude) for tutoring purposes. Worked solutions and data verified by Ian Helfrich, PhD.*
+*Prepared with AI assistance (Anthropic Claude) for tutoring purposes. Verification is limited to the checks documented in AUDIT.md.*

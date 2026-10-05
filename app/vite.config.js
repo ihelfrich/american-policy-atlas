@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 
-// Local dev/preview serves at root; CI (deploy.yml) sets ATLAS_BASE=/ca-policy-atlas/ for Pages.
+// CI sets ATLAS_BASE to the repository path for GitHub Pages.
 export default defineConfig({
   base: process.env.ATLAS_BASE ?? "/",
   plugins: [tailwindcss()],

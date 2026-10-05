@@ -6,7 +6,7 @@
 // WebGL contexts, and it is why this is a *curriculum*, not an endless scroll.
 
 function normalize(hash) {
-  const h = (hash || "").replace(/^#/, "");
+  const h = (hash || "").replace(/^#/, "").split("?")[0];
   if (!h || h === "/") return "/";
   return h.startsWith("/") ? h : "/" + h;
 }
@@ -23,6 +23,7 @@ export function startRouter({ view, pages, fallback = "/", onBeforeRender, onAft
     const page = resolve();
     onBeforeRender?.(page);              // teardown hook (maps, observers)
     view.innerHTML = page.html || "";
+    view.focus({ preventScroll: true });
     document.title = page.title
       ? `${page.title} · The American Policy Atlas`
       : "The American Policy Atlas";

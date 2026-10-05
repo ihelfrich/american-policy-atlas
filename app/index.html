@@ -4,31 +4,33 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The American Policy Atlas — a teaching observatory for statistics</title>
-  <meta name="description" content="A multi-page statistics curriculum built on every county in the United States. Three movements: classical inference, the spatial field, and geosocioeconometrics — distributions and regression through to gradient fields, optimal transport, networks, and the topology of the socioeconomic surface." />
+  <meta name="description" content="Investigate income, housing, health, and inequality across US counties. Compare places, explore public data, and learn what a map can and cannot tell you." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <a href="#view" class="skip-link">Skip to content</a>
   <!-- masthead: nav is built by the router from the curriculum manifest -->
   <header class="masthead" id="top">
     <div class="masthead-bar">
       <a href="#/" class="masthead-title">The American Policy Atlas</a>
-      <div class="masthead-edition" id="edition">A teaching observatory · statistics on live national data</div>
-      <button class="masthead-toggle" id="nav-toggle" aria-label="sections">Sections</button>
+      <div class="masthead-edition" id="edition">Public data · Questions worth exploring</div>
+      <button class="masthead-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-controls="masthead-nav" aria-expanded="false">Sections</button>
     </div>
     <nav class="masthead-nav" id="masthead-nav"></nav>
   </header>
 
   <!-- single routed view: exactly one curriculum page lives here at a time -->
-  <main id="view"></main>
+  <main id="view" tabindex="-1"><p class="loading-message" role="status">Loading the county data…</p></main>
+  <noscript>This interactive atlas needs JavaScript. <a href="./data/us_counties.csv">Download the county data as CSV</a>.</noscript>
 
   <!-- colophon -->
   <footer class="colophon">
     <div class="colophon-inner">
       <div>
         <div class="kicker">The American Policy Atlas</div>
-        <p class="colophon-line">A teaching observatory. Built from public data; all figures and worked solutions checked by Ian Helfrich, PhD.</p>
+        <p class="colophon-line">A working teaching prototype by Ian Helfrich, PhD. Explore the evidence, question the assumptions, and follow the sources.</p>
       </div>
       <div class="colophon-sources mono-dim">
         <span>U.S. Census ACS 2018–22</span>

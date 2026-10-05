@@ -2,13 +2,21 @@
 
 A teaching observatory for statistics, built on every county in the United States.
 
-The atlas teaches a full statistics sequence on live national data — distributions,
+The atlas is a working prototype with guided investigations and a developing lesson library on dated national data — distributions,
 conditional expectations, regression, statistical inference, spatial dependence, and
-empirical-Bayes estimation — with each method computed in the browser from the same
+empirical-Bayes estimation — with selected examples computed in the browser from the same
 3,144-county dataset. The 1939 redlining story (Los Angeles, census-tract resolution)
 is the flagship case study inside the national atlas.
 
 See [DESIGN.md](DESIGN.md) for the full information design.
+
+## Investigation edition (October 2026)
+
+The home page starts with three questions: income and health, housing affordability, and broadband access. `/investigate` links an SVG county map, equal-county scatter, state filters, searchable two-place comparisons, source/coverage notes, a local notebook, and CSV export. Hash query parameters preserve a shareable view. County boundaries need no external tile service in this experience.
+
+The wider lesson library contains unfinished interactives. The normal shrinkage lesson is explicitly hypothetical; policy scenarios report percentage points rather than invented case counts. Health data are available for 2,956 of 3,144 county units, with Kentucky and Pennsylvania missing. See `AUDIT.md` for fixed defects and remaining verification limits.
+
+Run `npm test` and `npm run build` in `app/`. Tests cover missingness, known regression results, all shipped numeric summary means/counts, scenario endpoints, and the hypothetical shrinkage model.
 
 ## National data pipeline (`scripts/`)
 
@@ -19,7 +27,7 @@ See [DESIGN.md](DESIGN.md) for the full information design.
 
 Spatial contiguity is built from the full-resolution TIGER county shapefile (the
 web GeoJSON is simplified for transfer), using an `intersects` test — a healthy
-queen graph of ~5.9 neighbors per county, 0 islands, Moran's I ≈ 0.60 (p < 0.001)
+queen graph of ~5.9 neighbors per county, 0 islands, Moran's I ≈ 0.60 (permutation p = 0.001)
 for adult diabetes prevalence.
 
 ## California flagship pipeline (`scripts/`)

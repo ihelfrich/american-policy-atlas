@@ -69,50 +69,28 @@ const chapterNav = `<nav class="chapter-nav" id="chapter-nav"></nav>`;
 export const PAGES = [
   // ---------- FRONT MATTER ----------
   {
-    id: "home", route: "/", group: "front", nav: "Cover", title: "",
+    id: "home", route: "/", group: "front", nav: "Home", title: "",
     html: `
-      <section class="hero">
-        <div id="hero-map"></div>
-        <div class="hero-scrim"></div>
-        <div class="hero-inner">
-          <div class="kicker reveal">Vol. I · 3,144 counties · 50 states + DC · ACS 2018–22 → today</div>
-          <h1 class="hero-title reveal">A country is a field,<br/>not a list.</h1>
-          <p class="hero-lede reveal">A working atlas of the United States, built to <em>teach</em>. It runs three full semesters of statistics and econometrics from scratch — probability, distributions, regression, causal inference — on live national data, before it ever leans on geography. Then it breaks the assumption that counties are independent draws, and ends in a research program of my own: geosocioeconometrics.</p>
-          <div class="hero-actions reveal">
-            <a href="#/s1/data" class="btn btn-solid">Start the curriculum</a>
-            <a href="#/atlas" class="btn btn-ghost">Open the atlas</a>
-          </div>
+      <section class="cover-layout">
+        <div class="cover-copy"><span class="kicker">The American Policy Atlas · Working prototype</span>
+          <h1>Every place has<br>a story.<br><em>Ask a better question.</em></h1>
+          <p>Explore how income, housing, and health vary across the United States. Follow your curiosity from a national pattern to the places you know.</p>
+          <div class="hero-actions"><a class="btn btn-solid" href="#/investigate">Start investigating ↗</a><a class="btn btn-ghost" href="#/atlas">Explore the map</a></div>
+          <p class="cover-byline">An exploration by Ian Helfrich, PhD<br>Economics · Geography · Learning by doing</p>
+        </div>
+        <figure class="cover-figure"><div class="figure-label"><span>01 / The income landscape</span><span>ACS 2018–2022</span></div><div id="cover-map" class="county-map"></div><figcaption>Median household income by county. Five quantile classes, from pale to dark green. Gray indicates missing data. Alaska and Hawaii are inset.</figcaption><div class="cover-facts"><div><strong id="cover-count">3,144</strong><span>county equivalents</span></div><div><strong id="cover-measures">33</strong><span>public-data measures</span></div><div><strong>Your question</strong><span>is the starting point</span></div></div></figure>
+      </section>
+      <section class="question-section"><div class="section-intro"><span class="kicker">Choose a starting point</span><h2>Make the data mean something.</h2><p>Start with a question. Change the view. Notice what needs a better explanation.</p></div>
+        <div class="question-grid">
+          <a href="#/investigate?q=health" class="question-card"><span class="question-index">01 / Health & opportunity</span><h3>Does prosperity travel with health?</h3><p>Explore income and diabetes. Compare the national relationship with the places around you.</p><span class="question-arrow">Investigate ↗</span></a>
+          <a href="#/investigate?q=housing" class="question-card"><span class="question-index">02 / Housing & livelihoods</span><h3>Where is housing hardest to afford?</h3><p>Look beyond the price of a home to the share of income that goes toward rent.</p><span class="question-arrow">Investigate ↗</span></a>
+          <a href="#/investigate?q=access" class="question-card"><span class="question-index">03 / Access & inequality</span><h3>Who has access to a connected world?</h3><p>Explore broadband subscriptions and poverty, then ask what a county average leaves out.</p><span class="question-arrow">Investigate ↗</span></a>
         </div>
       </section>
-
-      <section class="toc reveal">
-        <div class="toc-intro">
-          <span class="kicker">How to read this atlas</span>
-          <h2 class="toc-title">Three semesters, then the field.</h2>
-          <p class="toc-sub">The core is a full statistics and econometrics sequence — the same arc a department would teach, on every county in the country. Geography stays in the background as an example until the foundations are solid. Only then does the map become the object of study, and only then the original methods.</p>
-        </div>
-        <div class="toc-grid">
-          <a class="toc-card toc-i" href="#/s1/data">
-            <span class="toc-num">I–III</span>
-            <h3>The statistics core</h3>
-            <p>Three semesters from the ground up: probability and inference, the linear model and its modern cousins, then econometrics and causal inference. Twenty-eight chapters, every one on live national data.</p>
-            <span class="toc-go">Begin Semester I →</span>
-          </a>
-          <a class="toc-card toc-ii" href="#/spatial/dependence">
-            <span class="toc-num">IV</span>
-            <h3>Spatial statistics</h3>
-            <p>The classical chapters assumed counties were independent. They are not. Tobler's law made quantitative: Moran's I, the map as data, and the redlining line of 1939 still legible in today's health gradient.</p>
-            <span class="toc-go">When independence breaks →</span>
-          </a>
-          <a class="toc-card toc-iii" href="#/geo/gradient-fields">
-            <span class="toc-num">V</span>
-            <h3>Geosocioeconometrics</h3>
-            <p>The original program. Gradient and structure-tensor fields, optimal transport as distributional flux, networks and diffusion, and the topology of the socioeconomic surface.</p>
-            <span class="toc-go">Geometry of the field →</span>
-          </a>
-        </div>
-      </section>`,
+      <section class="learning-path"><div><span class="kicker">Go a little deeper</span><h2>Learn the tools.<br>Keep asking questions.</h2></div><div><p>The lesson library introduces distributions, regression, inference, and spatial dependence. Some chapters are reading notes with interactives still in development.</p><a href="#/s1/data">Open the lesson library →</a><a href="#/spatial/redlining">Explore the Los Angeles redlining case →</a><a href="#/apparatus/methods">Read the sources and limitations →</a></div></section>
+      <section class="evidence-note"><b>A map starts a conversation.</b><p>This prototype uses dated public-data snapshots, including ACS 2018–2022 and CDC PLACES. County patterns describe places; they do not establish individual experiences or the effects of a policy. Definitions, coverage, and limitations travel with each investigation.</p></section>`,
   },
+  { id: "investigate", route: "/investigate", group: "front", nav: "Investigate", title: "Investigate a question", html: '<div id="investigation" class="investigation"></div>' },
 
   {
     id: "atlas", route: "/atlas", group: "front", nav: "The atlas", seq: 0,
@@ -142,7 +120,7 @@ export const PAGES = [
         <div class="atlas-rail reveal">
           <span class="kicker">Guided views</span>
           <h2 class="rail-title">Five ways into the country</h2>
-          <p class="rail-sub">Each preset sets a variable, a classification rule, and a region. Everything in the curriculum is built from this same national data — change the number here and the lessons downstream change with it.</p>
+          <p class="rail-sub">Each preset sets a variable, a classification rule, and a region. The map uses the national snapshot. Lesson examples have their own fixed variables; changing this map does not change those examples.</p>
           <div class="preset-list" id="atlas-presets">
             <button class="preset" data-var="pop_density_km2" data-view="us" data-class="jenks">
               <b>Where people are</b><span>Population density · four orders of magnitude · Jenks breaks</span></button>
@@ -314,7 +292,7 @@ export const PAGES = [
     title: "Bayesian inference & shrinkage",
     html: head({ kicker: "Semester I · 11 · Bayesian thinking",
       title: "Borrowing strength across counties",
-      lede: "A 20% rate measured on 500 people is barely a measurement. Shrinkage pulls the noisy local estimate toward the whole, in proportion to how little it knows." })
+      lede: "Explore how the uncertainty of a hypothetical estimate changes its balance with a prior. This demonstration does not re-estimate CDC health data." })
       + moduleBody("m7", "bayes-plot") + chapterNav,
   },
 
@@ -646,15 +624,15 @@ export const PAGES = [
     title: "Spatial dependence",
     html: head({ kicker: "Spatial · 29 · Spatial dependence",
       title: "Nearby counties are not strangers",
-      lede: "Every classical chapter treated each county as an independent draw. Tobler's first law says that is wrong — and Moran's I says exactly how wrong." })
+      lede: "Measure spatial clustering in the available county diabetes estimates. The spatial weights and missing-data coverage define which question the statistic answers." })
       + moduleBody("m6", "moran-plot") + chapterNav,
   },
   {
     id: "policy", route: "/spatial/policy", group: "spatial", nav: "Policy counterfactual", seq: 30,
-    title: "Policy & forecasting",
-    html: head({ kicker: "Spatial · 30 · Policy impact & forecasting",
+    title: "Policy scenarios",
+    html: head({ kicker: "Spatial · 30 · Illustrative scenario",
       title: "From description to counterfactual",
-      lede: "Sort the country by poverty, watch diabetes climb, then ask the what-if a place-based program implies — with its assumptions in the open." })
+      lede: "Compare county averages across poverty groups and choose a hypothetical gap reduction. The slider sets an assumption; the data do not identify a program effect." })
       + moduleBody("m8", "policy-plot") + chapterNav,
   },
   {
@@ -665,7 +643,7 @@ export const PAGES = [
         <div class="flagship-inner">
           <span class="kicker kicker-light">Spatial · The flagship case</span>
           <h1 class="flagship-title">A line drawn in 1939, still legible today</h1>
-          <p class="page-lede page-lede-light">The Home Owners' Loan Corporation graded neighborhoods A through D and starved the D's of investment. The grades are gone; the gradient they produced is not. Here it is, in present-day health data, at the tract scale.</p>
+          <p class="page-lede page-lede-light">Compare historical HOLC grades with present-day modeled health estimates in Los Angeles. These descriptive differences invite questions about lasting inequality; this map alone does not identify the causal effect of the grades.</p>
           <div id="redlining" class="prose-slot prose-slot-light"></div>
           <div id="redlining-mount" class="mt"></div>
         </div>

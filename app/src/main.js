@@ -1,3 +1,5 @@
+import { median } from "./analysis.js";
+import { mountCover, mountInvestigation } from "./investigate.js";
 import maplibregl from "maplibre-gl";
 import * as Plot from "@observablehq/plot";
 import { animate, inView } from "motion";
@@ -75,7 +77,7 @@ async function boot() {
     state.summary = summary;
   } catch (e) {
     document.getElementById("view").innerHTML =
-      `<p class="load-error">Could not load county data. Run scripts/11_national_county.py then scripts/90_optimize_web_geometry.py.</p>`;
+      `<p class="load-error">Could not load county data. Please reload the page or try again later.</p>`;
     console.error(e);
     return;
   }
@@ -83,7 +85,8 @@ async function boot() {
   // Map every page id to its behavior, then wrap so the reveal animation and
   // chapter prev/next run uniformly after each mount.
   const MOUNTS = {
-    home: mountHome,
+    home: mountCover,
+    investigate: mountInvestigation,
     atlas: mountAtlas,
     "reading-a-map": () => renderReadingMap(),
     distributions: () => renderDistributions(Plot),
@@ -107,6 +110,7 @@ async function boot() {
   };
   PAGES.forEach((p) => { p.mount = () => MOUNTS[p.id]?.(); });
 
+  document.querySelector(".skip-link").addEventListener("click", e => { e.preventDefault(); document.getElementById("view").focus(); });
   buildNav();
   wireMastheadToggle();
 
@@ -125,22 +129,21 @@ async function boot() {
 function buildNav() {
   const nav = document.getElementById("masthead-nav");
   if (!nav) return;
-  const byGroup = {};
-  for (const p of PAGES) (byGroup[p.group] ??= []).push(p);
-  nav.innerHTML = GROUPS.map((g) => {
-    const pages = byGroup[g.id] || [];
-    if (!pages.length) return "";
-    const links = pages.map((p) =>
-      `<a href="#${p.route}" data-route="${p.route}">${p.nav}</a>`).join("");
-    const label = g.label
-      ? `<span class="nav-group-label">${g.label}</span>` : "";
-    return `<div class="nav-group">${label}${links}</div>`;
-  }).join("");
+  const primary = ['home','investigate','atlas','explorer','methods'];
+  const link = p => '<a href="#'+p.route+'" data-route="'+p.route+'">'+p.nav+'</a>';
+  nav.innerHTML = primary.map(id => link(PAGES.find(p=>p.id===id))).join('') +
+    '<details class="library-menu"><summary>Lesson library</summary><div class="library-list">' +
+    GROUPS.filter(g=>!['front','data'].includes(g.id)).map(g=>'<div><b>'+g.label+'</b>'+PAGES.filter(p=>p.group===g.id&&!primary.includes(p.id)).map(p=>link(p)+(p.html.includes('Interactive in development')?'<small>Reading note</small>':'')).join('')+'</div>').join('')+'</div></details>';
+  nav.addEventListener('click',e=>{if(e.target.closest('a'))nav.querySelectorAll('details').forEach(d=>d.open=false);});
 }
 
 function markActiveNav(page) {
-  document.querySelectorAll("#masthead-nav a").forEach((a) =>
-    a.classList.toggle("is-current", a.dataset.route === page.route));
+  document.querySelectorAll("#masthead-nav a").forEach((a) => {
+    const current = a.dataset.route === page.route;
+    a.classList.toggle("is-current", current);
+    if (current) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
+  });
 }
 
 // Linear curriculum spine: pages that carry a `seq`, in order. Drives the
@@ -164,9 +167,9 @@ function wireMastheadToggle() {
   const toggle = document.getElementById("nav-toggle");
   const nav = document.getElementById("masthead-nav");
   if (toggle && nav) {
-    toggle.addEventListener("click", () => nav.classList.toggle("open"));
+    toggle.addEventListener("click", () => { const open=nav.classList.toggle("open"); toggle.setAttribute("aria-expanded", String(open)); });
     nav.addEventListener("click", (e) => {
-      if (e.target.closest("a")) nav.classList.remove("open");
+      if (e.target.closest("a")) { nav.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); }
     });
   }
 }
@@ -374,7 +377,7 @@ function colorExpr(varId) {
 function whenStyleReady(map, cb) {
   if (map.isStyleLoaded()) { cb(); return; }
   const iv = setInterval(() => {
-    if (!map || !map.getContainer()) { clearInterval(iv); return; }
+    if (!activeMaps.includes(map)) { clearInterval(iv); return; }
     if (map.isStyleLoaded()) { clearInterval(iv); cb(); }
   }, 80);
 }
@@ -458,8 +461,8 @@ function renderStats(vals, v) {
   const q = (p) => s[Math.floor(p * s.length)];
   const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
   slot.innerHTML = `
-    <div class="os-label">across ${vals.length.toLocaleString()} counties</div>
-    <div>median ${fmtVal(q(0.5), v.unit)} · mean ${fmtVal(mean, v.unit)}</div>
+    <div class="os-label">across ${vals.length.toLocaleString()} available counties; ${(state.counties.features.length-vals.length).toLocaleString()} missing</div>
+    <div>median ${fmtVal(median(vals), v.unit)} · mean ${fmtVal(mean, v.unit)}</div>
     <div>p10–p90 ${fmtVal(q(0.1), v.unit)} → ${fmtVal(q(0.9), v.unit)}</div>`;
   const c = document.getElementById("atlas-count");
   if (c) c.textContent = vals.length.toLocaleString() + " counties";
@@ -512,6 +515,7 @@ function buildRedlining() {
 }
 
 function setupReveal() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in")); return; }
   document.querySelectorAll(".reveal:not(.in)").forEach((el) =>
     inView(el, () => { el.classList.add("in"); animate(el, { opacity: [0, 1], y: [16, 0] }, { duration: 0.7 }); }, { amount: 0.12 }));
 }

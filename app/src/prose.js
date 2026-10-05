@@ -1,3 +1,4 @@
+import { gapScenario, normalPosterior } from "./analysis.js";
 // Module narrative + interactive plots (M1-M8) and methods text.
 import katex from "katex";
 import { state } from "./data.js";
@@ -83,8 +84,8 @@ export function renderReadingMap() {
 // ---- M2: distributions ----
 export function renderDistributions(Plot) {
   setProse("m2",
-    P(`Before any model, look at one variable on its own. Here is median household income for all <b>3,144 counties</b>, as a histogram: the horizontal axis is income, the height of each bar is how many counties fall in that slice. A distribution is just the full answer to "how often does each value happen?"`) +
-    P(`Two summaries sit on the plot. The <b>median</b> (solid) splits the counties into two equal halves; the <b>mean</b> (dashed) is the balance point. When a distribution has a long right tail — a handful of very rich counties — the mean is dragged toward the tail and lands to the right of the median. That gap between mean and median <em>is</em> the skew, and it is why the choice of color breaks on the atlas page mattered so much.`));
+    P(`Before any model, look at one variable on its own. Here is median household income for all <b>3,144 counties</b>, where available, as a histogram: the horizontal axis is income, the height of each bar is how many counties fall in that slice. A distribution is just the full answer to "how often does each value happen?"`) +
+    P(`Two summaries sit on the plot. The <b>median</b> (solid) splits the counties into two equal halves; the <b>mean</b> (dashed) is the balance point. When a distribution has a long right tail — a handful of very rich counties — the mean is dragged toward the tail and lands to the right of the median. That gap between mean and median can signal asymmetry, although it is not itself a formal measure of skewness, and it is why the choice of color breaks on the atlas page mattered so much.`));
   distPlot(Plot);
 }
 
@@ -104,7 +105,7 @@ export function renderRegression(Plot) {
 // ---- M5: statistical inference ----
 export function renderInference(Plot) {
   setProse("m5",
-    P(`Every number in Movement I so far is computed on all 3,144 counties at once. But the deeper lesson of statistics is about <em>sampling</em>: if you only saw a handful of counties, how sure could you be about the whole country? Treat the full set of county diabetes rates as the population, then draw thousands of random samples and record each sample's mean.`) +
+    P(`Coverage varies by measure; the diabetes simulation uses the available county estimates. But the deeper lesson of statistics is about <em>sampling</em>: if you only saw a handful of counties, how sure could you be about the whole country? Treat the available county estimates as a fixed finite population, draw counties independently with replacement, and record each sample mean. This artificial sampling experiment does not propagate the uncertainty in the source estimates.`) +
     P(`The histogram below is the <b>sampling distribution</b> of that mean. Two facts the <b>Central Limit Theorem</b> promises show up immediately: the heap is nearly normal even though the underlying county values are skewed, and its spread is the standard error ${tex("\\sigma/\\sqrt{n}")}, not the population standard deviation. A 95% confidence interval is just one sample's mean plus or minus about two standard errors — and a hypothesis test asks whether an observed gap is larger than that yardstick.`));
   inferencePlot(Plot);
 }
@@ -113,23 +114,19 @@ export function renderInference(Plot) {
 export function renderMoran(Plot) {
   setProse("m6",
     P(`Tobler's first law: near things are more related than distant things. <b>Moran's I</b> puts a number on it by correlating each county's value with the average of its neighbors (its "spatial lag"). Positive I means clustering — high next to high, low next to low. Neighbors here are counties that share a border (queen contiguity), built from the full-resolution Census boundary file.`) +
-    P(`The residuals from the regression we fit in Movement I are not scattered at random across the map; they pool. That spatial autocorrelation is exactly why a single OLS line understates the uncertainty, and why spatial models exist. It is also the hinge into Movement III: autocorrelation is the crudest possible reading of a structure the field actually has everywhere.`));
+    P(`This statistic is computed for the diabetes estimates themselves, not regression residuals. It does not diagnose residual dependence or quantify the error in an OLS standard error. The graph is rebuilt on counties with available data, so missing states affect the spatial comparison.`));
   moranPlot(Plot);
 }
 
 // ---- M7: Bayesian shrinkage ----
 export function renderBayes(Plot) {
-  setProse("m7",
-    P(`A county of 500 people with a 20% diabetes rate is not really telling you 20% — the estimate is built on almost nothing. Empirical-Bayes small-area estimation pulls each noisy local rate toward the population-weighted national mean, in proportion to how little information that county carries. This is <b>shrinkage</b>, and it is the logic behind every model-based small-area release.`) +
-    P(`The posterior mean is a precision-weighted average: ${tex("\\hat\\theta_i = w_i\\,y_i + (1-w_i)\\,\\mu")}, with weight ${tex("w_i = \\tau^2 / (\\tau^2 + v_i)")}. Here ${tex("v_i")} is the county's own sampling variance (large for tiny counties) and ${tex("\\tau^2")} is the genuine between-county variance, estimated by method of moments. Small counties move a lot; large counties barely budge.`));
+  setProse("m7", P('How should a noisy measurement be balanced against prior information? This hypothetical normal-normal model lets you change the standard error of an observation. The prior mean is 12%, its standard deviation is 3 percentage points, and the observed estimate is 20%.') + P('The posterior mean is w × observation + (1 − w) × prior mean, with w = prior variance / (prior variance + measurement variance). These are illustrative inputs, not county estimates. County population is not a survey sample size. CDC PLACES already uses multilevel regression and poststratification; re-shrinking its published rates with a binomial variance based on residents would be unjustified.'));
   bayesPlot(Plot);
 }
 
 // ---- M8: policy ----
 export function renderPolicy(Plot) {
-  setProse("m8",
-    P(`Sort the counties into five equal groups by poverty rate. Diabetes climbs steadily from the lowest-poverty quintile to the highest. Suppose a place-based investment program closed half of that gap — bringing every quintile halfway down to the healthiest one. How many fewer adults would have diabetes?`) +
-    P(`The projection below applies that counterfactual reduction to each quintile and counts the avoided cases, weighting by population. This is not causal proof; it is a transparent what-if built on the conditional means you have been computing all along. Good forecasting shows its assumptions in the open.`));
+  setProse("m8", P('Group the counties with both poverty and diabetes estimates into five roughly equal groups, ordered by poverty. Each bar is the unweighted average of county diabetes estimates in that group, not the prevalence among all people in the group.') + P('Choose how much of each positive gap above the lowest-poverty group to close. This arithmetic scenario does not specify an intervention or estimate its effect. Results stay in percentage points: converting these adult rates to case counts would require compatible adult denominators and a defensible intervention model.'));
   policyPlot(Plot);
 }
 
@@ -202,7 +199,7 @@ function regressionBlock(Plot) {
         <div>slope = <b>${b1.toFixed(2)}</b> pts / $10k</div><div>R² = ${simple.r2.toFixed(3)}</div></div>
       <div class="rounded-lg border border-ink/15 p-3"><div class="text-xs uppercase text-dim">+ poverty control</div>
         <div>slope = <b>${b1c.toFixed(2)}</b> pts / $10k</div><div>R² = ${multi.r2.toFixed(3)}</div></div></div>`;
-    txt += P(`Adding poverty shrinks the income slope by about <b>${shrink}%</b> but does not erase it. Much of income's apparent link to diabetes runs through poverty, yet an independent association survives — the two variables are correlated, not interchangeable, and the regression keeps the part of each that the other cannot explain.`);
+    txt += P(`Adding poverty shrinks the income slope by about <b>${shrink}%</b> but does not erase it. This is a change in a conditional association, not evidence that poverty mediates a causal income effect. The comparison uses the same complete-case counties. PLACES outcomes are modeled estimates whose predictors include socioeconomic information; that construction can contribute to the observed association.`);
     const xmin = Math.min(...dp.map((d) => d.inc)), xmax = Math.max(...dp.map((d) => d.inc));
     const line = [xmin, xmax].map((x) => ({ x, y: simple.beta[0] + simple.beta[1] * x }));
     const regEl = document.getElementById("reg-plot");
@@ -256,7 +253,7 @@ function inferencePlot(Plot) {
     ],
   }));
   el.insertAdjacentHTML("beforeend",
-    `<p class="text-sm mt-2 text-ink/80">National mean μ = <b>${mu.toFixed(2)}%</b> (solid). Across ${B.toLocaleString()} resamples the sample mean piles up in a near-normal heap of theoretical width σ/√n = <b>${seTheory.toFixed(2)}</b> (dashed = 95% band). One fresh sample gave a 95% CI of [${lo.toFixed(2)}, ${hi.toFixed(2)}], which ${covers ? "does" : "does <b>not</b>"} contain μ.</p>`);
+    `<p class="text-sm mt-2 text-ink/80">Mean of available county estimates μ = <b>${mu.toFixed(2)}%</b> (solid). Across ${B.toLocaleString()} resamples the sample mean piles up in a near-normal heap of theoretical width σ/√n = <b>${seTheory.toFixed(2)}</b> (dashed = 95% band). One fresh sample gave a 95% CI of [${lo.toFixed(2)}, ${hi.toFixed(2)}], which ${covers ? "does" : "does <b>not</b>"} contain μ.</p>`);
 
   // two-sample test: Census South region vs the rest
   const SOUTH = new Set(["10", "11", "12", "13", "24", "37", "45", "51", "54", "01", "21", "28", "47", "05", "22", "40", "48"]);
@@ -272,7 +269,7 @@ function inferencePlot(Plot) {
   const seD = Math.sqrt(vv(south, mS) / south.length + vv(rest, mR) / rest.length);
   const tstat = (mS - mR) / seD;
   el.insertAdjacentHTML("beforeend",
-    `<p class="text-sm mt-2 text-ink/80"><b>Hypothesis test.</b> Southern counties (n = ${south.length}) average ${mS.toFixed(2)}% diabetes versus ${mR.toFixed(2)}% elsewhere (n = ${rest.length}). The difference of ${(mS - mR).toFixed(2)} points has a Welch t-statistic of <b>${tstat.toFixed(1)}</b> — far past any conventional threshold. The "diabetes belt" is not sampling noise.</p>`);
+    `<p class="text-sm mt-2 text-ink/80"><b>Hypothesis test.</b> Southern counties (n = ${south.length}) average ${mS.toFixed(2)}% diabetes versus ${mR.toFixed(2)}% elsewhere (n = ${rest.length}). The difference of ${(mS - mR).toFixed(2)} points has a Welch t-statistic of <b>${tstat.toFixed(1)}</b> under an independence assumption. This is a demonstration of the Welch formula, not a calibrated significance claim: spatial dependence, modeled outcomes, missing states, and the absence of a sampling design limit this interpretation.</p>`);
 }
 
 function moranPlot(Plot) {
@@ -285,85 +282,41 @@ function moranPlot(Plot) {
       x: { label: "county value (z)", grid: true }, y: { label: "neighbor mean (z)", grid: true },
       marks: [
         Plot.dot(m.scatter, { x: "z", y: "lag", r: 1.6, fill: "#6d5a8c", fillOpacity: 0.3 }),
-        Plot.linearRegressionY(m.scatter, { x: "z", y: "lag", stroke: "#b5482f" }),
+        Plot.linearRegressionY(m.scatter, { x: "z", y: "lag", stroke: "#b5482f", ci: 0 }),
         Plot.ruleX([0]), Plot.ruleY([0]),
       ],
     }));
     el.insertAdjacentHTML("beforeend",
-      `<p class="text-sm mt-2 text-ink/80">Moran's I = <b>${m.I?.toFixed(3)}</b> (permutation p ${m.perm_p <= 0.001 ? "< 0.001" : "= " + m.perm_p}) across ${m.n?.toLocaleString()} contiguous counties, mean ${m.mean_neighbors} neighbors each. Strong positive spatial autocorrelation: diabetes clusters.</p>`);
+      `<p class="text-sm mt-2 text-ink/80">Moran's I = <b>${m.I?.toFixed(3)}</b> (permutation p ${"= " + m.perm_p}) across ${m.n?.toLocaleString()} contiguous counties, mean ${m.mean_neighbors} neighbors each. Strong positive spatial autocorrelation: diabetes clusters.</p>`);
   } else {
     el.innerHTML = `<p class="text-sm text-ink/60">Spatial-lag scatter is precomputed by the build pipeline (script 12).</p>`;
   }
 }
 
 function bayesPlot(Plot) {
-  const rows = [];
-  for (const f of state.counties?.features || []) {
-    const y = num(f.properties.diabetes_pct), n = num(f.properties.pop_total);
-    if (Number.isFinite(y) && Number.isFinite(n) && n > 0) rows.push({ y, n });
-  }
-  const el = document.getElementById("bayes-plot");
-  if (!el) return;
-  if (rows.length < 100) { el.innerHTML = `<p class="text-sm text-ink/60">Shrinkage demo needs the national county layer.</p>`; return; }
-  // population-weighted grand mean (the prior)
-  const totN = rows.reduce((s, r) => s + r.n, 0);
-  const mu = rows.reduce((s, r) => s + r.y * r.n, 0) / totN;
-  // each county's rate treated as a proportion observed over its residents:
-  // sampling variance v_i = p(1-p)/n, in percentage-point^2 units (×1e4)
-  rows.forEach((r) => { const p = r.y / 100; r.vi = (p * (1 - p) / r.n) * 1e4; });
-  const meanVi = rows.reduce((s, r) => s + r.vi, 0) / rows.length;
-  const totVar = rows.reduce((s, r) => s + (r.y - mu) ** 2, 0) / rows.length;
-  const tau2 = Math.max(totVar - meanVi, 1e-6);   // method-of-moments between-county variance
-  rows.forEach((r) => { r.w = tau2 / (tau2 + r.vi); r.shrunk = r.w * r.y + (1 - r.w) * mu; });
-  const pts = rows.filter((_, i) => i % 4 === 0).map((r) => ({ n: r.n, raw: r.y, shrunk: r.shrunk }));
-  el.append(Plot.plot({
-    height: 300, marginLeft: 50,
-    x: { label: "county population (log scale)", type: "log", grid: true },
-    y: { label: "diabetes estimate (%)", grid: true },
-    marks: [
-      Plot.ruleY([mu], { stroke: "#5b6470", strokeDasharray: "4 3" }),
-      Plot.link(pts, { x1: "n", y1: "raw", x2: "n", y2: "shrunk", stroke: "#bbb", strokeOpacity: 0.5 }),
-      Plot.dot(pts, { x: "n", y: "raw", r: 2, fill: "#c0504d", fillOpacity: 0.5 }),
-      Plot.dot(pts, { x: "n", y: "shrunk", r: 2, fill: "#6b8f71" }),
-    ],
-  }));
-  el.insertAdjacentHTML("beforeend",
-    `<p class="text-sm mt-2 text-ink/80"><span style="color:#c0504d">●</span> raw rate &nbsp; <span style="color:#6b8f71">●</span> shrunk posterior &nbsp; ┄ population-weighted mean ${mu.toFixed(1)}%. Small-population counties on the left are pulled hard toward the mean; the big counties on the right barely move.</p>`);
+  const el = document.getElementById('bayes-plot'); if (!el) return;
+  el.innerHTML = '<div class="scenario-controls"><label for="bayes-se">Measurement standard error (percentage points)</label><input id="bayes-se" type="range" min="0.5" max="12" step="0.5" value="4"><output id="bayes-value" for="bayes-se"></output></div><div id="bayes-chart"></div><p id="bayes-caption"></p>';
+  const update=()=>{
+    const se=Number(el.querySelector('#bayes-se').value), result=normalPosterior(20,se,12,3);
+    el.querySelector('#bayes-value').textContent=se.toFixed(1);
+    const data=[{label:'Prior mean',value:12},{label:'Observed estimate',value:20},{label:'Posterior mean',value:result.mean}];
+    el.querySelector('#bayes-chart').replaceChildren(Plot.plot({height:220,marginLeft:125,x:{label:'Illustrative rate (%)',domain:[0,25],grid:true},y:{label:null,domain:data.map(d=>d.label)},marks:[Plot.dot(data,{x:'value',y:'label',r:7,fill:'#397e70'}),Plot.text(data,{x:'value',y:'label',text:d=>d.value.toFixed(1)+'%',dx:26})]}));
+    el.querySelector('#bayes-caption').textContent='The observation receives '+(result.weight*100).toFixed(1)+'% of the weight. Larger measurement uncertainty moves the posterior toward the stated prior. This is a teaching simulation with known assumptions, not a CDC estimator.';
+  };
+  el.querySelector('#bayes-se').oninput=update;update();
 }
 
 function policyPlot(Plot) {
-  const rows = [];
-  for (const f of state.counties?.features || []) {
-    const pov = num(f.properties.pct_poverty), d = num(f.properties.diabetes_pct), p = num(f.properties.pop_total);
-    if ([pov, d, p].every(Number.isFinite)) rows.push({ pov, d, p });
-  }
-  const el = document.getElementById("policy-plot");
-  if (!el) return;
-  if (rows.length < 100) { el.innerHTML = `<p class="text-sm text-ink/60">Counterfactual needs the national county layer.</p>`; return; }
-  rows.sort((a, b) => a.pov - b.pov);
-  const Q = 5, bins = [];
-  for (let q = 0; q < Q; q++) {
-    const seg = rows.slice(Math.floor(q / Q * rows.length), Math.floor((q + 1) / Q * rows.length));
-    const pop = seg.reduce((s, r) => s + r.p, 0);
-    bins.push({ q: q + 1, d: seg.reduce((s, r) => s + r.d * r.p, 0) / pop, pop });
-  }
-  const lo = bins[0].d;   // healthiest (lowest-poverty) quintile
-  const data = bins.map((b) => ({ q: `Q${b.q}`, observed: b.d, counterfactual: b.d - (b.d - lo) * 0.5, pop: b.pop }));
-  let avoided = 0;
-  data.forEach((b) => { avoided += (b.observed - b.counterfactual) / 100 * b.pop; });
-  el.append(Plot.plot({
-    height: 300, marginLeft: 50,
-    x: { label: "poverty quintile (Q1 lowest → Q5 highest)" }, y: { label: "diabetes prevalence (%)", grid: true },
-    color: { legend: true, domain: ["observed", "if half the gap closed"], range: ["#c0504d", "#6b8f71"] },
-    marks: [
-      Plot.barY(data.flatMap((d) => [
-        { q: d.q, v: d.observed, k: "observed" },
-        { q: d.q, v: d.counterfactual, k: "if half the gap closed" }]),
-        { x: "q", y: "v", fill: "k", dx: (d) => d.k === "observed" ? -8 : 8, inset: 2 }),
-    ],
-  }));
-  el.insertAdjacentHTML("beforeend",
-    `<p class="text-sm mt-2 text-ink/80">Halving every quintile's gap to the lowest-poverty group implies roughly <b>${Math.round(avoided).toLocaleString()}</b> fewer adults with diabetes nationwide — a transparent counterfactual, not a causal estimate.</p>`);
+  const el=document.getElementById('policy-plot');if(!el)return;
+  const rows=(state.counties?.features||[]).map(f=>f.properties);
+  el.innerHTML='<div class="scenario-controls"><label for="policy-gap">Assumed share of positive gap closed</label><input id="policy-gap" type="range" min="0" max="100" step="5" value="50"><output id="policy-value" for="policy-gap"></output></div><div id="policy-chart"></div><p id="policy-caption"></p>';
+  const update=()=>{
+    const share=Number(el.querySelector('#policy-gap').value)/100, bins=gapScenario(rows,share);
+    el.querySelector('#policy-value').textContent=Math.round(share*100)+'%';
+    if(!bins.length){el.querySelector('#policy-caption').textContent='Not enough complete county records.';return;}
+    el.querySelector('#policy-chart').replaceChildren(Plot.plot({height:320,marginLeft:65,x:{label:'Poverty group (Q1 lowest)',domain:bins.map(d=>d.group)},y:{label:'Mean of county diabetes estimates (%)',grid:true},marks:[Plot.link(bins,{x1:'group',x2:'group',y1:'observed',y2:'scenario',stroke:'#aab9ae',strokeWidth:4}),Plot.dot(bins,{x:'group',y:'observed',fill:'#c66b25',r:6}),Plot.dot(bins,{x:'group',y:'scenario',fill:'#18564c',r:4})]}));
+    el.querySelector('#policy-caption').textContent='Orange: observed group mean. Green: assumed scenario. '+bins.reduce((n,b)=>n+b.n,0).toLocaleString()+' complete counties; equal county weights. Ties in poverty are ordered by GEOID. The baseline is the lowest-poverty group, not necessarily the healthiest. No effects or avoided cases are estimated.';
+  };el.querySelector('#policy-gap').oninput=update;update();
 }
 
 export function renderMethods() {
@@ -372,11 +325,11 @@ export function renderMethods() {
   el.innerHTML = `
     <p><b>Geography.</b> All 3,144 county and county-equivalent units of the 50 states and DC (Census TIGER 2023). The web map carries simplified boundaries; spatial contiguity is built from the full-resolution shapefile.</p>
     <p><b>ACS 2018–2022</b> five-year estimates: median household income, poverty, education, race and ethnicity, unemployment, tenure and rent burden, health insurance. Percentages derived against their correct universes.</p>
-    <p><b>CDC PLACES 2024–2025</b> model-based county prevalence of adult diabetes, obesity, and hypertension.</p>
-    <p><b>Population</b> from the ACS county totals, used both for density and as the precision weight in the empirical-Bayes shrinkage.</p>
-    <p><b>Spatial dependence.</b> Moran's I under queen contiguity (counties sharing any boundary point are neighbors), row-standardized weights, significance from a 999-draw permutation null. Contiguity is computed on the unsimplified TIGER geometry, excluding Alaska and Hawaii, which have no land neighbors.</p>
-    <p><b>Inference demos</b> resample the county values with a fixed seed, so every figure is reproducible. The South/non-South contrast uses the Census definition of the South region.</p>
-    <p><b>Empirical Bayes.</b> Each county rate is shrunk toward the population-weighted national mean with weight w = τ²/(τ²+v), where v is the county's own sampling variance and the between-county variance τ² is estimated by method of moments. This is the Fay–Herriot logic behind official small-area estimates.</p>
+    <p><b>CDC PLACES.</b> The pipeline identifies its input as the 2025 county release, crude adult prevalence. Release year is not measurement year. <a href="https://www.cdc.gov/places/methodology/index.html">CDC uses multilevel regression and poststratification</a>, including socioeconomic predictors, so associations with those predictors are not wholly independent evidence.</p><p><b>Coverage.</b> This snapshot has diabetes estimates for 2,956 of 3,144 county units. All 120 Kentucky and 67 Pennsylvania counties, plus one Texas county, are missing health values. Their absence is not evidence of zero disease; the extraction does not establish the reason for every omission.</p><p><b>Uncertainty and timing.</b> ACS margins of error and PLACES intervals are not shipped. Comparisons are descriptive point estimates from different observation periods. Equal county averages are not population prevalence estimates. These files are snapshots, not live feeds.</p>
+    <p><b>Population</b> from the ACS county totals, used for density. It is not a sample size or an adult health denominator.</p>
+    <p><b>Spatial dependence.</b> Moran's I under queen contiguity (counties sharing any boundary point are neighbors), row-standardized weights, significance from a 999-draw permutation null. Contiguity is computed on the unsimplified TIGER geometry, excluding Alaska and Hawaii by the pipeline’s regional scope choice, and dropping remaining zero-neighbor units. This does not mean all counties in those states lack neighbors.</p>
+    <p><b>Inference demos</b> resample the county values with a fixed seed, so every figure is reproducible. The South/non-South contrast uses the Census definition of the South region but is descriptive; a naive independent-county test does not account for spatial dependence or modeled outcome uncertainty.</p>
+    <p><b>Empirical Bayes.</b> The interactive is a hypothetical normal-normal model with user-controlled measurement error and a fixed prior. It does not use resident population as sample size and does not re-estimate PLACES.</p>
     <p class="text-ink/60">All computation is reproducible from the <code>scripts/</code> pipeline (11 national county assembly → 12 spatial dependence). California tracts and the redlining case study retain their own tract-level pipeline.</p>`;
 }
 

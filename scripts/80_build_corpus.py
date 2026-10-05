@@ -39,13 +39,12 @@ def main():
     add("about", "Overview", "What the American Policy Atlas is",
         f"""The American Policy Atlas is a teaching observatory for statistics built on every
         county in the United States: {summary.get('n_counties', 3144):,} counties across
-        {summary.get('n_states', 51)} states and DC. It teaches a full statistics sequence —
+        50 states and DC. It offers a developing lesson library —
         reading a choropleth, distributions, conditional expectations, regression, statistical
-        inference, spatial dependence, and Bayesian shrinkage — with every method computed in the
-        browser from the same national dataset. The 1939 HOLC redlining story in Los Angeles, at
+        inference, spatial dependence, and Bayesian shrinkage — with selected examples computed in the browser; many chapters remain reading notes. The 1939 HOLC redlining story in Los Angeles, at
         census-tract resolution, is the flagship case study. Data come from the U.S. Census ACS
         2018-2022, CDC PLACES, BLS, BEA, WorldPop, and the University of Richmond's Mapping
-        Inequality project.""", "#home")
+        Inequality project.""", "#/")
 
     add("data-sources", "Overview", "Where the data come from",
         """Demographics and economics are American Community Survey 2018-2022 five-year estimates:
@@ -54,7 +53,7 @@ def main():
         adult diabetes, obesity, and high blood pressure prevalence — are CDC PLACES model-based
         county estimates. County and tract geometry is Census TIGER/Line 2023. The redlining grades
         are from Mapping Inequality (University of Richmond), digitizing the 1939 HOLC maps.""",
-        "#methods")
+        "#/apparatus/methods")
 
     # --- module concepts ---
     add("m1-classification", "Reading a map", "Choropleth classification (quantile, equal, Jenks)",
@@ -63,7 +62,7 @@ def main():
         counties in each color, which flatters skewed variables like income. Equal-interval uses
         equal value widths and is honest about magnitude but can leave classes empty. Jenks finds
         natural breaks that minimize within-class variance. None is uniquely correct; classification
-        is an assumption a good analyst states out loud.""", "#m1")
+        is an assumption a good analyst states out loud.""", "#/s1/data")
 
     inc = vs.get("median_hh_income", {})
     add("m2-distributions", "Distributions", "Distributions, mean vs. median, and skew",
@@ -73,86 +72,43 @@ def main():
         distribution is right-skewed: a long tail of high-income counties drags the balance point
         upward. The median splits counties into two equal halves; the mean is the balance point.
         That mean-median gap is the skew, and it is why the choice of color breaks matters.""",
-        "#m2")
+        "#/s1/distributions")
 
     add("m3-cef", "Conditional expectations", "E[Y|X] and the binscatter",
         """A conditional expectation, written E[Y given X], answers: for counties at a given income,
         what is the average diabetes rate? It is the most useful object in applied statistics. The
         atlas approximates it nonparametrically with a binscatter — sort counties by income, chop
         into bins, plot the average outcome in each bin — letting the data choose its own shape.
-        Regression is just the straight-line summary of this same cloud.""", "#m3")
+        Regression is just the straight-line summary of this same cloud.""", "#/s1/conditional-expectations")
 
-    add("m4-regression", "Regression", "Regression and what a control does",
-        """The atlas fits diabetes prevalence on county median income, then adds present-day poverty
-        as a control. The income slope shrinks substantially but does not vanish. Much of income's
-        apparent link to diabetes runs through poverty, yet an independent association survives:
-        income and poverty are correlated, not interchangeable. A control lets the regression keep
-        the part of each variable that the other cannot explain. This is description, not a causal
-        claim.""", "#m4")
+    add("m4-regression", "Methods", "m4 regression",
+        "The atlas fits diabetes estimates on income, then adjusts for poverty in the same complete-case sample. A changed coefficient is a conditional association, not proof of mediation or causation. PLACES uses socioeconomic predictors, so model construction may contribute to the association.", "#/s2/regression")
 
     db = vs.get("diabetes_pct", {})
-    add("m5-inference", "Statistical inference", "Sampling distributions, confidence intervals, hypothesis tests",
-        f"""Treat all county diabetes rates as the population (mean about {db.get('mean', 0):.1f}%),
-        then draw thousands of random samples and record each sample mean. The resulting sampling
-        distribution is nearly normal even though county values are skewed — the Central Limit
-        Theorem — and its spread is the standard error sigma over root-n, not the population standard
-        deviation. A 95% confidence interval is one sample's mean plus or minus about two standard
-        errors. A hypothesis test asks whether an observed gap exceeds that yardstick. The atlas
-        contrasts Census-South counties against the rest and finds a difference far past any
-        conventional threshold: the diabetes belt is not sampling noise.""", "#m5")
+    add("m5-inference", "Methods", "m5 inference",
+        "The simulation draws available county diabetes estimates independently with replacement from a fixed finite population. It illustrates sampling variation, not uncertainty in CDC estimates. The descriptive South versus other counties contrast does not provide calibrated significance under spatial dependence and missing data.", "#/s1/sampling")
 
-    add("m6-spatial", "Spatial dependence", "Moran's I and spatial autocorrelation",
-        f"""Tobler's first law: near things are more related than distant things. Moran's I measures
-        this by correlating each county's value with the average of its neighbors (its spatial lag).
-        Neighbors are counties sharing a border (queen contiguity), built from the full-resolution
-        Census boundary file. For adult diabetes the atlas computes Moran's I =
-        {moran.get('I', 0.60):.3f} (permutation p = {moran.get('perm_p', 0.001)}), across
-        {moran.get('n', 0):,} contiguous counties averaging {moran.get('mean_neighbors', 5.9)}
-        neighbors each. That is strong positive spatial autocorrelation: regression residuals pool
-        on the map rather than scattering, which is why a single OLS line understates uncertainty and
-        why spatial models exist.""", "#m6")
+    add("m6-spatial", "Methods", "m6 spatial",
+        "Moran’s I is 0.6025 for raw diabetes estimates on 2,921 connected counties in this snapshot, with a one-sided permutation p of 0.001 from 999 permutations. It is not a test of regression residuals. Missing states affect the graph.", "#/spatial/dependence")
 
-    add("m7-bayes", "Bayesian thinking", "Empirical-Bayes shrinkage and small-area estimation",
-        """A county of 500 people with a 20% diabetes rate is built on almost nothing. Empirical-Bayes
-        small-area estimation pulls each noisy local rate toward the population-weighted national mean,
-        in proportion to how little information the county carries. The posterior mean is a
-        precision-weighted average: theta-hat = w*y + (1-w)*mu, with weight w = tau-squared /
-        (tau-squared + v). Here v is the county's own sampling variance (large for tiny counties) and
-        tau-squared is the genuine between-county variance, estimated by method of moments. Small
-        counties move a lot; large counties barely budge. This is the Fay-Herriot logic behind
-        official model-based small-area releases.""", "#m7")
+    add("m7-bayes", "Methods", "m7 bayes",
+        "The shrinkage lesson is a hypothetical normal-normal model. The prior mean is 12 percent with standard deviation 3 percentage points, and the observed estimate is 20 percent. The reader varies measurement standard error. Population is not sample size, and this is not a re-estimation of PLACES.", "#/s1/bayes")
 
-    add("m8-policy", "Policy", "Counterfactual projection from conditional means",
-        """Sort counties into five equal groups by poverty rate; diabetes climbs steadily from the
-        lowest-poverty quintile to the highest. The atlas asks a transparent what-if: if a place-based
-        investment closed half of each quintile's gap to the healthiest group, how many fewer adults
-        would have diabetes? It applies that reduction to each quintile and counts avoided cases,
-        weighting by population. This is not causal proof — it is a counterfactual built openly on the
-        conditional means computed throughout the atlas. Good forecasting shows its assumptions.""",
-        "#m8")
+    add("m8-policy", "Methods", "m8 policy",
+        "The scenario sorts complete-case counties into poverty quintiles and calculates unweighted mean county diabetes estimates. A slider closes an assumed fraction of positive gaps above the lowest-poverty group. Results are descriptive percentage points, not intervention effects or avoided cases.", "#/spatial/policy")
 
-    add("redlining", "Flagship", "The 1939 redlining case study",
-        """The flagship case study maps the 1939 HOLC redlining grades of Los Angeles at census-tract
-        resolution and lays them beside present-day health and economic outcomes. Tracts graded "D"
-        (colored red, "hazardous") in 1939 still show measurably worse outcomes today. The atlas links
-        this to a national literature — most directly Aaronson, Hartley and Mazumder's
-        boundary-discontinuity estimate of what the HOLC maps caused — and treats the local gradient
-        as one legible instance of the spatial clustering measured nationally with Moran's I.""",
-        "#redlining")
+    add("redlining", "Methods", "redlining",
+        "The Los Angeles case compares modern tract health estimates grouped by the dominant historical HOLC grade. Modern tracts and historical neighborhoods differ. This descriptive comparison does not identify the causal effect of grading. Consult the linked research papers for their separate identification strategies.", "#/spatial/redlining")
 
-    add("methods-spatial", "Methods", "How spatial contiguity is computed",
-        """Moran's I uses queen contiguity: counties sharing any boundary point are neighbors. Weights
-        are row-standardized and significance comes from a 999-draw permutation null. Critically,
-        contiguity is computed on the unsimplified TIGER geometry, not the simplified web map —
-        simplifying boundaries breaks the shared edges and destroys the neighbor graph. Alaska and
-        Hawaii are excluded because their counties have no land neighbors.""", "#methods")
+    add("methods-spatial", "Methods", "methods spatial",
+        "Queen weights are constructed using full-resolution county geometry. The pipeline excludes Alaska and Hawaii as a regional scope choice and drops zero-neighbor units; not all counties in those states lack land neighbors. The 999-draw permutation statistic is for raw diabetes estimates, not residuals.", "#/apparatus/methods")
 
     add("reproducibility", "Methods", "Reproducibility and the build pipeline",
         """Every figure is reproducible from the scripts directory: script 11 assembles the national
         county layer from ACS and CDC PLACES, script 12 computes spatial dependence on the raw TIGER
         shapefile. Inference demos resample county values with a fixed random seed so every figure is
         identical across reloads. The California tracts and redlining case study retain their own
-        tract-level pipeline (scripts 10 through 60).""", "#methods")
+        tract-level pipeline (scripts 10 through 60).""", "#/apparatus/methods")
 
     # --- papers ---
     for i, p in enumerate(papers.get("papers", [])):

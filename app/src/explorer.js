@@ -1,3 +1,4 @@
+import { median, mean as average } from "./analysis.js";
 // In-browser data explorer over the national county table.
 // Two panels: a univariate distribution (filter, histogram, ranked counties,
 // CSV of the current selection) and a bivariate relationship (scatter of any
@@ -49,7 +50,7 @@ export function mountExplorer() {
       </div>
       <div id="ex-fitline" class="mt-4 text-sm text-ink/80"></div>
       <div id="ex-scatter" class="mt-3"></div>
-      <p class="mt-2 text-xs text-dim">Each dot is a county. The line is an ordinary-least-squares fit; <i>r</i> is the Pearson correlation. Association, not causation — read the redlining case study for what it takes to argue the latter.</p>
+      <p class="mt-2 text-xs text-dim">Each dot is a county. The line is an ordinary-least-squares fit; <i>r</i> is the Pearson correlation. Equal county weights; no calibrated uncertainty band is shown. County associations do not identify individual relationships or causal effects. Source uncertainty and spatial dependence are not modeled here.</p>
     </section>`;
 
   // populate selects
@@ -66,7 +67,8 @@ export function mountExplorer() {
     if (t.dataset.tab === "rel") renderScatter();
   }));
 
-  scopeSel.addEventListener("change", () => { scopeState = scopeSel.value; renderDist(); });
+  scopeSel.value = scopeState;
+  scopeSel.addEventListener("change", () => { scopeState = scopeSel.value; renderDist(); renderScatter(); });
   el.querySelector("#ex-var").addEventListener("change", (e) => { variable = e.target.value; renderDist(); });
   el.querySelector("#ex-csv").addEventListener("click", exportCsv);
   el.querySelector("#ex-x").addEventListener("change", (e) => { xVar = e.target.value; renderScatter(); });
@@ -99,8 +101,8 @@ function renderDist() {
     .filter((d) => Number.isFinite(d.val));
   data.sort((a, b) => b.val - a.val);
   const vals = data.map((d) => d.val);
-  const mean = vals.reduce((a, b) => a + b, 0) / (vals.length || 1);
-  const med = vals[Math.floor(vals.length / 2)];
+  const mean = average(vals);
+  const med = median(vals);
   const scopeLbl = scopeState === "all" ? "U.S. counties" : `counties in ${scopeState}`;
   document.getElementById("ex-summary").innerHTML =
     `<b>${data.length.toLocaleString()}</b> ${scopeLbl} · ${v.label} · mean ${fmt(mean, v)} · median ${fmt(med, v)} · range ${fmt(vals[vals.length - 1], v)}–${fmt(vals[0], v)}`;
@@ -130,14 +132,15 @@ function renderScatter() {
     `slope ${slope.toPrecision(3)} ${vy.unit}/${vx.unit}`;
 
   mount.innerHTML = "";
+  if (!Number.isFinite(r)) { document.getElementById("ex-fitline").textContent = "Relationship not estimable in this scope: too few complete counties or no variation."; return; }
   mount.append(Plot.plot({
     height: 420, marginLeft: 56, width: mount.clientWidth || 680,
     grid: true,
-    x: { label: `${vx.label} (${vx.unit}) →`, type: vx.log ? "log" : "linear" },
+    x: { label: `${vx.label} (${vx.unit}) →`, type: "linear" },
     y: { label: `↑ ${vy.label} (${vy.unit})` },
     marks: [
       Plot.dot(data, { x: "x", y: "y", r: 2, fill: "#3b528b", fillOpacity: 0.32 }),
-      Plot.linearRegressionY(data, { x: "x", y: "y", stroke: "#b5482f", ci: 0.95, fillOpacity: 0.08 }),
+      Plot.linearRegressionY(data, { x: "x", y: "y", stroke: "#b5482f", ci: 0, fillOpacity: 0.08 }),
     ],
   }));
 }
