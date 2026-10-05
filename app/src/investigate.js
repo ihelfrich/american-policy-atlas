@@ -27,35 +27,75 @@ function format(v, key) {
 }
 
 export function drawCountyMap(el, variable, selected, onSelect, scope = 'all', override = null) {
-  // The web GeoJSON follows RFC 7946 ring order; d3's spherical polygons use
-  // the opposite convention. Reverse copied rings, never the shared map data.
-  const features = projectedFeatures ||= state.counties.features.map(f => ({...f, geometry: {...f.geometry,
-    coordinates: f.geometry.type === 'Polygon'
-      ? f.geometry.coordinates.map(r => [...r].reverse())
-      : f.geometry.coordinates.map(p => p.map(r => [...r].reverse())) }}));
-  const projection = geoAlbersUsa().fitExtent([[12,12],[928,518]], {type:'FeatureCollection', features});
-  const path = geoPath(projection);
-  const values=features.map(f=>override?number(override.values.get(f.properties.GEOID)):number(f.properties[variable])).filter(Number.isFinite);
+  if (!projectedFeatures) {
+    // Copy and reverse RFC 7946 rings for d3's spherical convention.
+    const features = state.counties.features.map(f => ({...f, geometry: {...f.geometry,
+      coordinates: f.geometry.type === 'Polygon'
+        ? f.geometry.coordinates.map(r => [...r].reverse())
+        : f.geometry.coordinates.map(p => p.map(r => [...r].reverse())) }}));
+    const path=geoPath(geoAlbersUsa().fitExtent([[12,12],[928,518]],{type:'FeatureCollection',features}));
+    projectedFeatures=features.map(f=>({properties:f.properties,path:path(f)||''}));
+  }
+  const values=projectedFeatures.map(f=>override?number(override.values.get(f.properties.GEOID)):number(f.properties[variable])).filter(Number.isFinite);
   const magnitudes=values.map(Math.abs).sort((a,b)=>a-b);
-  const low=quantileSorted(magnitudes,.4)||.01,high=Math.max(low+.01,quantileSorted(magnitudes,.8)||.02);
+  const low=override?.breaks?.[2]??(quantileSorted(magnitudes,.4)||.01);
+  const high=override?.breaks?.[3]??Math.max(low+.01,quantileSorted(magnitudes,.8)||.02);
   const scale=override?scaleThreshold([-high,-low,low,high],['#27687a','#99c4cb','#f0f0df','#ddb47a','#ab582d']):scaleQuantile(values,colors);
+  if(!el._countyNodes){
+    el.innerHTML='<svg viewBox="0 0 940 530" role="img"></svg><div class="map-tooltip" aria-hidden="true" hidden></div>';
+    const svg=el.querySelector('svg'),tooltip=el.querySelector('.map-tooltip');
+    el._countyNodes=new Map();
+    for(const f of projectedFeatures){
+      const node=document.createElementNS('http://www.w3.org/2000/svg','path');
+      node.setAttribute('d',f.path);node.dataset.geoid=f.properties.GEOID;
+      const title=document.createElementNS('http://www.w3.org/2000/svg','title');node.append(title);
+      svg.append(node);el._countyNodes.set(f.properties.GEOID,node);
+    }
+    svg.onpointermove=e=>{
+      const title=e.target.querySelector?.('title')?.textContent;
+      if(!title){tooltip.hidden=true;return;}
+      tooltip.textContent=title;tooltip.hidden=false;
+      const rect=el.getBoundingClientRect();
+      tooltip.style.left=Math.max(8,Math.min(e.clientX-rect.left+12,rect.width-240))+'px';
+      tooltip.style.top=Math.max(8,e.clientY-rect.top-56)+'px';
+    };
+    svg.onpointerleave=()=>{tooltip.hidden=true;};
+  }
+  const svg=el.querySelector('svg');
   const label=override?.label||VARS[variable].label;
-  el.innerHTML = `<svg viewBox="0 0 940 530" role="img" aria-label="County map of ${esc(label)}. Alaska and Hawaii shown as insets. ${onSelect ? 'Select a county using the search controls below.' : 'Darker colors indicate higher values.'}">${features.map(f => {
-    const p=f.properties, value=override?number(override.values.get(p.GEOID)):number(p[variable]);
-    const valueLabel=override?(Number.isFinite(value)?`${value.toFixed(2)} percentage points`:'Not available'):format(value,variable);
-    return `<path d="${path(f)||''}" data-geoid="${p.GEOID}" fill="${Number.isFinite(value)?scale(value):'#c8c8c3'}" opacity="${scope==='all'||p.state_name===scope?1:0.18}" stroke="${p.GEOID===selected?'#d47b30':'#faf8f3'}" stroke-width="${p.GEOID===selected?2.4:0.15}"><title>${esc(p.county_name)}, ${esc(p.state_name)}: ${valueLabel}</title></path>`;
-  }).join('')}</svg>`;
-  if (onSelect) el.querySelector('svg').onclick=e=>{const id=e.target.dataset.geoid;if(id)onSelect(id);};
+  svg.setAttribute('aria-label','County map of '+label+'. Alaska and Hawaii are inset. '+(onSelect?'Use the county selector for keyboard access.':'Darker colors indicate higher values.'));
+  for(const f of projectedFeatures){
+    const p=f.properties,node=el._countyNodes.get(p.GEOID);
+    const value=override?number(override.values.get(p.GEOID)):number(p[variable]);
+    const label=override?(Number.isFinite(value)?value.toFixed(2)+' percentage points':'Not available'):format(value,variable);
+    node.setAttribute('fill',Number.isFinite(value)?scale(value):'#c8c8c3');
+    node.setAttribute('opacity',scope==='all'||p.state_name===scope?1:.18);
+    node.setAttribute('stroke',p.GEOID===selected?'#112f38':'#faf8f3');
+    node.setAttribute('stroke-width',p.GEOID===selected?'2.5':'.15');
+    node.classList.toggle('is-selected',p.GEOID===selected);
+    node.querySelector('title').textContent=p.county_name+', '+p.state_name+': '+label;
+  }
+  if(selected)el._countyNodes.get(selected)?.parentNode.append(el._countyNodes.get(selected));
+  svg.onclick=onSelect?e=>{if(e.target.dataset.geoid)onSelect(e.target.dataset.geoid);}:null;
   return override?[-high,-low,low,high]:scale.quantiles();
 }
 
 export function mountCover() {
   const map=document.getElementById('cover-map');
   if (!map) return;
-  drawCountyMap(map,'median_hh_income');
   const rows=state.counties.features.map(f=>f.properties);
   document.getElementById('cover-count').textContent=rows.length.toLocaleString();
   document.getElementById('cover-measures').textContent=Object.keys(VARS).length;
+  function render(variable){
+    const breaks=drawCountyMap(map,variable);
+    const legendValue=v=>VARS[variable].unit.startsWith('$')?'$'+Math.round(v/1000)+'k':format(v,variable);
+    document.getElementById('cover-map-title').textContent=VARS[variable].label;
+    document.getElementById('cover-caption').textContent=`${VARS[variable].source}. National county quintiles, with rounded legend values; gray indicates unavailable data. ${summarize(rows,variable).n.toLocaleString()} counties with estimates. Alaska and Hawaii are inset.`;
+    document.getElementById('cover-legend').innerHTML=colors.map((color,i)=>`<span><i style="background:${color}"></i>${i===0?'Below '+legendValue(breaks[0]):i===4?legendValue(breaks[3])+' +':legendValue(breaks[i-1])+'–'+legendValue(breaks[i])}</span>`).join('');
+    document.querySelectorAll('[data-cover-var]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.coverVar===variable)));
+  }
+  document.querySelectorAll('[data-cover-var]').forEach(b=>b.onclick=()=>render(b.dataset.coverVar));
+  render('median_hh_income');
 }
 
 export function mountInvestigation() {

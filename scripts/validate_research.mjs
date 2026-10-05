@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {csv} from '../app/src/analysis.js';
-import {specificationSet} from '../app/src/research.js';
+import {specificationSet,fitSpecification} from '../app/src/research.js';
 const rows=JSON.parse(fs.readFileSync('app/public/data/us_counties.min.geojson')).features.map(f=>f.properties);
 const data=JSON.parse(fs.readFileSync('app/public/data/diabetes_evidence.json'));
 rows.forEach(r=>r.diabetes_adjusted=data.county[r.GEOID]?.adjusted?.estimate);
@@ -18,11 +18,16 @@ try {
   const reference=fs.readFileSync(output,'utf8');
   let maxSlopeDifference=0,maxResidualDifference=0;
   for(const line of reference.trim().split('\n').slice(1)){
-    const [y,id,n,b,e]=line.replaceAll('"','').split(',');
-    const result=specificationSet(rows,y==='pct_broadband'?'pct_poverty':'median_hh_income',y,y==='pct_broadband'?10:10000).results.find(f=>f.id===id);
+    const [y,id,n,b,e,h,rmse,deletion,ca]=line.replaceAll('"','').split(',');
+    const x=y==='pct_broadband'?'pct_poverty':'median_hh_income',step=y==='pct_broadband'?10:10000;
+    const set=specificationSet(rows,x,y,step),result=set.results.find(f=>f.id===id);
     if(result.n!==+n)throw new Error('Common sample mismatch');
     maxSlopeDifference=Math.max(maxSlopeDifference,Math.abs(result.slope-Number(b)));
     maxResidualDifference=Math.max(maxResidualDifference,Math.abs(result.points[0].residual-Number(e)));
+    const omitted=fitSpecification(set.sample.filter(r=>r.state_name!=='California'),x,y,result,step);
+    for(const [actual,reference]of [[result.points[0].leverage,h],[result.rmse,rmse],[result.points[0].deletionChange,deletion],[omitted.slope,ca]]){
+      if(Math.abs(actual-Number(reference))>1e-9)throw new Error('R diagnostic mismatch: '+id);
+    }
   }
   if(maxSlopeDifference>1e-9||maxResidualDifference>1e-9)throw new Error('R reference mismatch');
   if(process.argv.includes('--update'))fs.writeFileSync('app/tests/fixtures/r-reference.csv',reference);

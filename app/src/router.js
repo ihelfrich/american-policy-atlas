@@ -13,6 +13,7 @@ function normalize(hash) {
 
 export function startRouter({ view, pages, fallback = "/", onBeforeRender, onAfterRender }) {
   const byRoute = new Map(pages.map((p) => [p.route, p]));
+  let cleanup, generation=0;
 
   function resolve() {
     const route = normalize(location.hash);
@@ -20,6 +21,8 @@ export function startRouter({ view, pages, fallback = "/", onBeforeRender, onAft
   }
 
   function render() {
+    const currentGeneration=++generation;
+    cleanup?.();cleanup=undefined;
     const page = resolve();
     onBeforeRender?.(page);              // teardown hook (maps, observers)
     view.innerHTML = page.html || "";
@@ -29,8 +32,14 @@ export function startRouter({ view, pages, fallback = "/", onBeforeRender, onAft
       : "The American Policy Atlas";
     // Jump to top on navigation; a curriculum page should start at its title,
     // not wherever the previous page happened to be scrolled.
-    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
-    try { page.mount?.(); } catch (e) { console.error(`mount failed for ${page.id}`, e); }
+    window.scrollTo({ top: 0, behavior: "instant" });
+    try {
+      Promise.resolve(page.mount?.()).then(dispose=>{
+        if(typeof dispose!=='function')return;
+        if(currentGeneration===generation)cleanup=dispose;
+        else dispose();
+      }).catch(e=>console.error(`mount failed for ${page.id}`,e));
+    } catch (e) { console.error(`mount failed for ${page.id}`, e); }
     onAfterRender?.(page);               // nav highlight, reveal animations
   }
 

@@ -20,11 +20,11 @@ Run `npm test` and `npm run build` in `app/`. Tests cover missingness, known reg
 
 ## Evidence Lab
 
-`#/lab` turns a claim into an analytical investigation: predict a direction, compare eight fixed specifications on the same complete sample, inspect a residual map and county exceptions, and record the next research question. Fits vary state fixed effects, median-age/log-density adjustment, and equal-county versus ACS total-population weighting. Coefficients use a fixed exposure increment ($10,000 of median income or 10 percentage points of poverty). They are descriptive associations. More controls do not establish a better causal design.
+`#/lab` turns a claim into an analytical investigation: compare eight fixed specifications on the same complete sample, inspect linked residual maps and partial-regression plots, examine county and state influence, and record the next research question. Prediction mode is optional; results are visible on entry. Fits vary state fixed effects, median-age/log-density adjustment, and equal-county versus ACS total-population weighting. Coefficients use a fixed exposure increment ($10,000 of median income or 10 percentage points of poverty). They are descriptive associations. More controls do not establish a better causal design.
 
 The diabetes supplement adds source-verified crude and age-adjusted estimates and their CDC 95% intervals. It reproduces all 2,956 existing crude values exactly. It also resolves the missing-data explanations: CDC omits the relevant 2023 estimates for Kentucky and Pennsylvania; Loving County's source adult population is below 50. The other Atlas datasets have not been refreshed. ACS margins of error and propagated coefficient uncertainty remain absent.
 
-Exports are reviewable and copyable in a dialog, with a file-download link. A JSON research record includes all estimates, common-sample GEOIDs, choices, sources, and optional notes. Notes are local; shared URLs omit them.
+Exports are reviewable and copyable in a dialog, with a file-download link. A version-2 JSON research record includes all estimates, common-sample GEOIDs, choices, sources, optional notes, and the completed state-deletion results (or an explicit pending/unavailable status). Notes are local; shared URLs omit them.
 
 From the repository root:
 
@@ -34,7 +34,9 @@ node scripts/validate_research.mjs          # independent base-R comparison, Rsc
 node scripts/validate_research.mjs --update # intentionally regenerate the reference fixture
 ```
 
-CI uses the stored R reference fixture and needs no R runtime or network access. The verification covers all 32 fits across the three studies and both diabetes outcomes, plus analytical cases with known slopes, sign reversals, unequal weights, and collinearity. Design and limitations are documented in `AUDIT.md`.
+The layout preserves map and point identity during model transitions, with fixed color breaks and axes across the eight specifications for a given outcome. State-deletion refits run in a worker with stale-response guards and route cleanup. Small screens use a compact model selector and an expandable eight-model comparison. Motion respects the reduced-motion preference.
+
+CI uses the stored R reference fixture and needs no R runtime or network access. The verification covers all 32 fits across the three studies and both diabetes outcomes, including slopes, residuals, RMSE, a reference hat value, county deletion, and California deletion, plus analytical cases with known slopes, sign reversals, unequal weights, and collinearity. Design and limitations are documented in `AUDIT.md`.
 
 ## National data pipeline (`scripts/`)
 

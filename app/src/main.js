@@ -17,6 +17,7 @@ import { mountAssistant } from "./assistant.js";
 import { PAGES, GROUPS } from "./curriculum.js";
 import { startRouter } from "./router.js";
 import "./style.css";
+import './lab.css';
 
 const BASE = import.meta.env.BASE_URL;
 

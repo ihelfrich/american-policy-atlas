@@ -40,8 +40,17 @@ export function fitSpecification(rows,x,y,spec,step=1) {
   const rank=groupIds.length+basis.length+1;
   if(rows.length<=rank || xx<=1e-12*Math.max(1,dot(centeredX,centeredX)))return {id:spec.id,slope:null,reason:'Insufficient independent variation in the exposure',points:[],n:rows.length};
   const beta=dot(rx,ry)/xx;
-  const points=rows.map((r,i)=>({...r,residual:(ry[i]-beta*rx[i])/sw[i],fitted:rawY[i]-(ry[i]-beta*rx[i])/sw[i]}));
-  return {id:spec.id,slope:beta*step,beta,points,n:rows.length,rank,weight:spec.weight,within:spec.within,adjust:spec.adjust};
+  const groupWeights=new Map(groupIds.map(g=>[g,0]));
+  groups.forEach((g,i)=>groupWeights.set(g,groupWeights.get(g)+w[i]));
+  const points=rows.map((r,i)=>{
+    const residual=(ry[i]-beta*rx[i])/sw[i];
+    const leverage=w[i]/groupWeights.get(groups[i])+basis.reduce((s,q)=>s+q[i]**2,0)+rx[i]**2/xx;
+    return {...r,residual,fitted:rawY[i]-residual,partialX:rx[i]/sw[i],partialY:ry[i]/sw[i],leverage,
+      deletionChange:leverage<1-1e-10?-rx[i]*sw[i]*residual/xx/(1-leverage)*step:null};
+  });
+  const totalWeight=w.reduce((a,b)=>a+b,0);
+  const rmse=Math.sqrt(points.reduce((s,r,i)=>s+w[i]*r.residual**2,0)/totalWeight);
+  return {id:spec.id,slope:beta*step,beta,points,n:rows.length,rank,rmse,weight:spec.weight,within:spec.within,adjust:spec.adjust};
 }
 
 export function specificationSet(rows,x,y,step=1) {
@@ -51,4 +60,18 @@ export function specificationSet(rows,x,y,step=1) {
 
 export function estimateDirection(value) {
   return value==null?'unavailable':Math.abs(value)<0.05?'little':value<0?'lower':'higher';
+}
+
+// Group deletion is a sensitivity diagnostic, not cross-validation or inference.
+// Keep the full-data common sample definition and remove one state per refit.
+export function stateSensitivity(rows,x,y,spec,step=1) {
+  const sample=commonSample(rows,x,y);
+  const baseline=fitSpecification(sample,x,y,spec,step).slope;
+  const omitted=[...new Set(sample.map(r=>r.state_name))].sort().map(state=>{
+    const retained=sample.filter(r=>r.state_name!==state);
+    const fit=fitSpecification(retained,x,y,spec,step);
+    return {state,n:fit.n,removed:sample.length-retained.length,slope:fit.slope,
+      change:fit.slope==null||baseline==null?null:fit.slope-baseline};
+  });
+  return {baseline,omitted};
 }

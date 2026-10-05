@@ -57,15 +57,27 @@ def main():
 
     # --- module concepts ---
     add("evidence-lab", "Evidence Lab", "Testing a county-level explanation",
-        """The Evidence Lab asks visitors to predict a direction, compare eight descriptive
-        linear specifications, and inspect counties with large residuals. It compares pooled,
+        """The Evidence Lab compares eight descriptive linear specifications, with an optional
+        prediction exercise. Linked maps and partial-regression plots show the selected fit. It compares pooled,
         within-state, age-and-log-density-adjusted, and combined fits under equal county and
         ACS total-population weights. Every fit uses the same complete sample for that outcome.
         Population weights change the descriptive emphasis; they are not precision weights or
         individual-level data. The specification range is not a confidence interval or a causal
         effect. Extra controls are not automatically better: they can condition on mediators or
         colliders. All 32 shipped fits (including both diabetes outcomes) were checked against R.
-        A research record exports choices, the sample GEOIDs, estimates, sources, and notes.""", "#/lab")
+        A research record exports choices, the sample GEOIDs, estimates, geographic sensitivity,
+        sources, and notes.""", "#/lab")
+    add("model-diagnostics", "Evidence Lab", "Model fit and geographic sensitivity",
+        """The partial-regression view removes the selected controls from both axes. With no
+        controls it centers the data. Its weighted slope recovers the selected coefficient.
+        Map color thresholds and plot axes stay fixed across the eight fits for a given outcome.
+        The county detail reports an in-sample fitted value, residual, weighted hat value, and
+        exact coefficient change if that county is deleted, when deletion preserves rank.
+        State-deletion diagnostics refit the selected model omitting each state in turn; they
+        are neither cross-validation nor an uncertainty interval. Weighted RMSE is evaluated in
+        sample. Hat values, RMSE, case deletion, and state deletion were independently checked
+        against R. The chart displays all estimable state refits and names the three largest
+        absolute changes. These diagnostics do not establish causal effects.""", "#/lab")
     add("diabetes-evidence", "Evidence Lab", "Health measurement and missing data",
         """The lab imports crude and age-adjusted diabetes prevalence and CDC model-based 95%
         confidence intervals from the 2025 county release, based on BRFSS 2023. Its 2,956 crude
