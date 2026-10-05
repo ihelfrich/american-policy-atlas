@@ -56,6 +56,26 @@ def main():
         "#/apparatus/methods")
 
     # --- module concepts ---
+    add("evidence-lab", "Evidence Lab", "Testing a county-level explanation",
+        """The Evidence Lab asks visitors to predict a direction, compare eight descriptive
+        linear specifications, and inspect counties with large residuals. It compares pooled,
+        within-state, age-and-log-density-adjusted, and combined fits under equal county and
+        ACS total-population weights. Every fit uses the same complete sample for that outcome.
+        Population weights change the descriptive emphasis; they are not precision weights or
+        individual-level data. The specification range is not a confidence interval or a causal
+        effect. Extra controls are not automatically better: they can condition on mediators or
+        colliders. All 32 shipped fits (including both diabetes outcomes) were checked against R.
+        A research record exports choices, the sample GEOIDs, estimates, sources, and notes.""", "#/lab")
+    add("diabetes-evidence", "Evidence Lab", "Health measurement and missing data",
+        """The lab imports crude and age-adjusted diabetes prevalence and CDC model-based 95%
+        confidence intervals from the 2025 county release, based on BRFSS 2023. Its 2,956 crude
+        values exactly reproduce the existing Atlas observations. Age standardization changes
+        the outcome; adjustment for county median age is a different operation. Interval overlap
+        does not test the difference between the estimates; their covariance is unavailable.
+        CDC release notes explain the absence of the relevant estimates for Kentucky and
+        Pennsylvania. Loving County, Texas has 30 adults in the source, below the 50-adult
+        reporting threshold. ACS margins of error and propagated regression uncertainty are
+        not available in the lab.""", "#/lab")
     add("m1-classification", "Reading a map", "Choropleth classification (quantile, equal, Jenks)",
         """A choropleth colors each area by a number, but the same numbers tell different stories
         depending on where the color breaks fall. Quantile classification puts an equal count of

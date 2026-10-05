@@ -1,5 +1,5 @@
 import * as Plot from '@observablehq/plot';
-import { geoAlbersUsa, geoPath, scaleQuantile } from 'd3';
+import { geoAlbersUsa, geoPath, scaleQuantile, scaleThreshold, quantileSorted } from 'd3';
 import { state, VARS, groupedOptions } from './data.js';
 import { number, summarize, relationship, csv } from './analysis.js';
 
@@ -26,7 +26,7 @@ function format(v, key) {
   return VARS[key].unit.startsWith('$') ? '$' + Math.round(v).toLocaleString() : v.toLocaleString(undefined,{maximumFractionDigits:1}) + (VARS[key].unit.startsWith('%') ? '%' : '');
 }
 
-export function drawCountyMap(el, variable, selected, onSelect, scope = 'all') {
+export function drawCountyMap(el, variable, selected, onSelect, scope = 'all', override = null) {
   // The web GeoJSON follows RFC 7946 ring order; d3's spherical polygons use
   // the opposite convention. Reverse copied rings, never the shared map data.
   const features = projectedFeatures ||= state.counties.features.map(f => ({...f, geometry: {...f.geometry,
@@ -35,13 +35,18 @@ export function drawCountyMap(el, variable, selected, onSelect, scope = 'all') {
       : f.geometry.coordinates.map(p => p.map(r => [...r].reverse())) }}));
   const projection = geoAlbersUsa().fitExtent([[12,12],[928,518]], {type:'FeatureCollection', features});
   const path = geoPath(projection);
-  const scale = scaleQuantile(features.map(f=>number(f.properties[variable])).filter(Number.isFinite), colors);
-  el.innerHTML = `<svg viewBox="0 0 940 530" role="img" aria-label="County map of ${esc(VARS[variable].label)}. Alaska and Hawaii shown as insets. ${onSelect ? 'Select a county using the search controls below.' : 'Darker colors indicate higher values.'}">${features.map(f => {
-    const p=f.properties, value=number(p[variable]);
-    return `<path d="${path(f)||''}" data-geoid="${p.GEOID}" fill="${Number.isFinite(value)?scale(value):'#c8c8c3'}" opacity="${scope==='all'||p.state_name===scope?1:0.18}" stroke="${p.GEOID===selected?'#d47b30':'#faf8f3'}" stroke-width="${p.GEOID===selected?2.4:0.15}"><title>${esc(p.county_name)}, ${esc(p.state_name)}: ${format(value,variable)}</title></path>`;
+  const values=features.map(f=>override?number(override.values.get(f.properties.GEOID)):number(f.properties[variable])).filter(Number.isFinite);
+  const magnitudes=values.map(Math.abs).sort((a,b)=>a-b);
+  const low=quantileSorted(magnitudes,.4)||.01,high=Math.max(low+.01,quantileSorted(magnitudes,.8)||.02);
+  const scale=override?scaleThreshold([-high,-low,low,high],['#27687a','#99c4cb','#f0f0df','#ddb47a','#ab582d']):scaleQuantile(values,colors);
+  const label=override?.label||VARS[variable].label;
+  el.innerHTML = `<svg viewBox="0 0 940 530" role="img" aria-label="County map of ${esc(label)}. Alaska and Hawaii shown as insets. ${onSelect ? 'Select a county using the search controls below.' : 'Darker colors indicate higher values.'}">${features.map(f => {
+    const p=f.properties, value=override?number(override.values.get(p.GEOID)):number(p[variable]);
+    const valueLabel=override?(Number.isFinite(value)?`${value.toFixed(2)} percentage points`:'Not available'):format(value,variable);
+    return `<path d="${path(f)||''}" data-geoid="${p.GEOID}" fill="${Number.isFinite(value)?scale(value):'#c8c8c3'}" opacity="${scope==='all'||p.state_name===scope?1:0.18}" stroke="${p.GEOID===selected?'#d47b30':'#faf8f3'}" stroke-width="${p.GEOID===selected?2.4:0.15}"><title>${esc(p.county_name)}, ${esc(p.state_name)}: ${valueLabel}</title></path>`;
   }).join('')}</svg>`;
   if (onSelect) el.querySelector('svg').onclick=e=>{const id=e.target.dataset.geoid;if(id)onSelect(id);};
-  return scale.quantiles();
+  return override?[-high,-low,low,high]:scale.quantiles();
 }
 
 export function mountCover() {
@@ -71,7 +76,7 @@ export function mountInvestigation() {
     <div class="invest-panels"><section class="chart-panel"><div class="panel-heading"><span class="step-number">01</span><h2>Find the pattern</h2></div><div id="iq-map" class="county-map"></div><div id="iq-legend" class="map-key"></div><p class="chart-note">Five national quantile classes. Gray: missing. Alaska and Hawaii are inset; areas are not to a common scale. Click a county or use the searchable list below.</p></section>
     <section class="chart-panel"><div class="panel-heading"><span class="step-number">02</span><h2>Question the pattern</h2></div><div id="iq-scatter"></div><p class="chart-note">Each point is a county with both measures available. The line summarizes their association with equal weight per county. It does not estimate a policy effect.</p></section></div>
     <section class="place-section"><div class="panel-heading"><span class="step-number">03</span><h2>Get to know two places</h2></div><p>A national pattern can hide a local difference. Compare any two counties, including places outside your selected state.</p><div class="place-controls"><label>Search counties<input id="iq-search" type="search" placeholder="Try St. Louis, Fulton, or a state" /></label><label>First place<select id="iq-place"></select></label><label>Compare with<select id="iq-compare"></select></label></div><div id="iq-comparison"></div><p class="chart-note">The reference is the median of available county values in your selected scope, not a national household income or population prevalence estimate. St. Louis city and St. Louis County are separate county-equivalent units.</p></section>
-    <section class="interpret-section"><div><span class="kicker">Before drawing a conclusion</span><h2>What would change your mind?</h2><p id="iq-caution"></p><p id="iq-next"></p><details><summary>Check the evidence behind this view</summary><div id="iq-sources"></div><p>ACS measures are pooled 2018–2022 estimates. PLACES is a 2025 release of modeled estimates, not a 2025 census of health. These are different observation periods and populations. Margins of error and model intervals are not included in this prototype.</p><p>Missing health values occur across Kentucky and Pennsylvania and in one Texas county in this snapshot. The extraction does not record a reason for every omission. Missing is never treated as zero.</p><p><a href="https://www.cdc.gov/places/methodology/index.html">CDC methodology</a> · <a href="https://www.census.gov/programs-surveys/acs/guidance/estimates.html">Understanding ACS estimates</a> · <a href="#/apparatus/methods">Atlas methods and coverage</a></p></details></div><div class="notebook"><label for="iq-note">Your working explanation</label><p>What do you observe? What else could explain it? What would you investigate next?</p><textarea id="iq-note" rows="6" placeholder="I notice… Another explanation could be… I would want to know…"></textarea><p class="chart-note">Kept on this device when browser storage is available. Never sent to a server.</p><button id="iq-export" class="action-button">Download evidence CSV</button><button id="iq-notes" class="action-button secondary">Download my notes</button><span id="iq-storage-status" role="status"></span></div></section>`;
+    <section class="interpret-section"><div><span class="kicker">Before drawing a conclusion</span><h2>What would change your mind?</h2><p id="iq-caution"></p><p id="iq-next"></p><a id="iq-lab-link" href="#/lab">Test this question in the Evidence Lab →</a><details><summary>Check the evidence behind this view</summary><div id="iq-sources"></div><p>ACS measures are pooled 2018–2022 estimates. PLACES is a 2025 release of modeled estimates, not a 2025 census of health. These are different observation periods and populations. ACS margins of error are not included. The Evidence Lab adds CDC diabetes intervals and age-adjusted estimates.</p><p>CDC’s 2025 release omits the relevant 2023 BRFSS-based estimates for Kentucky and Pennsylvania. Loving County, Texas has 30 adults in the CDC source, below its 50-adult reporting threshold. Missing is never treated as zero.</p><p><a href="https://www.cdc.gov/places/methodology/index.html">CDC methodology</a> · <a href="https://www.census.gov/programs-surveys/acs/guidance/estimates.html">Understanding ACS estimates</a> · <a href="#/apparatus/methods">Atlas methods and coverage</a></p></details></div><div class="notebook"><label for="iq-note">Your working explanation</label><p>What do you observe? What else could explain it? What would you investigate next?</p><textarea id="iq-note" rows="6" placeholder="I notice… Another explanation could be… I would want to know…"></textarea><p class="chart-note">Kept on this device when browser storage is available. Never sent to a server.</p><button id="iq-export" class="action-button">Download evidence CSV</button><button id="iq-notes" class="action-button secondary">Download my notes</button><span id="iq-storage-status" role="status"></span></div></section>`;
   const get=id=>el.querySelector('#'+id);
   const options=()=>{
     const term=get('iq-search').value.toLowerCase();
@@ -97,6 +102,7 @@ export function mountInvestigation() {
     get('iq-scatter').replaceChildren(fit.n?Plot.plot({width:600,height:360,marginLeft:64,marginBottom:55,x:{label:`${VARS[x].label} (${VARS[x].unit})`,grid:true},y:{label:`${VARS[y].label} (${VARS[y].unit})`,grid:true},marks}):Object.assign(document.createElement('p'),{textContent:'No counties have both measures in this scope. Try another state or variable.'}));
     const a=rows.find(r=>r.GEOID===selected),b=rows.find(r=>r.GEOID===comparison);
     get('iq-comparison').innerHTML=`<div class="table-scroll"><table><caption>Selected places and the ${esc(scope==='all'?'United States':scope)} county median</caption><thead><tr><th scope="col">Measure</th><th scope="col">${esc(a.county_name)}<small>${esc(a.state_name)}</small></th><th scope="col">${esc(b.county_name)}<small>${esc(b.state_name)}</small></th><th scope="col">Scope median</th></tr></thead><tbody>${[...new Set([x,y,'median_hh_income','pct_poverty','pct_broadband'])].map(key=>`<tr><th scope="row">${esc(VARS[key].label)}</th><td>${format(number(a[key]),key)}</td><td>${format(number(b[key]),key)}</td><td>${format(summarize(subset,key).median,key)}</td></tr>`).join('')}</tbody></table></div>`;
+    get('iq-lab-link').href=`#/lab?q=${question.id}&county=${selected}`;
     const custom=x!==question.x||y!==question.y;
     get('iq-caution').textContent=custom?'You changed the measures. Check their definitions and denominators below. A relationship between county averages does not identify a relationship between individuals or establish a causal effect.':question.caution;
     get('iq-next').textContent=custom?'Does the pattern survive a different geographic scope? What other variables or study design would help explain it?':question.next;

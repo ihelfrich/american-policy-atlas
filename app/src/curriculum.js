@@ -73,13 +73,14 @@ export const PAGES = [
     html: `
       <section class="cover-layout">
         <div class="cover-copy"><span class="kicker">The American Policy Atlas · Working prototype</span>
-          <h1>Every place has<br>a story.<br><em>Ask a better question.</em></h1>
-          <p>Explore how income, housing, and health vary across the United States. Follow your curiosity from a national pattern to the places you know.</p>
-          <div class="hero-actions"><a class="btn btn-solid" href="#/investigate">Start investigating ↗</a><a class="btn btn-ghost" href="#/atlas">Explore the map</a></div>
+          <h1>A pattern is<br>only the<br><em>beginning.</em></h1>
+          <p>Make a prediction. Change the lens. Follow the places that challenge your explanation of income, health, and opportunity.</p>
+          <div class="hero-actions"><a class="btn btn-solid" href="#/lab">Enter the Evidence Lab ↗</a><a class="btn btn-ghost" href="#/investigate">Start with a map</a></div>
           <p class="cover-byline">An exploration by Ian Helfrich, PhD<br>Economics · Geography · Learning by doing</p>
         </div>
         <figure class="cover-figure"><div class="figure-label"><span>01 / The income landscape</span><span>ACS 2018–2022</span></div><div id="cover-map" class="county-map"></div><figcaption>Median household income by county. Five quantile classes, from pale to dark green. Gray indicates missing data. Alaska and Hawaii are inset.</figcaption><div class="cover-facts"><div><strong id="cover-count">3,144</strong><span>county equivalents</span></div><div><strong id="cover-measures">33</strong><span>public-data measures</span></div><div><strong>Your question</strong><span>is the starting point</span></div></div></figure>
       </section>
+      <section class="lab-invitation"><div><span class="kicker">Introducing the Evidence Lab</span><h2>Put your explanation<br>under pressure.</h2><p>One dataset. Eight analytical choices. See what happens when you compare counties within states, account for age and density, or give larger populations more weight.</p><a href="#/lab">Test a story against the evidence →</a></div><div class="invitation-diagram" aria-label="Workflow from a prediction to eight analytical choices to places for further research"><span>Your prediction</span><div class="lens-stack"><b>Geography</b><b>Weighting</b><b>Adjustment</b></div><span>A better research question</span><small>Same counties · Explicit choices · Traceable sources</small></div></section>
       <section class="question-section"><div class="section-intro"><span class="kicker">Choose a starting point</span><h2>Make the data mean something.</h2><p>Start with a question. Change the view. Notice what needs a better explanation.</p></div>
         <div class="question-grid">
           <a href="#/investigate?q=health" class="question-card"><span class="question-index">01 / Health & opportunity</span><h3>Does prosperity travel with health?</h3><p>Explore income and diabetes. Compare the national relationship with the places around you.</p><span class="question-arrow">Investigate ↗</span></a>
@@ -91,6 +92,7 @@ export const PAGES = [
       <section class="evidence-note"><b>A map starts a conversation.</b><p>This prototype uses dated public-data snapshots, including ACS 2018–2022 and CDC PLACES. County patterns describe places; they do not establish individual experiences or the effects of a policy. Definitions, coverage, and limitations travel with each investigation.</p></section>`,
   },
   { id: "investigate", route: "/investigate", group: "front", nav: "Investigate", title: "Investigate a question", html: '<div id="investigation" class="investigation"></div>' },
+  { id: "lab", route: "/lab", group: "front", nav: "Evidence Lab", title: "The Evidence Lab", html: '<div id="evidence-lab" class="evidence-lab"></div>' },
 
   {
     id: "atlas", route: "/atlas", group: "front", nav: "The atlas", seq: 0,

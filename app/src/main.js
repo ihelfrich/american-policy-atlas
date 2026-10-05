@@ -12,6 +12,7 @@ import {
 } from "./prose.js";
 import { mountExplorer } from "./explorer.js";
 import { mountDownloads } from "./download.js";
+import { mountLab } from './lab.js';
 import { mountAssistant } from "./assistant.js";
 import { PAGES, GROUPS } from "./curriculum.js";
 import { startRouter } from "./router.js";
@@ -87,6 +88,7 @@ async function boot() {
   const MOUNTS = {
     home: mountCover,
     investigate: mountInvestigation,
+    lab: mountLab,
     atlas: mountAtlas,
     "reading-a-map": () => renderReadingMap(),
     distributions: () => renderDistributions(Plot),
@@ -129,7 +131,7 @@ async function boot() {
 function buildNav() {
   const nav = document.getElementById("masthead-nav");
   if (!nav) return;
-  const primary = ['home','investigate','atlas','explorer','methods'];
+  const primary = ['home','lab','investigate','atlas','explorer','methods'];
   const link = p => '<a href="#'+p.route+'" data-route="'+p.route+'">'+p.nav+'</a>';
   nav.innerHTML = primary.map(id => link(PAGES.find(p=>p.id===id))).join('') +
     '<details class="library-menu"><summary>Lesson library</summary><div class="library-list">' +
